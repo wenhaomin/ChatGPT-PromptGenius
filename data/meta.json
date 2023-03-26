@@ -1,0 +1,36 @@
+{
+    "languages": [
+        {
+            "code": "eng",
+            "name": "English"
+        },
+        {
+            "code": "chn",
+            "name": "中文"
+        },
+         {
+            "code": "jpn",
+            "name": "日语"
+        }
+    ],
+    "index_content": {
+        "eng": {
+            "site_title": "Prompt Genius",
+            "search_prompt": "Type in the functions you want to achieve...",
+            "search_btn_text": "Search",
+            "class_display_title": "Or choose from the following existing classes."
+        },
+        "chn": {
+            "site_title": "潘多拉之盒",
+            "search_prompt": "输入你想实现的功能...",
+            "search_btn_text": "搜索",
+            "class_display_title": "或者从下列现有类别中选择。"
+        },
+        "jpn": {
+            "site_title": "Prompt Genius",
+            "search_prompt": "達成したい機能を入力してください...",
+            "search_btn_text": "検索",
+            "class_display_title": "または、以下の既存のカテゴリから選択してください。"
+        }
+    }
+}
