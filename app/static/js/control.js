@@ -197,7 +197,10 @@ function search_prompt_by_string(search_text, selected_lan_code){
 // render given prompts
 function render_prompt_display(prompt_list){
     $('#class-card-row').empty();
+    $('#prompt_num').text("Prompt Number:" + prompt_list.length.toString());
+    console.log(prompt_list.length)
     prompt_list.forEach(function (item) {
+        
         prompt_card_html = generate_prompt_card_html(item);
                 $('#class-card-row').append(prompt_card_html);
         })

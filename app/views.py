@@ -116,23 +116,32 @@ def search_prompt(search_text, lan_code):
 
     for data in prompts:
         fid = data['function']
+        function_desc = functions_dict[fid]['desc'][lan_code]
+        class_list = [name[lan_code] for name in fid_to_cnames[fid]] 
         for p in data['content'][lan_code]:
             p_text = p['content'][0]
 
-            score  = text_similarity_score(search_text, p_text, lan_code)
-            if score > 0.5:
-                tmp = {}
-                tmp['chat_list'] = p['content']  # todo: change later
-                tmp['class_list'] = [name[lan_code] for name in fid_to_cnames[fid]]  # get class names
-                tmp['author'] = '@w'
-                tmp['model'] = 'GPT 3.5'
-                tmp['function_desc'] = functions_dict[fid]['desc'][lan_code]
-                result.append(tmp)
+            # also take output the class label
+            compare_text_lst = class_list + [p_text, function_desc]
+
+            for c_text in compare_text_lst:
+                score  = text_similarity_score(search_text, c_text, lan_code)
+                if score > 0.5:
+                    tmp = {}
+                    tmp['chat_list'] = p['content']  # todo: change later
+                    tmp['class_list'] = class_list  # get class names
+                    tmp['author'] = '@w'
+                    tmp['model'] = 'GPT 3.5'
+                    tmp['function_desc'] = function_desc
+                    result.append(tmp)
+                    continue
     return jsonify({"content": result, "message": "success"})
 
 
-from waitress import serve
-app = Flask(__name__)
+# remove duplicate value
+
+
+
 
 
 

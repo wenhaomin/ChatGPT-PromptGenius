@@ -34,17 +34,13 @@ function generate_prompt_card_html(item){
             <span class="mdui-chip mdui-color-pink-a100">
               <div class="mdui-chip-title">${class_name}</div>
             </span>
-            <span class="mdui-chip mdui-color-blue">
+            <span class="mdui-chip mdui-color-grey">
               <div class="mdui-chip-title">${author}</div>
             </span>
           </div>
 
-          <div class="mdui-card-primary mdui-text-color-green-900 horizontal-flex">
-
-            <div>
-                <i class="mdui-icon material-icons">lightbulb_outline</i>
-            </div>
-            <div>
+          <div class="mdui-card-primary horizontal-flex">
+            <div class="mdui-chip mdui-color-blue" style = "padding:5px">
                 <i class="mdui-card-primary-subtitle">${function_desc}</i>
             </div>
           </div>
@@ -76,3 +72,16 @@ function generate_prompt_card_html(item){
 //                <span class="mdui-card-primary-subtitle">${function_desc}</span>
 //            </div>
 //          </div>
+
+
+{/* <div>
+<i class="mdui-icon material-icons">lightbulb_outline</i>
+</div> */}
+
+// <div class="mdui-card-primary mdui-text-color-green-900 horizontal-flex">
+
+          
+// <div class="mdui-chip mdui-color-pink-a100">
+//     <i class="mdui-card-primary-subtitle">${function_desc}</i>
+// </div>
+// </div>
