@@ -8,9 +8,17 @@
             "code": "chn",
             "name": "中文"
         },
-         {
+        {
             "code": "jpn",
             "name": "日语"
+        },
+        {
+            "code": "kor",
+            "name": "한국인"
+        },
+        {
+            "code": "deu",
+            "name": "Deutsch"
         }
     ],
     "index_content": {
@@ -31,6 +39,18 @@
             "search_prompt": "達成したい機能を入力してください...",
             "search_btn_text": "検索",
             "class_display_title": "または、以下の既存のカテゴリから選択してください。"
+        },
+        "kor": {
+            "site_title": "Prompt Genius",
+            "search_prompt": "달성하려는 기능을 입력하십시오....",
+            "search_btn_text": "찾다",
+            "class_display_title": "또는 다음 기존 클래스에서 선택하십시오."
+        },
+        "deu": {
+            "site_title": "Prompt Genius",
+            "search_prompt": "Geben Sie die gewünschten Funktionen ein...",
+            "search_btn_text": "Suchen",
+            "class_display_title": "Oder wählen Sie aus den folgenden bestehenden Klassens."
         }
     }
 }

@@ -14,6 +14,8 @@ functions = load_json_file(['data', 'functions.json'])
 prompts = load_json_file(['data', 'prompts.json'])
 classes_tree = load_json_file(['data', 'class_tree.json'])
 
+# print([f['function'] for f in functions])
+
 
 # get function dict:
 functions_dict = {f['function']: f for f in functions}
@@ -219,6 +221,8 @@ def search_prompt(search_text, lan_code):
 # priority = 1, good, 
 # priority = 2, popular
 # priority = 3, precious, do do show
+
+
 
 
 

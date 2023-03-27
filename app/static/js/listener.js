@@ -19,5 +19,5 @@ function languageSelectListenser() {
 function prompt_search_listener(){
     var search_text = $("#search-input").val();
     console.log(search_text);
-    search_prompt_by_string(search_text, cur_lan_code)
+    render_search_prompt_by_string(search_text, cur_lan_code)
 }
