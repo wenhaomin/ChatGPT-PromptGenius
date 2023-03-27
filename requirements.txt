@@ -2,3 +2,4 @@ pandas
 numpy
 flask
 waitress
+easydict

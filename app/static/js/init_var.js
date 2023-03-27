@@ -5,7 +5,7 @@
  */
 
 let all_languages;
-let cur_lan_code = 'eng';
+let cur_lan_code = 'chn';
 
 // Haomin Wen
 let cur_class = ''

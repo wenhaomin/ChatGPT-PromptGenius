@@ -15,12 +15,8 @@ prompts = load_json_file(['data', 'prompts.json'])
 classes_tree = load_json_file(['data', 'class_tree.json'])
 
 
-
-
-
 # get function dict:
 functions_dict = {f['function']: f for f in functions}
-
 
 
 # class id to names,
@@ -37,8 +33,6 @@ def get_cname_dict(d):
 for c in classes_tree:
     get_cname_dict(c)
 
-
-
 # function id to class name
 # {'function_id': [{"eng": Code Development, "chn": "代码开发"}, ...]}
 fid_to_cnames = {}
@@ -47,6 +41,40 @@ for f in functions:
     cid_lst = f['class'] # a function can have many classes
     cnames_lst = [cid_to_cnames[cid] for cid in cid_lst]
     fid_to_cnames[fid] = cnames_lst
+
+
+is_function_in_class_tree = True
+if is_function_in_class_tree:
+
+     # build class_function_dict
+    from collections import defaultdict
+    c_f_dict = defaultdict(set)
+    for f in functions:
+        c_lst = f['class']
+        fid = f['function']
+        for c in c_lst:
+            c_f_dict[c].add(fid)
+
+
+    # change the function class
+    for f in functions:
+        f['class'].append(f['function'])
+
+   
+    # change the class tree, mount the function as the second class 
+    def mount_function_in_class_tree(d: dict):
+        cid = d['id']
+        if cid == 'office': return 0# do not conduct for office
+        children_lst = []
+        fid_lst = c_f_dict.get(cid, [])
+        for fid in fid_lst:
+            names = functions_dict[fid]['desc']
+            tmp = {'id': fid, 'names': names}
+            children_lst.append(tmp)
+        d['children'] = children_lst
+    
+    for c in classes_tree:
+        mount_function_in_class_tree(c)
 
 
 @bp.route('/')

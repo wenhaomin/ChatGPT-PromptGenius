@@ -12,29 +12,13 @@ import json
 openai.api_key = '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' # ly
 
 # function_lst = [
-#     "Drafting/editing written communications",
 #     "Answering questions and trivia",
 #     "Language translation/interpretation",
 #     "Creative writing ideas",
-#     "Tutoring/homework help",
 #     "Resume/cover letter assistance",
-#     "Entertainment recommendations",
-#     "Travel planning assistance",
-#     "Weather/news updates",
 #     "Productivity/self-improvement tips",
-#     "Financial planning/budgeting",
 #     "Meal planning/recipes",
-#     "Scheduling reminders",
-#     "Research assistance",
 #     "Tech troubleshooting",
-#     "Language learning",
-#     "Conversation practice",
-#     "Meditation/mindfulness guidance",
-#     "Event planning",
-#     "Gift recommendations",
-#     "Microsoft Word",
-#     "Microsoft Excel",
-#     "Microsoft PowerPoint",
 #     "Microsoft Outlook",
 #     "Microsoft Access",
 #     "Microsoft OneNote",
@@ -519,9 +503,7 @@ if __name__ == "__main__":
         out_path = './output/functions.json'
         json.dump(function_lst, open(out_path,'w'), indent=4)
 
-    # df = pd.read_csv('./output/prompt_table.csv')
-    # df = df[df['language_code']=='kor']
-    # print(df.__len__())
+ 
     # generate prompts.json
     if 0:
         f_df = pd.read_csv('./output/function_table.csv')
@@ -558,24 +540,7 @@ if __name__ == "__main__":
         out_path = './output/prompts.json'
         json.dump(prompts_lst, open(out_path, 'w'), indent=4)
 
-                    # print(group_df)
-
-
-    # generate classes.json
-    if 0:
-
-
-        class_list = []
-        for k, v in class_name.items():
-            tmp = {'id': k, 'names': v}
-            class_list.append(tmp)
-        json.dump(class_list, open('./output/classes.json', 'w'), indent=4)
-
-    # #generate functions class_level.json
-    if 0:
-        json.dump(class_tree, open('./output/class_level.json', 'w'), indent=4)
-
-
+                  
 
 
     if 0: # aggrate the prompts
