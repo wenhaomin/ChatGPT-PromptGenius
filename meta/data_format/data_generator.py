@@ -382,6 +382,10 @@ class_name = {
 
 
 class_icon = {
+    "popular":{
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_name": "thumb_up",
+    },
     'office': {"icon_style":"mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
                 "icon_name":"widgets"
                } ,

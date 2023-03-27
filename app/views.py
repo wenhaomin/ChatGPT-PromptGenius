@@ -15,6 +15,7 @@ prompts = load_json_file(['data', 'prompts.json'])
 classes_level = load_json_file(['data', 'class_level.json'])
 
 
+
 # get function dict:
 functions_dict = {f['function']: f for f in functions}
 
@@ -87,7 +88,7 @@ def fetch_prompt(class_id, lan_code):
     result = []
 
     # find all funcions that has the class
-    if class_id == 'all_class':
+    if class_id == 'all_class' or class_id == 'popular':
         f_lst = [f['function'] for f in functions]
     else:
         f_lst = [f['function'] for f in functions if class_id in f['class']]
@@ -97,6 +98,10 @@ def fetch_prompt(class_id, lan_code):
         fid = data['function']
         if fid not in f_lst: continue
         for p in data['content'][lan_code]:
+            # todo: prompt filter condition
+            
+            if class_id=='popular' and p['priority'] != 2: continue  # priority=2, means popular
+
             tmp = {}
             tmp['chat_list'] =  p['content'] #todo: change later
             tmp['class_list'] = [name[lan_code] for name in fid_to_cnames[fid]] # get class names
@@ -140,8 +145,43 @@ def search_prompt(search_text, lan_code):
 
 # remove duplicate value
 
+# one function can have many class. Add a class, popular: 
+# 1) add  popular in classes.json
+# {
+#     "id": "popular",
+#     "names": {
+#         "chn": "popular",
+#         "eng": "popular",
+#         "jpn": "popular",
+#         "fra": "popular",
+#         "kor": "popular",
+#         "deu": "popular"
+#     }
+# },
 
 
+
+# 3) add popular into the class_level.json
+#  {
+#         "id": "popular",
+#         "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+#         "icon_name": "code",
+#         "names": {
+#             "chn": "popular",
+#             "eng": "popular",
+#             "jpn": "popular",
+#             "fra": "popular",
+#             "kor": "popular",
+#             "deu": "popular"
+#         }
+#     },
+
+# 3) add popular data into prompts.json
+# solutioin 2: change the  fetch_prompt function, iter all prompts to check its priority, if priority = 2, it is popular
+# priority = 0, normal 
+# priority = 1, good, 
+# priority = 2, popular
+# priority = 3, precious, do do show
 
 
 

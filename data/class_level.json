@@ -1,5 +1,18 @@
 [
     {
+        "id": "popular",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_name": "thumb_up",
+        "names": {
+            "chn": "popular",
+            "eng": "popular",
+            "jpn": "popular",
+            "fra": "popular",
+            "kor": "popular",
+            "deu": "popular"
+        }
+    },
+    {
         "id": "office",
         "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
         "icon_name": "widgets",
