@@ -6,6 +6,7 @@ import openai, os
 import copy
 import re
 import json
+
 # openai.api_key = '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' # whm
 
 openai.api_key = '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' # ly
@@ -140,6 +141,19 @@ def batch_file_name(file_dir, suffix='.train'):
     return L
 
 
+
+
+def dir_check(path):
+    """
+    check weather the given path exists, if not, then create it
+    """
+    import os
+    dir = path if os.path.isdir(path) else os.path.split(path)[0]
+    if not os.path.exists(dir): os.makedirs(dir)
+    return path
+  
+
+
 def get_function_id(string):
     return re.sub(r'[^a-zA-Z]', '-', string)
 
@@ -202,7 +216,7 @@ def aggreate_prompts(file, is_test):
 
     # generate prompts.json
     out_path =  './prompts.json' if is_test else f'./prompts_{get_time_str()}.json'
-    with open(out_path, 'w', encoding='UTF-8') as f:
+    with open(dir_check(out_path), 'w', encoding='UTF-8') as f:
         json.dump(prompts_lst, f, indent=4)
 
     # generate functions.json
@@ -266,6 +280,15 @@ def aggreate_prompts(file, is_test):
 
 
 class_name = {
+    "popular":
+     {
+            'chn': '精选',
+            'eng': 'Popular',
+            'jpn': '人気',
+            'fra': 'Populaire',
+            'kor': '인기 있는',
+            'deu': 'Beliebt',
+        },
     'office':
         {
             'chn': 'Microsoft Office',
@@ -331,7 +354,7 @@ class_name = {
     },
     'study_tutoring': {
         'chn': '学业辅导',
-        'eng': 'Study tutoring',
+        'eng': 'Study Tutoring',
         'jpn': 'がくしゅう',
         'fra': 'Tutorat universitaire',
         'kor': '학업 지도',
@@ -428,7 +451,8 @@ class_icon = {
 }
 
 
-class_level = {
+class_tree = {
+    'popular':{},
     'office': {
         'MacrosoftExcel': {},
         'MacrosoftOneNote': {},
@@ -451,7 +475,7 @@ if __name__ == "__main__":
 
 
 
-    # generate class level
+    # generate class tree
     if 1:
         def get_class_name(class_id):
             return class_name.get(class_id, {lang: class_id for lang in config.supported_languages})
@@ -460,15 +484,20 @@ if __name__ == "__main__":
             result = []
             for key, value in d.items():
                 tmp = {"id": key, "names": get_class_name(key)}
-                # todo: add the icon
+                #  add the icon
+                icon = class_icon.get(key, None)
+                if icon is not None:
+                    tmp['icon_name'] = icon['icon_name']
+                    tmp['icon_style'] = icon['icon_style']
+                # for children
                 if value:
                     tmp["children"] = dict_to_list(value)
                 result.append(tmp)
 
             return result
-        output = dict_to_list(class_level)
+        output = dict_to_list(class_tree)
 
-        json.dump(output, open('./class_level.json', 'w'), indent=4)
+        json.dump(output, open(dir_check('./output/class_tree.json'), 'w'), indent=4)
 
 
     # generate functions.json
@@ -533,7 +562,7 @@ if __name__ == "__main__":
 
 
     # generate classes.json
-    if 1:
+    if 0:
 
 
         class_list = []
@@ -544,7 +573,7 @@ if __name__ == "__main__":
 
     # #generate functions class_level.json
     if 0:
-        json.dump(class_level, open('./output/class_level.json', 'w'), indent=4)
+        json.dump(class_tree, open('./output/class_level.json', 'w'), indent=4)
 
 
 

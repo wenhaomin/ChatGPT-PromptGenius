@@ -9,10 +9,12 @@ bp = Blueprint('views', __name__)
 
 
 meta = load_json_file(['data', 'meta.json'])
-classes = load_json_file(['data', 'classes.json'])
+# classes = load_json_file(['data', 'classes.json'])
 functions = load_json_file(['data', 'functions.json'])
 prompts = load_json_file(['data', 'prompts.json'])
-classes_level = load_json_file(['data', 'class_level.json'])
+classes_tree = load_json_file(['data', 'class_tree.json'])
+
+
 
 
 
@@ -20,13 +22,20 @@ classes_level = load_json_file(['data', 'class_level.json'])
 functions_dict = {f['function']: f for f in functions}
 
 
-# class id to names,
-#{ "code_development": {"eng": Code Development, "chn": "代码开发"}, ...}
-cid_to_cnames = {}
-for c in classes:
-    cid = c['id']
-    cid_to_cnames[cid] =c['names']
 
+# class id to names,
+cid_to_cnames = {}
+def get_cname_dict(d):
+    id = d['id']
+    cnames = d['names']
+    cid_to_cnames[id] = cnames
+    children = d.get('children', None)
+    if children is not None:
+        for c in children:
+            get_cname_dict(c)
+
+for c in classes_tree:
+    get_cname_dict(c)
 
 
 
@@ -51,23 +60,23 @@ def fetch_meta(meta_name):
     return jsonify({"content": meta[meta_name], "message": "success"})
 
 
-@bp.route('/fetch_class/<param>')
-def fetch_class(param):
-    if param == 'with_example':
-        result = []
-        for item in copy.deepcopy(classes):
-            one_class = item
-            class_id = one_class['id']
-            for function in functions: # 遍历所有的function，找到属于某个class的function
-                if class_id in function['class']:
-                    one_class['example'] = function
-                    break
-            result.append(one_class)
-    elif param == 'raw':
-        result = classes
-    else:
-        return jsonify({"message": f'Invalid parameter "{param}"'})
-    return jsonify({"content": result, "message": "success"})
+# @bp.route('/fetch_class/<param>')
+# def fetch_class(param):
+#     if param == 'with_example':
+#         result = []
+#         for item in copy.deepcopy(classes):
+#             one_class = item
+#             class_id = one_class['id']
+#             for function in functions: # 遍历所有的function，找到属于某个class的function
+#                 if class_id in function['class']:
+#                     one_class['example'] = function
+#                     break
+#             result.append(one_class)
+#     elif param == 'raw':
+#         result = classes
+#     else:
+#         return jsonify({"message": f'Invalid parameter "{param}"'})
+#     return jsonify({"content": result, "message": "success"})
 
 
 # @bp.route('/fetch_meta/<meta_name>')
@@ -79,7 +88,7 @@ def fetch_class(param):
 @bp.route('/fetch_tree/')
 def fetch_tree():
 
-    result = copy.deepcopy(classes_level)
+    result = copy.deepcopy(classes_tree)
 
     return jsonify({"content": result, "message": "success"})
 

@@ -1,18 +1,5 @@
 [
     {
-        "function": "popular_function",
-        "desc": {
-            "chn": "popular",
-            "eng": "popular",
-            "jpn": "popular",
-            "kor": "popular",
-            "deu": "popular"
-        },
-        "class": [
-            "popular"
-        ]
-    },
-    {
         "function": "data_analysis",
         "desc": {
             "chn": "\u6570\u636e\u5206\u6790",
