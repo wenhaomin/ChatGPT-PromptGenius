@@ -1,5 +1,5 @@
 /**
- * Author: Yan Lin
+ * Author: Yan Lin, Haomin Wen
  * Created on: 2023-03-18
  * Listener functions.
  */
@@ -15,7 +15,6 @@ function languageSelectListenser() {
 }
 
 
-// By Haomin Wen
 function prompt_search_listener(){
     var search_text = $("#search-input").val();
     console.log(search_text);

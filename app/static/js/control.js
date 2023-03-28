@@ -1,8 +1,10 @@
 /**
- * Author: Yan Lin
+ * Author: Yan Lin, Haomin Wen
  * Created on: 2023-03-18
  * Control functions.
  */
+
+// const { CONNREFUSED } = require("dns");
 
 function render_page_basic(selected_lan_code) {
     // Render the basic elements on the page.
@@ -199,12 +201,35 @@ function render_prompt_display(prompt_list){
     $('#class-card-row').empty();
     $('#prompt_num').text("Prompt Number:" + prompt_list.length.toString());
     console.log(prompt_list.length)
-    prompt_list.forEach(function (item) {
+    prompt_list.forEach(function (item, index) {
         
-        prompt_card_html = generate_prompt_card_html(item);
-                $('#class-card-row').append(prompt_card_html);
+        prompt_card_html = generate_prompt_card_html(index, item);
+        $('#class-card-row').append(prompt_card_html);
+        
+        cur_prompt = '#class-card-'+ index.toString();
+        $(cur_prompt).on('click', function() {
+            // Custom click event listener code
+            // console.log('Clicked on item with id:', $(this).text());
+            copy_to_clipboard($(this).text());
+        
+        });
+
         })
     }
+
+// copy text
+function copy_to_clipboard(text) {
+    const copyContent = async () => {
+        try {
+        await navigator.clipboard.writeText(text);
+        console.log('Content copied to clipboard');
+        } catch (err) {
+        console.error('Failed to copy: ', err);
+        }
+    }
+    
+    copyContent();
+}
 
 
 
