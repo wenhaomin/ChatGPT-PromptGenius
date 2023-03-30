@@ -5,6 +5,6 @@
  */
 
 let all_languages;
-let cur_lan_code = 'chn';
+let cur_lan_code = 'eng';
 
 let cur_class = ''

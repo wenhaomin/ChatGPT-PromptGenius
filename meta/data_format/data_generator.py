@@ -454,13 +454,77 @@ class_tree = {
 }
 
 
+def load_json_file(file_paths):
+    with open(os.path.join(*file_paths), mode='r', encoding='utf-8') as fp:
+        content = json.load(fp)
+    return content
+
+
+def add_prompts_to_json(lst, fin):
+        # lst is a list of prompt json
+        # file is the path file that stores the files
+        prompts = load_json_file([fin, 'prompts.json'])
+        prompts = {f['function']:f for f in prompts}
+
+        for p in lst:
+            function_id = p['function']
+            priority = p['priority']
+            model = p['model']
+            language_code = p['language_code']
+            content = p['content']
+            chat = p.get('chat', '')
+            author = p.get('author', '')
+            author_link = p.get('author_link', '')
+            prompt_semantic_id = p.get('prompt_semantic_id', '')
+
+            # assert function_id in prompts.keys(), f"[error]:{function_id} is not in current function list."
+            if function_id not in prompts.keys(): 
+                print(f"[warnings]:{function_id} is not in current function list.")
+                continue
+
+            prompts[function_id]['content'][language_code].append(p)
+
+        output = [v for _, v in prompts.items()]
+        json.dump(output, open(dir_check(fin + '/prompts_new.json'), 'w'), indent=4)
+    
+import csv
+def read_csv(file_path):
+    with open(file_path, 'r') as file:
+        reader = csv.DictReader(file)
+        rows = []
+        for row in reader:
+            rows.append(row)
+        return rows
+
 
 if __name__ == "__main__":
+
+    # incorpate new data to prompts.json
+    # add_prompts_to_json(lst):
+    # add_prompts_to_database(lst):
+    fin = './static/good_prompt/github_awesome_chatgpt_prompt/output_2.csv'
+    prompt_lst = []
+    for p in read_csv(fin):
+        p['priority'] = 2
+        p['model'] = 'ChatGPT'
+        p['language_code'] = 'eng'
+        p['content'] = [p['content']]
+        p['author'] = "@github"
+        p['author_link'] = "https://github.com/f/awesome-chatgpt-prompts#act-as-an-educational-content-creator"
+        prompt_lst.append(p)
+        
+
+
+    # print(prompt_lst[:4])
+
+    cur_prompt_fin = './output/'
+    add_prompts_to_json(prompt_lst, cur_prompt_fin)
+
 
 
 
     # generate class tree
-    if 1:
+    if 0:
         def get_class_name(class_id):
             return class_name.get(class_id, {lang: class_id for lang in config.supported_languages})
 
@@ -506,8 +570,9 @@ if __name__ == "__main__":
  
     # generate prompts.json
     if 0:
-        f_df = pd.read_csv('./output/function_table.csv')
-        df =  pd.read_csv('./output/prompt_table.csv')
+
+        f_df = pd.read_csv('./static/csv_data/function_table.csv')
+        df =  pd.read_csv('./static/csv_data/prompt_table.csv')
 
         fid_to_fname = {}
         for idx, row in f_df.iterrows():

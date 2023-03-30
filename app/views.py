@@ -9,7 +9,6 @@ bp = Blueprint('views', __name__)
 
 
 meta = load_json_file(['data', 'meta.json'])
-# classes = load_json_file(['data', 'classes.json'])
 functions = load_json_file(['data', 'functions.json'])
 prompts = load_json_file(['data', 'prompts.json'])
 classes_tree = load_json_file(['data', 'class_tree.json'])
@@ -144,8 +143,9 @@ def fetch_prompt(class_id, lan_code):
             tmp = {}
             tmp['chat_list'] =  p['content'] #todo: change later
             tmp['class_list'] = [name[lan_code] for name in fid_to_cnames[fid]] # get class names
-            tmp['author'] = '@w'
-            tmp['model'] = 'GPT 3.5'
+            tmp['author'] = p.get('author', '')
+            tmp['author_link'] = p.get('author_link', '')
+            tmp['model'] = p.get('model', 'GPT 3.5')
             tmp['function_desc'] = functions_dict[fid]['desc'][lan_code]
             #priority_check todo: excute the priority check here
             result.append(tmp)
@@ -174,8 +174,9 @@ def search_prompt(search_text, lan_code):
                     tmp = {}
                     tmp['chat_list'] = p['content']  # todo: change later
                     tmp['class_list'] = class_list  # get class names
-                    tmp['author'] = '@w'
-                    tmp['model'] = 'GPT 3.5'
+                    tmp['author'] = p.get('author', '')
+                    tmp['author_link'] = p.get('author_link', '')
+                    tmp['model'] = p.get('model', 'GPT 3.5')
                     tmp['function_desc'] = function_desc
                     result.append(tmp)
                     continue
