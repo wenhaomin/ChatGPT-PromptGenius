@@ -65,10 +65,12 @@ if is_function_in_class_tree:
     # change the class tree, mount the function as the second class 
     def mount_function_in_class_tree(d: dict):
         cid = d['id']
+        # print('##', cid_to_cnames[cid]['chn'])
         if cid == 'office': return 0# do not conduct for office
         children_lst = []
         fid_lst = c_f_dict.get(cid, [])
         for fid in fid_lst:
+            # print('###', functions_dict[fid]['desc']['chn'])
             names = functions_dict[fid]['desc']
             tmp = {'id': fid, 'names': names}
             children_lst.append(tmp)
@@ -76,6 +78,7 @@ if is_function_in_class_tree:
     
     for c in classes_tree:
         mount_function_in_class_tree(c)
+
 
 
 @bp.route('/')

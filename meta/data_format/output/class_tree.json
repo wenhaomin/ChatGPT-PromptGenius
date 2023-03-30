@@ -13,6 +13,58 @@
         "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
     },
     {
+        "id": "research_assistance",
+        "names": {
+            "chn": "\u79d1\u7814\u5e2e\u52a9",
+            "eng": "Research Assistance",
+            "jpn": "\u7814\u7a76\u652f\u63f4",
+            "fra": "Assistance \u00e0 la recherche",
+            "kor": "\uc5f0\uad6c \uc9c0\uc6d0",
+            "deu": "Forschungsunterst\u00fctzung"
+        },
+        "icon_name": "computer",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+    },
+    {
+        "id": "copywriting_generation",
+        "names": {
+            "chn": "\u6587\u6848\u751f\u6210",
+            "eng": "Text Generation",
+            "jpn": "\u30b3\u30d4\u30fc\u30e9\u30a4\u30c6\u30a3\u30f3\u30b0",
+            "fra": "R\u00e9daction publicitaire",
+            "kor": "\ucf58\ud150\uce20 \uc791\uc131",
+            "deu": "Texterstellung"
+        },
+        "icon_name": "wrap_text",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+    },
+    {
+        "id": "code_development",
+        "names": {
+            "chn": "\u4ee3\u7801\u5f00\u53d1",
+            "eng": "Code Development",
+            "jpn": "\u30b3\u30fc\u30c9\u958b\u767a",
+            "fra": "D\u00e9veloppement de code",
+            "kor": "\ucf54\ub4dc \uac1c\ubc1c",
+            "deu": "Code-Entwicklung"
+        },
+        "icon_name": "code",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+    },
+    {
+        "id": "language_learning",
+        "names": {
+            "chn": "\u8bed\u8a00\u5b66\u4e60",
+            "eng": "Language Learning",
+            "jpn": "\u8a00\u8a9e\u5b66\u7fd2",
+            "fra": "Apprentissage des langues",
+            "kor": "\uc5b8\uc5b4 \ud559\uc2b5",
+            "deu": "Sprachtraining"
+        },
+        "icon_name": "language",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+    },
+    {
         "id": "office",
         "names": {
             "chn": "Microsoft Office",
@@ -72,19 +124,6 @@
         ]
     },
     {
-        "id": "code_development",
-        "names": {
-            "chn": "\u4ee3\u7801\u5f00\u53d1",
-            "eng": "Code Development",
-            "jpn": "\u30b3\u30fc\u30c9\u958b\u767a",
-            "fra": "D\u00e9veloppement de code",
-            "kor": "\ucf54\ub4dc \uac1c\ubc1c",
-            "deu": "Code-Entwicklung"
-        },
-        "icon_name": "code",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
-    },
-    {
         "id": "leisure_and_entertainment",
         "names": {
             "chn": "\u4f11\u95f2\u5a31\u4e50",
@@ -101,7 +140,7 @@
         "id": "study_tutoring",
         "names": {
             "chn": "\u5b66\u4e1a\u8f85\u5bfc",
-            "eng": "Study tutoring",
+            "eng": "Study Tutoring",
             "jpn": "\u304c\u304f\u3057\u3085\u3046",
             "fra": "Tutorat universitaire",
             "kor": "\ud559\uc5c5 \uc9c0\ub3c4",
@@ -124,19 +163,6 @@
         "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
     },
     {
-        "id": "copywriting_generation",
-        "names": {
-            "chn": "\u6587\u6848\u751f\u6210",
-            "eng": "Text Generation",
-            "jpn": "\u30b3\u30d4\u30fc\u30e9\u30a4\u30c6\u30a3\u30f3\u30b0",
-            "fra": "R\u00e9daction publicitaire",
-            "kor": "\ucf58\ud150\uce20 \uc791\uc131",
-            "deu": "Texterstellung"
-        },
-        "icon_name": "wrap_text",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
-    },
-    {
         "id": "gift_selection",
         "names": {
             "chn": "\u793c\u7269\u6311\u9009",
@@ -147,32 +173,6 @@
             "deu": "Geschenkauswahl"
         },
         "icon_name": "card_giftcard",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
-    },
-    {
-        "id": "research_assistance",
-        "names": {
-            "chn": "\u79d1\u7814\u5e2e\u52a9",
-            "eng": "Research Assistance",
-            "jpn": "\u7814\u7a76\u652f\u63f4",
-            "fra": "Assistance \u00e0 la recherche",
-            "kor": "\uc5f0\uad6c \uc9c0\uc6d0",
-            "deu": "Forschungsunterst\u00fctzung"
-        },
-        "icon_name": "computer",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
-    },
-    {
-        "id": "language_learning",
-        "names": {
-            "chn": "\u8bed\u8a00\u5b66\u4e60",
-            "eng": "Language Learning",
-            "jpn": "\u8a00\u8a9e\u5b66\u7fd2",
-            "fra": "Apprentissage des langues",
-            "kor": "\uc5b8\uc5b4 \ud559\uc2b5",
-            "deu": "Sprachtraining"
-        },
-        "icon_name": "language",
         "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
     }
 ]

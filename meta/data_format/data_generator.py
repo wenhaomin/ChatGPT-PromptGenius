@@ -437,20 +437,20 @@ class_icon = {
 
 class_tree = {
     'popular':{},
+    'research_assistance': {},
+    'copywriting_generation': {},
+    'code_development': {},
+    'language_learning': {},
     'office': {
         'MacrosoftExcel': {},
         'MacrosoftOneNote': {},
         'MacrosoftPowerPoint': {},
         'MacrosoftWord': {}
     },
-    'code_development': {},
     'leisure_and_entertainment': {},
     'study_tutoring': {},
     'teacher_education': {},
-    'copywriting_generation': {},
     'gift_selection': {},
-    'research_assistance': {},
-    'language_learning': {}
 }
 
 
@@ -499,32 +499,33 @@ def read_csv(file_path):
 
 if __name__ == "__main__":
 
+    if 0:
     # incorpate new data to prompts.json
     # add_prompts_to_json(lst):
     # add_prompts_to_database(lst):
-    fin = './static/good_prompt/github_awesome_chatgpt_prompt/output_2.csv'
-    prompt_lst = []
-    for p in read_csv(fin):
-        p['priority'] = 2
-        p['model'] = 'ChatGPT'
-        p['language_code'] = 'eng'
-        p['content'] = [p['content']]
-        p['author'] = "@github"
-        p['author_link'] = "https://github.com/f/awesome-chatgpt-prompts#act-as-an-educational-content-creator"
-        prompt_lst.append(p)
-        
+        fin = './static/good_prompt/github_awesome_chatgpt_prompt/output_2.csv'
+        prompt_lst = []
+        for p in read_csv(fin):
+            p['priority'] = 2
+            p['model'] = 'ChatGPT'
+            p['language_code'] = 'eng'
+            p['content'] = [p['content']]
+            p['author'] = "@github"
+            p['author_link'] = "https://github.com/f/awesome-chatgpt-prompts#act-as-an-educational-content-creator"
+            prompt_lst.append(p)
+            
 
 
-    # print(prompt_lst[:4])
+        # print(prompt_lst[:4])
 
-    cur_prompt_fin = './output/'
-    add_prompts_to_json(prompt_lst, cur_prompt_fin)
+        cur_prompt_fin = './output/'
+        add_prompts_to_json(prompt_lst, cur_prompt_fin)
 
 
 
 
     # generate class tree
-    if 0:
+    if 1:
         def get_class_name(class_id):
             return class_name.get(class_id, {lang: class_id for lang in config.supported_languages})
 
