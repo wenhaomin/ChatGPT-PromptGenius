@@ -43,11 +43,24 @@
 
     <!-- mdui-collapse="{accordion: true}" -->
 
+    <div>
+        <div class="mdui-text-center mdui-m-t-2 mdui-typo-display-2">
+            PromptGenius
+        </div>
+        <div class="mdui-text-center mdui-m-t-2 mdui-typo-subheading-opacity">
+            全面、有效的指令大全
+        </div>
+    </div>
+
     <!--drawer-->
     <div class="mdui-drawer" id="left-drawer" style="width:auto;">
         <div id="hierarchy-tree" class="mdui-collapse mdui-m-t-5" style="{accordion: true}" ></div>
         <!--<button class="mdui-btn" mdui-drawer-close>close</button>-->
     </div>
+
+
+
+
 
 
 
@@ -57,18 +70,24 @@
 
             <!-- Row for the search input. -->
             <div class="mdui-row" id="search-row">
-                <div class="mdui-col-xs-11">
+                <div class="mdui-col-xs-12">
                     
-                    <div class="mdui-textfield">
-                        <input class="mdui-textfield-input mdui-text-center" type="text" id="search-input" />
+                    <div class="mdui-textfield mdui-textfield-floating-label ">
+
+                        <label class="mdui-textfield-label">Press Enter to Search</label>
+<!--                        <input class="mdui-textfield-input mdui-text-center" type="text" id="search-input" />-->
+                        <input class="mdui-textfield-input mdui-text-center" type="Press Enter to Search" id="search-input" />
+
+
+
                     </div>
                 </div>
-                <div class="mdui-col-xs-1">
-                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple" id="search-btn"></button>
-                </div>
+<!--                <div class="mdui-col-xs-1">-->
+<!--                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple" id="search-btn"></button>-->
+<!--                </div>-->
             </div>
 
-            <div class="mdui-divider"></div>
+<!--            <div class="mdui-divider"></div>-->
 
             
             <div class="mdui-textfield mdui-text-center" id="prompt_num" ></div>

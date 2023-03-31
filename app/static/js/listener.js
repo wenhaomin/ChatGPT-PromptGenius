@@ -9,7 +9,7 @@ function languageSelectListenser() {
     switch_selected_language(selected_lan_code);
     render_page_basic(selected_lan_code);
 //    render_class_display(selected_lan_code);
-    render_all_prompt(selected_lan_code)
+    render_all_prompt(selected_lan_code);
     render_class_tree(selected_lan_code);
     cur_lan_code = selected_lan_code;
 }

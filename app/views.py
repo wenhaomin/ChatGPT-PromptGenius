@@ -146,6 +146,7 @@ def fetch_prompt(class_id, lan_code):
             tmp['chat_list'] =  [p['content']]
             tmp['class_list'] = [name[lan_code] for name in fid_to_cnames[fid]] # get class names
             tmp['author'] = p.get('author', '')
+            if tmp['author']=='whm': tmp['author'] = ''
             tmp['author_link'] = p.get('author_link', '')
             tmp['model'] = p.get('model', 'GPT 3.5')
             tmp['function_desc'] = functions_dict[fid]['desc'][lan_code]
@@ -162,6 +163,7 @@ def search_prompt(search_text, lan_code):
 
     for data in prompts:
         fid = data['function_id']
+        if fid not in functions_dict.keys(): continue
         function_desc = functions_dict[fid]['desc'][lan_code]
         class_list = [name[lan_code] for name in fid_to_cnames[fid]] 
         for p in data['content'][lan_code]:
@@ -177,6 +179,7 @@ def search_prompt(search_text, lan_code):
                     tmp['chat_list'] = [p['content']]
                     tmp['class_list'] = class_list  # get class names
                     tmp['author'] = p.get('author', '')
+                    if tmp['author'] == 'whm': tmp['author'] = ''
                     tmp['author_link'] = p.get('author_link', '')
                     tmp['model'] = p.get('model', 'GPT 3.5')
                     tmp['function_desc'] = function_desc

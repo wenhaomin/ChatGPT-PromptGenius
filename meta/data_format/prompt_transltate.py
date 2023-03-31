@@ -109,7 +109,7 @@ if __name__ == '__main__':
         pyperclip.copy(data)
         # pyperclip.paste()
 
-    if 1: # translate api way
+    if 0: # translate api way
         from meta.data_format.config import  config
         from meta.data_format.data_generator import chat_gpt
         import csv

@@ -164,23 +164,23 @@ if __name__ == "__main__":
     if 0:
 
     # add_prompts_to_database(lst):
-        fin = './static/good_prompt/github_awesome_chatgpt_prompt/output_2.csv'
+        fin = config.ws + '/meta/data_format/raw/3_28_good_prompt/prompt_chn.csv'
         prompt_lst = []
         for p in read_csv(fin):
-            p['priority'] = "2"
-            p['model'] = "ChatGPT"
-            p['language_code'] = "eng"
-            p['content'] = p['content']
-            p['author'] = "@github"
-            p['author_link'] = "https://github.com/f/awesome-chatgpt-prompts#act-as-an-educational-content-creator"
-            p['prompt_semantic_id'] = random_id()
+            # p['priority'] = "2"
+            # p['model'] = "ChatGPT"
+            # p['language_code'] = "eng"
+            # p['content'] = p['content']
+            # p['author'] = "@github"
+            # p['author_link'] = "https://github.com/f/awesome-chatgpt-prompts#act-as-an-educational-content-creator"
+            # p['prompt_semantic_id'] = random_id()
             prompt_lst.append(p)
 
         # incorpate new data to prompts.json
         #cur_prompt_fin = './output/'
         #add_prompts_to_json(prompt_lst, cur_prompt_fin)
         # prompt_lst = prompt_lst[:2]
-        add_prompts_to_database(prompt_lst[:1])
+        add_prompts_to_database(prompt_lst)
 
 
     '''
@@ -196,7 +196,7 @@ if __name__ == "__main__":
     '''
 
     # generate class tree
-    if 0:
+    if 1:
         def get_class_name(class_id):
             return config.class_name.get(class_id, {lang: class_id for lang in config.supported_languages})
 
@@ -217,7 +217,7 @@ if __name__ == "__main__":
             return result
         output = dict_to_list(config.class_tree)
 
-        json.dump(output, open(dir_check('./output/class_tree.json'), 'w'), indent=4)
+        json.dump(output, open(dir_check(config.ws + '/data/class_tree.json'), 'w'), indent=4)
 
 
     # generate functions.json
@@ -236,12 +236,12 @@ if __name__ == "__main__":
             function_lst.append(tmp)
             print(tmp)
 
-        out_path = './output/functions.json'
+        out_path = config.ws + '/data/functions.json'
         json.dump(function_lst, open(out_path,'w'), indent=4)
 
  
     # generate prompts.json
-    if 1:
+    if 0:
         # f_df = pd.read_csv('./csv_database/function_table.csv')
         df =  pd.read_csv('./csv_database/prompt_table.csv')
 

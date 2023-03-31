@@ -10,7 +10,7 @@
             "deu": "Beliebt"
         },
         "icon_name": "thumb_up",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-red"
     },
     {
         "id": "research_assistance",
@@ -36,7 +36,7 @@
             "deu": "Texterstellung"
         },
         "icon_name": "wrap_text",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple"
     },
     {
         "id": "code_development",
@@ -62,7 +62,7 @@
             "deu": "Sprachtraining"
         },
         "icon_name": "language",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-green"
     },
     {
         "id": "office",
@@ -134,7 +134,7 @@
             "deu": "Freizeit und Unterhaltung"
         },
         "icon_name": "music_video",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-pink"
     },
     {
         "id": "study_tutoring",
@@ -147,7 +147,7 @@
             "deu": "Akademische Nachhilfe"
         },
         "icon_name": "library_books",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-grey"
     },
     {
         "id": "teacher_education",
@@ -160,7 +160,7 @@
             "deu": "Lehrerausbildung"
         },
         "icon_name": "people_outline",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-grey"
     },
     {
         "id": "gift_selection",
@@ -173,6 +173,6 @@
             "deu": "Geschenkauswahl"
         },
         "icon_name": "card_giftcard",
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-indigo"
     }
 ]

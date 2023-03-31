@@ -24,12 +24,13 @@ $('#language-select').on('change', languageSelectListenser);
 $("#search-btn").on('click', prompt_search_listener);
 
 $(document).ready(function () {
-        $("#search-input").keydown(function (e) {
-            var curKey = e.which;
-            if (curKey == 13) {
-                console.log('enter')
-                $("#search-btn").click();
-                return false;
-            }
-        });
+        $("#search-input").keydown(function (e) {
+        var curKey = e.which;
+        if (curKey == 13) {
+            console.log('enter')
+            prompt_search_listener()
+            // $("#search-btn").click();
+        return false;
+            }
+     });
 });

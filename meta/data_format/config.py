@@ -147,7 +147,7 @@ config.class_name = {
 
 config.class_icon = {
     "popular":{
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-red",
         "icon_name": "thumb_up",
     },
     'office': {"icon_style":"mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
@@ -162,23 +162,23 @@ config.class_icon = {
         "icon_name": "code",
     },
     'leisure_and_entertainment': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-pink",
         "icon_name": "music_video",
     },
     'study_tutoring': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-grey",
         "icon_name": "library_books",
     },
     'teacher_education': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-grey",
         "icon_name": "people_outline",
     },
     'copywriting_generation': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple",
         "icon_name": "wrap_text",
     },
     'gift_selection': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-indigo",
         "icon_name": "card_giftcard",
     },
     'research_assistance': {
@@ -186,7 +186,7 @@ config.class_icon = {
         "icon_name": "computer",
     },
     'language_learning': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
+        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-green",
         "icon_name": "language",
     }
 }

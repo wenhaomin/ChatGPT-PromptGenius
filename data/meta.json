@@ -24,14 +24,14 @@
     "index_content": {
         "eng": {
             "site_title": "Prompt Genius",
-            "search_prompt": "Type in the functions you want to achieve...",
+            "search_prompt": "Search Prompt...",
             "search_btn_text": "Search",
             "class_display_title": "Or choose from the following existing classes."
         },
         "chn": {
-            "site_title": "潘多拉之盒",
-            "search_prompt": "输入你想实现的功能...",
-            "search_btn_text": "搜索",
+            "site_title": "提示精灵",
+            "search_prompt": "Search Prompt...",
+            "search_btn_text": "Search",
             "class_display_title": "或者从下列现有类别中选择。"
         },
         "jpn": {
