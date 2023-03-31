@@ -276,3 +276,18 @@ config.ws = get_workspace()
 #         ]
 #     },}
 # Note, only output the final python dict, i.e., dict_1, dict_2, dict_3.
+
+
+# For prompts
+# Unleash your imagination with tailored prompts!
+# All-purpose prompts: a gateway to creativity.
+# Diverse prompts: unlock endless possibilities.
+
+# Explore, create, inspire: prompts for every passion.
+# Versatile prompts to kickstart boundless creativity.
+# Find your muse: prompts for every endeavor.
+
+# Curated prompts to fuel your inspiration.
+# Your creative journey starts with our prompts.
+# Empower your ideas: tailored prompts await.
+# Jumpstart your imagination: prompts for all.

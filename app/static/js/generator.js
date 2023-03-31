@@ -31,6 +31,10 @@ function generate_prompt_card_html(index, item){
       <div class="mdui-card mdui-shadow-4 prompt-card">
         <div class="mdui-card-primary mdui-color-grey-50 prompt-card-header">
           <span class="mdui-icon material-icons mdui-text-color-blue">lightbulb_outline</span>  
+          
+           <span  class="mdui-chip mdui-color-theme-200"  >
+           <div class="mdui-chip-title"  id="copy-message-${index}">copy</div>
+          </span>
         
           <span class="mdui-chip mdui-color-theme-200">
             <div class="mdui-chip-title">${class_name}</div>
@@ -45,10 +49,10 @@ function generate_prompt_card_html(index, item){
             <div class="mdui-chip-title mdui-text-color-theme-text">${author}</div>
             </a>
           </span>
-
+          
          
           
-          
+
 
         </div>
 

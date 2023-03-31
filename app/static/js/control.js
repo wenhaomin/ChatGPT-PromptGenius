@@ -211,6 +211,15 @@ function render_prompt_display(prompt_list){
             // Custom click event listener code
             // console.log('Clicked on item with id:', $(this).text());
             copy_to_clipboard($(this).text());
+
+            const copy_message = document.getElementById('copy-message-' + index.toString());
+            // copy_message.style.display = 'block'; //block
+            copy_message.textContent = 'copied'
+            setTimeout(function() {
+                // copy_message.style.display = 'none';
+                copy_message.textContent = 'copy'
+            }, 1000);
+        // });
         
         });
 
