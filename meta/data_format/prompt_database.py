@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import pymysql
+from pymysql.converters import escape_string
 
 config = {
     'host':'localhost',
@@ -94,8 +95,8 @@ def insert_data_to_mysql(database, table, columns, data_list, host='localhost', 
     try:
         with connection.cursor() as cursor:
             # Create SQL query to insert data into the table
-            columns_str = ', '.join(columns)
-            placeholders = ', '.join(['%s'] * len(columns))
+            columns_str = ", ".join(columns)
+            placeholders = ", ".join(["%s"] * len(columns))
             sql = f"INSERT INTO {table} ({columns_str}) VALUES ({placeholders})"
 
             # Execute SQL query and commit changes

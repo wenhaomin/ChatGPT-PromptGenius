@@ -78,7 +78,7 @@
         "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
         "children": [
             {
-                "id": "MacrosoftExcel",
+                "id": "MicrosoftExcel",
                 "names": {
                     "chn": "Excel",
                     "eng": "Excel",
@@ -89,7 +89,7 @@
                 }
             },
             {
-                "id": "MacrosoftOneNote",
+                "id": "MicrosoftOneNote",
                 "names": {
                     "chn": "OneNote",
                     "eng": "OneNote",
@@ -100,7 +100,7 @@
                 }
             },
             {
-                "id": "MacrosoftPowerPoint",
+                "id": "MicrosoftPowerPoint",
                 "names": {
                     "chn": "PowerPoint",
                     "eng": "PowerPoint",
@@ -111,7 +111,7 @@
                 }
             },
             {
-                "id": "MacrosoftWord",
+                "id": "MicrosoftWord",
                 "names": {
                     "chn": "Word",
                     "eng": "Word",

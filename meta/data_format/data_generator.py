@@ -6,70 +6,10 @@ import openai, os
 import copy
 import re
 import json
-
+from meta.data_format.config import config
 # openai.api_key = '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' # whm
 
 openai.api_key = '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' # ly
-
-# function_lst = [
-#     "Answering questions and trivia",
-#     "Language translation/interpretation",
-#     "Creative writing ideas",
-#     "Resume/cover letter assistance",
-#     "Productivity/self-improvement tips",
-#     "Meal planning/recipes",
-#     "Tech troubleshooting",
-#     "Microsoft Outlook",
-#     "Microsoft Access",
-#     "Microsoft OneNote",
-#     "Microsoft Publisher",
-#     "Microsoft Teams",
-#     "Microsoft Visio",
-#     "Microsoft Project"
-# ]
-
-from easydict import EasyDict as edict
-
-config = edict()
-config.supported_languages = ['chn', 'eng', 'jpn', 'kor', 'deu']#'chn', 'eng', 'jpn', 'kor', 'deu'
-
-
-# prompt = f'Suppose you want use ChatGPT for Productivity/self-improvement tips, please directly write a short prompt enclosed in double quotes that will feed to ChatGPT. Do not show any other content that is not in the prompt.'
-
-# prompt = "Suppose you want use ChatGPT for Productivity/self-improvement tips, ' \
-#          'please write a enghlish prompt and provide an example chat for me. ' \
-#          'The chat should be organized as following dict format, where priority equals the prompt is simple, otherwise 1. ' \
-#          'The content is a list that records the chat. ' \
-#          'The first elements of the list should be the prompt. " \
-#          "{ \"priority\": 1, \"content\": [ \"I want you to act as an English translator, spelling corrector, and improver. " \
-#          "I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. " \
-#          "I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper-level English words and sentences. Keep the meaning the same, but make them more literary. " \
-#          "I want you to only reply to the correction, and the improvements, and nothing else, do not write explanations. My first sentence is “je voudrais un verre de vin” \", \"I would like a glass of wine.\", \"你今天吃饭了么？\", \"Have you had your meal today?\" ] }"
-
-
-# prompt = "Suppose you want use ChatGPT for Productivity/self-improvement tips,  please write a enghlish prompt and provide an example chat for me. The chat should be organized as following dict format, where priority equals the prompt is simple, otherwise 1.  The content is a list that records the chat.and the first elements of the list should be the prompt. Here is the example output: { \"priority\": 0, \"content\": [ \"将以下句子翻译成英语：“我明年想去巴黎旅游。”\", \"I want to travel to Paris next year.\"] },"
-# 'Suppose you want use ChatGPT to do the task of {random.choice(function_lst)}, please directly write a short prompt enclosed in double quotes that will feed to ChatGPT. Do not show any other content that is not in the prompt.'
-
-#  Finally, organize the output as a python dict, as {"enghlish_chat": xx, "chinese_chat": xx, "japanese_chat": xx, "korean_chat": xx, "german_chat": xx, "french_chat": xx,}, where xx in the above dict the the corresponding language chat dict.
-
-
-# prompt for gpt 3.5
-# Suppose you want use ChatGPT for Tech troubleshooting,  please write a prompt and provide an example chat for me. The chat should be organized as following dict format, where priority equals the prompt is simple, otherwise 1.  The content is a list that records the chat.and the first elements of the list should be the prompt. Here is the example output: { \"priority\": 0, \"content\": [ \"what time is it?\", \"It's 12:19.\"] }, Then, transalte the output into Chinese. Finally, organize the output as a python dict (named as dict_1), as {\"enghlish_chat\": xx, \"chinese_chat\": xx}, where xx in the above dict the the corresponding language chat dict. At last, repeat the above process for 3 times by changing the prompt for  Tech troubleshooting, so that you can get dict_1, dict_2, dict_3.  The final output should be like: dict_1 = {"english_chat": {
-#         "priority": 1,
-#         "content": [
-#             "What are the key milestones in the development of quantum computing?",
-#             "xx"
-#         ]
-#     },
-#     "chinese_chat": {
-#         "priority": 1,
-#         "content": [
-#             "xx",
-#             "xx"
-#         ]
-#     },}
-# Note, only output the final python dict, i.e., dict_1, dict_2, dict_3.
-
 
 def chat_gpt(messages):
     completion = openai.ChatCompletion.create(
@@ -83,7 +23,6 @@ def chat_gpt(messages):
     )
     chatgpt_response = completion.choices[0]['message']
     return chatgpt_response
-
 
 
 def get_time_str():
@@ -126,7 +65,6 @@ def batch_file_name(file_dir, suffix='.train'):
 
 
 
-
 def dir_check(path):
     """
     check weather the given path exists, if not, then create it
@@ -143,316 +81,6 @@ def get_function_id(string):
 
 
 
-lang_name_to_code = {
-    "English": "eng",
-    "Chinese": "chn",
-    "Spanish": "spa",
-    "Hindi": "hin",
-    "Arabic": "ara",
-    "Bengali": "ben",
-    "Portuguese": "por",
-    "Russian": "rus",
-    "Japanese": "jpn",
-    "Punjabi": "pan",
-    "Korean": "kor",
-    "German": "deu",
-    "French": "fra"
-}
-
-
-
-def aggreate_prompts(file, is_test):
-    # aggreate the all the prompts in the file  into one
-    L = batch_file_name(file, '.json')
-    prompts_dict = {}
-
-
-    for l in L:
-        prompt = json.load(open(l, 'r', encoding='UTF-8'))
-        fuc = prompt['function'] # prompt function
-        fuc = get_function_id(fuc)
-
-        if fuc not in prompts_dict.keys():
-            prompts_dict[fuc] = {'function': fuc, 'content':{}}
-        for key in ['english_chat', 'chinese_chat', "japanese_chat", "korean_chat",
-                    "german_chat", "french_chat"]:
-
-            lang =  key.split("_")[0].capitalize() #  prompt language
-            lang = lang_name_to_code[lang]
-            if lang not in prompts_dict[fuc]['content'].keys():
-                # prompts_dict[fuc]['content'][lang] = {"language": lang, "dialogs":[]}
-                prompts_dict[fuc]['content'][lang] = {}
-
-            dialog = prompt.get(key, "")
-            if dialog == '': continue
-            # prompts_dict[fuc]['content'][lang]['dialogs'].append(dialog)
-
-            prompts_dict[fuc]['content'][lang] = dialog
-
-
-
-    # function_lst = prompts_dict.keys()
-    prompts_lst = copy.deepcopy(prompts_dict)
-
-    # for fuc in function_lst:
-    #     prompts_lst[fuc]['content'] =  list(prompts_lst[fuc]['content'].values())
-    prompts_lst = list(prompts_lst.values())
-
-    # generate prompts.json
-    out_path =  './prompts.json' if is_test else f'./prompts_{get_time_str()}.json'
-    with open(dir_check(out_path), 'w', encoding='UTF-8') as f:
-        json.dump(prompts_lst, f, indent=4)
-
-    # generate functions.json
-    # function_describe = []
-    # for fuc in function_lst:
-    #     tmp = {'function': fuc,
-    #            'languages':{},
-    #            'class':[fuc]}
-    #     for lang in ['chinese', 'english']:
-    #         data =  json.load(open(f'./functions_list_{lang}.json', encoding='utf-8'))
-    #         tmp['languages'][lang.capitalize() ] = data[fuc]
-    #     function_describe.append(tmp)
-    #
-    #
-    # with open(f'./functions_{get_time_str()}.json', 'w', encoding='UTF-8') as f:
-    #     json.dump(function_describe, f, indent=4)
-
-    # generate functions.json
-    def convert_json_format(input_json):
-        output_json = []
-
-        for item in input_json:
-            new_item = {}
-            new_item['function'] = get_function_id(item['function'])
-
-            new_item['desc'] = {
-                'chn': item['languages']['Chinese'],
-                'eng': item['languages']['English']
-            }
-
-            new_item['class'] = new_item['function']
-
-            output_json.append(new_item)
-
-        return output_json
-
-    # Load input JSON file
-    with open('./backup/2023-3-18/functions_20230318204804.json', 'r') as input_file:
-        input_json = json.load(input_file)
-
-    # Convert JSON format
-    output_json = convert_json_format(input_json)
-
-    # Save output JSON file
-    with open('./functions.json', 'w', encoding='utf-8') as output_file:
-        json.dump(output_json, output_file, indent=4)
-
-    # generate classs.json
-
-    # [  "Drafting-editing-written-communications",    "Tutoring-homework-help",    "Resume-cover-letter-assistance",    "Financial-planning-budgeting",    "Entertainment-recommendations",    "Travel-planning-assistance",    "Answering-questions-and-trivia",    "Language-translation-interpretation",    "Creative-writing-ideas",    "Gift-recommendations",    "Language-learning",    "Meal-planning-recipes",    "Meditation-mindfulness-guidance",    "Research-assistance",    "Tech-troubleshooting"]
-
-    # [
-    #     {
-    #         "id": x,
-    #         "names": {
-    #             "chn": Chinese of x,
-    #             "eng": English of x
-    #         }
-    #     }
-    # ]
-
-
-class_name = {
-    "popular":
-     {
-            'chn': '精选',
-            'eng': 'Popular',
-            'jpn': '人気',
-            'fra': 'Populaire',
-            'kor': '인기 있는',
-            'deu': 'Beliebt',
-        },
-    'office':
-        {
-            'chn': 'Microsoft Office',
-            'eng': 'Microsoft Office',
-            'jpn': 'Microsoft Office',
-            'fra': 'Microsoft Office',
-            'kor': 'Microsoft Office',
-            'deu': 'Microsoft Office',
-        },
-
-
-    'MacrosoftExcel': {
-        'chn': 'Excel',
-        'eng': 'Excel',
-        'jpn': 'Excel',
-        'fra': 'Excel',
-        'kor': 'Excel',
-        'deu': 'Excel',
-    },
-
-    'MacrosoftOneNote': {
-        'chn': 'OneNote',
-        'eng': 'OneNote',
-        'jpn': 'OneNote',
-        'fra': 'OneNote',
-        'kor': 'OneNote',
-        'deu': 'OneNote',
-    },
-
-    'MacrosoftPowerPoint': {
-        'chn': 'PowerPoint',
-        'eng': 'PowerPoint',
-        'jpn': 'PowerPoint',
-        'fra': 'PowerPoint',
-        'kor': 'PowerPoint',
-        'deu': 'PowerPoint',
-    },
-
-    'MacrosoftWord': {
-        'chn': 'Word',
-        'eng': 'Word',
-        'jpn': 'Word',
-        'fra': 'Word',
-        'kor': 'Word',
-        'deu': 'Word',
-    },
-
-    'code_development': {
-        'chn': '代码开发',
-        'eng': 'Code Development',
-        'jpn': 'コード開発',
-        'fra': 'Développement de code',
-        'kor': '코드 개발',
-        'deu': 'Code-Entwicklung'
-    },
-    'leisure_and_entertainment': {
-        'chn': '休闲娱乐',
-        'eng': 'Entertainment',
-        'jpn': 'カジュアル',
-        'fra': 'Loisirs et divertissements',
-        'kor': '레저 및 엔터테인먼트',
-        'deu': 'Freizeit und Unterhaltung'
-    },
-    'study_tutoring': {
-        'chn': '学业辅导',
-        'eng': 'Study Tutoring',
-        'jpn': 'がくしゅう',
-        'fra': 'Tutorat universitaire',
-        'kor': '학업 지도',
-        'deu': 'Akademische Nachhilfe'
-    },
-    'teacher_education': {
-        'chn': '教师教学',
-        'eng': 'Teacher Education',
-        'jpn': '教師教育',
-        'fra': 'Formation des enseignants',
-        'kor': '교사 교육',
-        'deu': 'Lehrerausbildung'
-    },
-    'copywriting_generation': {
-        'chn': '文案生成',
-        'eng': 'Text Generation',
-        'jpn': 'コピーライティング',
-        'fra': 'Rédaction publicitaire',
-        'kor': '콘텐츠 작성',
-        'deu': 'Texterstellung'
-    },
-    'gift_selection': {
-        'chn': '礼物挑选',
-        'eng': 'Gift Selection',
-        'jpn': 'ギフト選択',
-        'fra': 'Sélection de cadeaux',
-        'kor': '선물 선택',
-        'deu': 'Geschenkauswahl'
-    },
-    'research_assistance': {
-        'chn': '科研帮助',
-        'eng': 'Research Assistance',
-        'jpn': '研究支援',
-        'fra': 'Assistance à la recherche',
-        'kor': '연구 지원',
-        'deu': 'Forschungsunterstützung'
-    },
-    'language_learning': {
-        'chn': '语言学习',
-        'eng': 'Language Learning',
-        'jpn': '言語学習',
-        'fra': 'Apprentissage des langues',
-        'kor': '언어 학습',
-        'deu': 'Sprachtraining'
-    }
-}
-
-
-
-class_icon = {
-    "popular":{
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "thumb_up",
-    },
-    'office': {"icon_style":"mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-                "icon_name":"widgets"
-               } ,
-    # 'MacrosoftExcel': "",
-    # 'MacrosoftOneNote': "",
-    # 'MacrosoftPowerPoint': {},
-    # 'MacrosoftWord': {},
-    'code_development': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "code",
-    },
-    'leisure_and_entertainment': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "music_video",
-    },
-    'study_tutoring': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "library_books",
-    },
-    'teacher_education': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "people_outline",
-    },
-    'copywriting_generation': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "wrap_text",
-    },
-    'gift_selection': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "card_giftcard",
-    },
-    'research_assistance': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "computer",
-    },
-    'language_learning': {
-        "icon_style": "mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue",
-        "icon_name": "language",
-    }
-}
-
-
-class_tree = {
-    'popular':{},
-    'research_assistance': {},
-    'copywriting_generation': {},
-    'code_development': {},
-    'language_learning': {},
-    'office': {
-        'MacrosoftExcel': {},
-        'MacrosoftOneNote': {},
-        'MacrosoftPowerPoint': {},
-        'MacrosoftWord': {}
-    },
-    'leisure_and_entertainment': {},
-    'study_tutoring': {},
-    'teacher_education': {},
-    'gift_selection': {},
-}
-
 
 def load_json_file(file_paths):
     with open(os.path.join(*file_paths), mode='r', encoding='utf-8') as fp:
@@ -467,7 +95,7 @@ def add_prompts_to_json(lst, fin):
         prompts = {f['function']:f for f in prompts}
 
         for p in lst:
-            function_id = p['function']
+            function_id = p['function_id']
             priority = p['priority']
             model = p['model']
             language_code = p['language_code']
@@ -477,7 +105,7 @@ def add_prompts_to_json(lst, fin):
             author_link = p.get('author_link', '')
             prompt_semantic_id = p.get('prompt_semantic_id', '')
 
-            # assert function_id in prompts.keys(), f"[error]:{function_id} is not in current function list."
+
             if function_id not in prompts.keys(): 
                 print(f"[warnings]:{function_id} is not in current function list.")
                 continue
@@ -486,10 +114,11 @@ def add_prompts_to_json(lst, fin):
 
         output = [v for _, v in prompts.items()]
         json.dump(output, open(dir_check(fin + '/prompts_new.json'), 'w'), indent=4)
+
     
 import csv
 def read_csv(file_path):
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         rows = []
         for row in reader:
@@ -497,44 +126,86 @@ def read_csv(file_path):
         return rows
 
 
+
+def add_prompts_to_database(lst):
+    # add data to the prompt database
+    from meta.data_format.prompt_database import insert_data_to_mysql
+    from pymysql.converters import escape_string
+
+    database, table = 'prompt_genius', 'prompt_table'
+    columns = [ 'function_id', 'priority', 'model', 'language_code', 'content', 'chat', 'author', 'author_link', 'prompt_semantic_id']# 'model', 'language_code', 'content', 'chat', 'author', 'author_link', 'prompt_semantic_id']
+    must_lst = ['function_id', 'priority', 'language_code', 'content', 'prompt_semantic_id']
+    data_lst = []
+    for p in lst:
+        assert set(must_lst).issubset(set(p.keys())), f'[Error] require { set(must_lst)- set(p.keys())}'
+        tmp = [escape_string(p.get(k, "")) for k in columns]
+        data_lst.append(tmp)
+    # print(data_lst[0])
+    insert_data_to_mysql(database, table, columns, data_lst)
+
+
+def random_id():
+    import random
+    import time
+    # Generate a random string of length 10
+    s = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=10))
+
+    # Get the current date in the format YYYYMMDD
+    t = time.strftime('%Y%m%d')
+
+    # Concatenate the string and date
+    result = t + '_' + s
+    return result
+
+
+
 if __name__ == "__main__":
 
     if 0:
-    # incorpate new data to prompts.json
-    # add_prompts_to_json(lst):
+
     # add_prompts_to_database(lst):
         fin = './static/good_prompt/github_awesome_chatgpt_prompt/output_2.csv'
         prompt_lst = []
         for p in read_csv(fin):
-            p['priority'] = 2
-            p['model'] = 'ChatGPT'
-            p['language_code'] = 'eng'
-            p['content'] = [p['content']]
+            p['priority'] = "2"
+            p['model'] = "ChatGPT"
+            p['language_code'] = "eng"
+            p['content'] = p['content']
             p['author'] = "@github"
             p['author_link'] = "https://github.com/f/awesome-chatgpt-prompts#act-as-an-educational-content-creator"
+            p['prompt_semantic_id'] = random_id()
             prompt_lst.append(p)
-            
+
+        # incorpate new data to prompts.json
+        #cur_prompt_fin = './output/'
+        #add_prompts_to_json(prompt_lst, cur_prompt_fin)
+        # prompt_lst = prompt_lst[:2]
+        add_prompts_to_database(prompt_lst[:1])
 
 
-        # print(prompt_lst[:4])
-
-        cur_prompt_fin = './output/'
-        add_prompts_to_json(prompt_lst, cur_prompt_fin)
-
-
-
+    '''
+    prompt_content_unique_trigger
+    BEGIN
+        DECLARE error_msg VARCHAR(255);
+        
+        IF EXISTS(SELECT * FROM prompt_table WHERE content = NEW.content) THEN
+            SET error_msg = CONCAT('Error: The content "', NEW.content, '" already exists in the prompt_table.');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = error_msg;
+        END IF;
+    END
+    '''
 
     # generate class tree
-    if 1:
+    if 0:
         def get_class_name(class_id):
-            return class_name.get(class_id, {lang: class_id for lang in config.supported_languages})
+            return config.class_name.get(class_id, {lang: class_id for lang in config.supported_languages})
 
         def dict_to_list(d):
             result = []
             for key, value in d.items():
                 tmp = {"id": key, "names": get_class_name(key)}
                 #  add the icon
-                icon = class_icon.get(key, None)
+                icon = config.class_icon.get(key, None)
                 if icon is not None:
                     tmp['icon_name'] = icon['icon_name']
                     tmp['icon_style'] = icon['icon_style']
@@ -544,17 +215,17 @@ if __name__ == "__main__":
                 result.append(tmp)
 
             return result
-        output = dict_to_list(class_tree)
+        output = dict_to_list(config.class_tree)
 
         json.dump(output, open(dir_check('./output/class_tree.json'), 'w'), indent=4)
 
 
     # generate functions.json
     if 0:
-        df = pd.read_csv('./output/function_table.csv')
+        df = pd.read_csv('./csv_database/function_table.csv')
         function_lst = []
         for idx, r in df.iterrows():
-            tmp = {'function': r['function_name']}
+            tmp = {'function_id': r['function_id']}
 
             tmp['desc'] = {}
             for lang in config.supported_languages:
@@ -570,19 +241,19 @@ if __name__ == "__main__":
 
  
     # generate prompts.json
-    if 0:
+    if 1:
+        # f_df = pd.read_csv('./csv_database/function_table.csv')
+        df =  pd.read_csv('./csv_database/prompt_table.csv')
 
-        f_df = pd.read_csv('./static/csv_data/function_table.csv')
-        df =  pd.read_csv('./static/csv_data/prompt_table.csv')
-
-        fid_to_fname = {}
-        for idx, row in f_df.iterrows():
-            fid_to_fname[row['function_id']] = row['function_name']
+        # fid_to_fname = {}
+        # for idx, row in f_df.iterrows():
+        #     fid_to_fname[row['function_id']] = row['function_id']
 
         prompts_lst = []
 
         for fid, group_df in df.groupby(['function_id']):
-            tmp = {'function': fid_to_fname[fid]}
+            # tmp = {'function_id': fid_to_fname[fid]}
+            tmp = {'function_id': fid}
             tmp['content'] = {}
 
 
@@ -594,30 +265,32 @@ if __name__ == "__main__":
                 if prompts_df.__len__() <= 0: continue
 
                 # iter each prompt
-                for idx, row in prompts_df.iterrows():
+                for idx, p in prompts_df.iterrows():
+                # for p in  df.to_dict(orient="records"):
+                #     print(p.to_dict())
                     a_prompt_dict = {
-                        'priority': 0,
-                        'content':[row['content']] # todo: change as chat
+                        'function_id': p['function_id'],
+                        'priority' : p['priority'],
+                        'model' : p['model'],
+                        'language_code' : p['language_code'],
+                        'content' : p['content'],
+                        'chat' : p.get('chat', "none"),
+                        'author' : p.get('author', 'none'),
+                        'author_link' : p.get('author_link', "none"),
+                        'prompt_semantic_id' : p.get('prompt_semantic_id', "none"),
                     }
                     tmp['content'][lang].append(a_prompt_dict)
 
             prompts_lst.append(tmp)
 
-        out_path = './output/prompts.json'
+        # out_path = './output/prompts.json'
+        out_path = config.ws + '/data/prompts.json'
         json.dump(prompts_lst, open(out_path, 'w'), indent=4)
 
                   
 
 
-    if 0: # aggrate the prompts
-        is_test = True
-        aggreate_prompts('./promptbase/', is_test)
-        #data = json.load(open('./classes_new.json'))
-        # print(data)
-        #json.dump(data, open('./classes_new.json', mode="w", encoding="utf-8"), indent=4)
 
-        # prompts_dict = json.load(open('./prompts_20230318183149.json', 'r', encoding='UTF-8'))
-        # print(prompts_dict)
 
     if 0: # generate the prompt and answer as well:
         prompt_num_per_func = 3
@@ -717,4 +390,3 @@ if __name__ == "__main__":
 
 
 
-# data add process
