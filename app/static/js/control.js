@@ -77,71 +77,144 @@ function switch_selected_language(selected_lan_code) {
 
 
 
+// function render_hierarchy_tree(data, parent_element, selected_lan_code) {
+//     data.forEach(function (item) {
+//         // Create a new MDUI Collapse item
+//         var collapseItem = $('<div class="mdui-collapse-item mdui-collapse-item-close"></div>');
+//
+//         head_name = item['names'][selected_lan_code];
+//         is_has_children = (item.children && item.children.length);
+//         class_id = item.id;
+//
+//         icon_style = item['icon_style'] || '';
+//         icon_name = item['icon_name'] || 'none';
+//
+//
+//         header_html = `
+//             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+//         `;
+//
+//         // icon
+//         if ((icon_name != 'none') ){
+//             icon_html = `<i class="${icon_style}">${icon_name}</i>`
+//             header_html += icon_html;
+//         }
+//
+//         // content
+//         header_html += `<div class="mdui-list-item-content">${head_name}</div>`
+//
+//         // arrow
+//         if (is_has_children) {
+//             header_html_arrow = `
+//                     <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-">keyboard_arrow_down</i>
+//                 </div>
+//             `;
+//             header_html += header_html_arrow;
+//         }
+//         header_html +=  `</div>`
+//
+//         var header = $(header_html)
+//             .attr('data-title', class_id)
+//             .on('click', function() {
+//
+//                 // Prevent the click event from propagating to child elements
+//                 // event.stopPropagation();
+//                 // Custom click event listener code
+//
+//                 console.log('Clicked on item with id:', class_id);
+//                 cur_class = class_id;
+//                 render_search_prompt_by_class(item.id, cur_lan_code)
+//             });
+//
+//
+//         // Append the header to the Collapse item
+//         collapseItem.append(header);
+//
+//         // Check if the current item has children
+//         if (is_has_children) {
+//             // Create a new MDUI Collapse item body
+//             var body = $('<div class="mdui-collapse-item-body mdui-list mdui-list-dense"></div>');
+//
+//             // Recursively call the 'renderHierarchyTree' function to render the child items
+//             render_hierarchy_tree(item.children, body, selected_lan_code);
+//
+//             // Append the body to the Collapse item
+//             collapseItem.append(body);
+//         }
+//
+//         // Append the MDUI Collapse item to the parent element
+//         parent_element.append(collapseItem);
+//     });
+// }
+
+
 function render_hierarchy_tree(data, parent_element, selected_lan_code) {
     data.forEach(function (item) {
-        // Create a new MDUI Collapse item
-        var collapseItem = $('<div class="mdui-collapse-item mdui-collapse-item-close"></div>');
+        // Wrap the loop body with an IIFE to create a new scope for each iteration
+        (function (item) {
+            // Create a new MDUI Collapse item
+            var collapseItem = $('<div class="mdui-collapse-item mdui-collapse-item-close"></div>');
 
-        head_name = item['names'][selected_lan_code];
-        is_has_children = (item.children && item.children.length);
-        class_id = item.id;
+            var head_name = item['names'][selected_lan_code];
+            var is_has_children = (item.children && item.children.length);
+            var class_id = item.id;
 
-        icon_style = item['icon_style'] || '';
-        icon_name = item['icon_name'] || 'none';
+            var icon_style = item['icon_style'] || '';
+            var icon_name = item['icon_name'] || 'none';
 
+            var header_html = `
+          <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+      `;
 
-        header_html = `
-            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-        `;
+            // icon
+            if ((icon_name != 'none')) {
+                var icon_html = `<i class="${icon_style}">${icon_name}</i>`;
+                header_html += icon_html;
+            }
 
-        // icon
-        if ((icon_name != 'none') ){
-            icon_html = `<i class="${icon_style}">${icon_name}</i>`
-            header_html += icon_html;
-        }
+            // content
+            header_html += `<div class="mdui-list-item-content">${head_name}</div>`;
 
-        // content
-        header_html += `<div class="mdui-list-item-content">${head_name}</div>`
+            // arrow
+            if (is_has_children) {
+                var header_html_arrow = `
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-">keyboard_arrow_down</i>
+              </div>
+          `;
+                header_html += header_html_arrow;
+            }
+            header_html += `</div>`;
 
-        // arrow
-        if (is_has_children) {
-            header_html_arrow = `
-                    <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-">keyboard_arrow_down</i>
-                </div>
-            `;
-            header_html += header_html_arrow;
-        }
-        header_html +=  `</div>`
+            var header = $(header_html)
+                .attr('data-title', class_id)
+                .on('click', function () {
+                    // Custom click event listener code
+                    console.log('Clicked on item with id:', class_id);
+                    cur_class = class_id;
+                    render_search_prompt_by_class(item.id, cur_lan_code);
+                });
 
-        var header = $(header_html)
-            .attr('data-title', class_id)
-            .on('click', function() {
-                // Custom click event listener code
-                console.log('Clicked on item with id:', class_id);
-                cur_class = class_id;
-                render_search_prompt_by_class(item.id, cur_lan_code)
-            });
+            // Append the header to the Collapse item
+            collapseItem.append(header);
 
+            // Check if the current item has children
+            if (is_has_children) {
+                // Create a new MDUI Collapse item body
+                var body = $('<div class="mdui-collapse-item-body mdui-list mdui-list-dense"></div>');
 
-        // Append the header to the Collapse item
-        collapseItem.append(header);
+                // Recursively call the 'renderHierarchyTree' function to render the child items
+                render_hierarchy_tree(item.children, body, selected_lan_code);
 
-        // Check if the current item has children
-        if (is_has_children) {
-            // Create a new MDUI Collapse item body
-            var body = $('<div class="mdui-collapse-item-body mdui-list mdui-list-dense"></div>');
+                // Append the body to the Collapse item
+                collapseItem.append(body);
+            }
 
-            // Recursively call the 'renderHierarchyTree' function to render the child items
-            render_hierarchy_tree(item.children, body, selected_lan_code);
-
-            // Append the body to the Collapse item
-            collapseItem.append(body);
-        }
-
-        // Append the MDUI Collapse item to the parent element
-        parent_element.append(collapseItem);
+            // Append the MDUI Collapse item to the parent element
+            parent_element.append(collapseItem);
+        })(item); // Pass the 'item' variable as an argument to the IIFE
     });
 }
+
 
 
 
