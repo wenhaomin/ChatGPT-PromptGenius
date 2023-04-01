@@ -34,6 +34,26 @@ def get_cname_dict(d):
 for c in classes_tree:
     get_cname_dict(c)
 
+
+# class id to icon_name, style
+cid_to_icon_name = {}
+cid_to_icon_style = {}
+def get_cicon_dict(d):
+    cid = d['id']
+    icon_style = d.get('icon_style', None)
+    icon_name = d.get('icon_name', None)
+    if icon_name is not None:
+        cid_to_icon_name[cid] = icon_name
+        cid_to_icon_style[cid] = icon_style
+
+    children = d.get('children', None)
+    if children is not None:
+        for c in children:
+            get_cicon_dict(c)
+
+for c in classes_tree:
+    get_cicon_dict(c)
+
 # function id to class name
 # {'function_id': [{"eng": Code Development, "chn": "代码开发"}, ...]}
 fid_to_cnames = {}
@@ -142,18 +162,34 @@ def fetch_prompt(class_id, lan_code):
             # prompt filter condition
             if class_id=='popular' and int(p['priority']) != 2: continue  # priority=2, means popular
 
-            tmp = {}
-            tmp['chat_list'] =  [p['content']]
-            tmp['class_list'] = [name[lan_code] for name in fid_to_cnames[fid]] # get class names
-            tmp['author'] = p.get('author', '')
-            if tmp['author']=='whm': tmp['author'] = ''
-            tmp['author_link'] = p.get('author_link', '')
-            tmp['model'] = p.get('model', 'GPT 3.5')
-            tmp['function_desc'] = functions_dict[fid]['desc'][lan_code]
+            tmp = get_prompt_info_for_render(fid, p, lan_code)
 
             result.append(tmp)
     return jsonify({"content": result, "message": "success"})
 
+
+def get_prompt_info_for_render(fid: str, p: dict, lan_code: str):
+    tmp = {}
+    tmp['chat_list'] = [p['content']]
+    tmp['class_list'] = [name[lan_code] for name in fid_to_cnames[fid]]  # get class names
+    tmp['author'] = p.get('author', '')
+    if tmp['author'] == 'whm': tmp['author'] = ''
+    tmp['author_link'] = p.get('author_link', '')
+    tmp['model'] = p.get('model', 'GPT 3.5')
+    tmp['function_desc'] = functions_dict[fid]['desc'][lan_code]
+
+    # get one class icon
+    tmp['icon_style'] = 'mdui-icon material-icons mdui-text-color-blue'
+    tmp['icon_name'] = 'lightbulb_outline'
+    cid_lst = functions_dict[fid]['class']
+    for cid in cid_lst:
+        cid_style = cid_to_icon_style.get(cid, None)
+        cid_name = cid_to_icon_name.get(cid, None)
+        if (cid_name is not None) and (cid_style is not None):
+            tmp['icon_style'] = cid_style
+            tmp['icon_name'] = cid_name
+
+    return  tmp
 
 
 
@@ -175,14 +211,9 @@ def search_prompt(search_text, lan_code):
             for c_text in compare_text_lst:
                 score  = text_similarity_score(search_text, c_text, lan_code)
                 if score > 0.5:
-                    tmp = {}
-                    tmp['chat_list'] = [p['content']]
-                    tmp['class_list'] = class_list  # get class names
-                    tmp['author'] = p.get('author', '')
-                    if tmp['author'] == 'whm': tmp['author'] = ''
-                    tmp['author_link'] = p.get('author_link', '')
-                    tmp['model'] = p.get('model', 'GPT 3.5')
-                    tmp['function_desc'] = function_desc
+
+                    tmp = get_prompt_info_for_render(fid, p, lan_code)
+
                     result.append(tmp)
                     continue
     return jsonify({"content": result, "message": "success"})
