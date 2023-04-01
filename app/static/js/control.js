@@ -205,26 +205,26 @@ function render_prompt_display(prompt_list){
         
         prompt_card_html = generate_prompt_card_html(index, item);
         $('#class-card-row').append(prompt_card_html);
-        
-        cur_prompt = '#class-card-'+ index.toString();
-        $(cur_prompt).on('click', function() {
-            // Custom click event listener code
-            // console.log('Clicked on item with id:', $(this).text());
-            copy_to_clipboard($(this).text());
 
+        cur_copy_button = '#copy-message-'+ index.toString();
+        $(cur_copy_button).on('click', function() {
+
+            // copy
+            const cur_prompt = document.getElementById('class-card-'+ index.toString());
+            copy_to_clipboard($(cur_prompt).text());
+
+            // show the copy information
             const copy_message = document.getElementById('copy-message-' + index.toString());
-            // copy_message.style.display = 'block'; //block
             copy_message.textContent = 'copied'
             setTimeout(function() {
-                // copy_message.style.display = 'none';
                 copy_message.textContent = 'copy'
-            }, 1000);
-        // });
-        
+            }, 1500);
+
         });
 
         })
     }
+    //The # symbol is used in jQuery for selecting an element by its ID, but when using document.getElementById, you should only pass the ID string without the # symbol.
 
 // copy text
 function copy_to_clipboard(text) {
