@@ -3,7 +3,7 @@
 💡Prompt Genius
 </h1>
 <p align="center">
-    <a href="./README-en.md">English</a> | 中文
+    <a href="./readme-en.md">English</a> | 中文
 </p>
 <p align="center">
     <em>全面、有效的 ChatGPT指令大全</em>
