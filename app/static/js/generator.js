@@ -1,5 +1,5 @@
 function gen_class_card_html(class_id, class_name, example_desc) {
-    html = `
+  html = `
     <div class="mdui-col class-card-col">
         <div class="mdui-card class-card mdui-hoverable" id="class-card-${class_id}" classid="${class_id}">
             <div class="mdui-card-primary class-card-primary">
@@ -9,12 +9,12 @@ function gen_class_card_html(class_id, class_name, example_desc) {
         </div>
     </div>
     `
-    return html
+  return html
 }
 
 
 
-function generate_prompt_card_html(index, item){
+function generate_prompt_card_html(index, item) {
   chat_list = item['chat_list']
   class_list = item['class_list']
   author = item['author']
@@ -24,14 +24,14 @@ function generate_prompt_card_html(index, item){
   prompt_text = chat_list[0]
   class_name = class_list[0]
   icon_name = item['icon_name']
-  icon_style=  item['icon_style']
+  icon_style = item['icon_style']
   example_desc = prompt_text
 
   icon_html = `<span class="${icon_style}">${icon_name}</span>  
           `
 
   // <div class="mdui-col-xs-6 mdui-col-sm-6 mdui-col-md-4 mdui-col-lg-3 mdui-col-xl-3 mdui-m-t-2">
-    // <span className="mdui-icon material-icons mdui-text-color-blue">lightbulb_outline</span>
+  // <span className="mdui-icon material-icons mdui-text-color-blue">lightbulb_outline</span>
   html = `
     <div class="mdui-col-xs-12 mdui-col-sm-12 mdui-col-md-12 mdui-col-lg-12 mdui-col-xl-12 mdui-m-t-12 mdui-m-b-2">
       <div class="mdui-card mdui-shadow-4 prompt-card">
@@ -39,11 +39,6 @@ function generate_prompt_card_html(index, item){
           
           
           ${icon_html}
-          
-           <span  class="mdui-chip mdui-color-theme-200"  >
-           <div class="mdui-chip-title"  id="copy-message-${index}">copy</div>
-          </span>
-        
           <span class="mdui-chip mdui-color-theme-200">
             <div class="mdui-chip-title">${class_name}</div>
           </span>
@@ -58,9 +53,7 @@ function generate_prompt_card_html(index, item){
             </a>
           </span>
           
-         
-          
-
+          <button class="mdui-btn mdui-float-right mdui-color-light-blue-50" id="copy-message-${index}">copy</button>
 
         </div>
 
@@ -79,4 +72,4 @@ function generate_prompt_card_html(index, item){
 // mdui-p-a-0: bottom and up and padding
 
 
-          
+

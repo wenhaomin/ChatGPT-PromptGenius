@@ -30,23 +30,23 @@
 <!-- mdui-color-indigo-50 -->
 
 <!-- class="mdui-typo-title" for header title -->
-<body class="mdui-drawer-body-left  mdui-color-grey-100  mdui-appbar-with-toolbar">
-    <header class="appbar mdui-appbar mdui-appbar-fixed  mdui-shadow-1 .mdui-hoverable">
-        <div class="mdui-toolbar mdui-color-grey-100" id="main-toolbar">
+<body class="mdui-drawer-body-left  mdui-color-grey-100 mdui-appbar-with-toolbar">
+    <header class="appbar mdui-appbar mdui-appbar-fixed mdui-color-indigo mdui-shadow-1 mdui-hoverable">
+        <div class="mdui-toolbar" id="main-toolbar">
 
-            <button class="mdui-btn" mdui-drawer="{target: '#left-drawer'}">
+            <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
                 <i class="mdui-icon material-icons">dehaze</i>
             </button>
             <!-- <a class="mdui-btn mdui-btn-icon" id="home-btn">
                 <i class="mdui-icon material-icons">home</i>
             </a> -->
-            <a  class="mdui-text-color-theme-text" id="page-header-title"></a>
+            <a  class="mdui-typo-headline" id="page-header-title"></a>
 
 {#            <div class="mdui-text-color-theme-text">ChatGPT工具传送门</div>#}
             <!-- <a href="/app/static/logo.svg">  </a> -->
             <!-- <img src="/app/static/logo.svg">  -->
             <div class="mdui-toolbar-spacer"></div>
-            <select class="mdui-select mdui-text-color-theme-text" id="language-select">
+            <select class="mdui-select" id="language-select">
             </select>
         </div>
     </header>
@@ -64,7 +64,7 @@
 
     <!--drawer-->
     <div class="mdui-drawer" id="left-drawer" style="width:auto;">
-        <div id="hierarchy-tree" class="mdui-collapse mdui-m-t-5" style="{accordion: true}" ></div>
+        <div id="hierarchy-tree" class="mdui-collapse mdui-m-t-1" style="{accordion: true}" ></div>
         <!--<button class="mdui-btn" mdui-drawer-close>close</button>-->
     </div>
 
@@ -82,11 +82,11 @@
             <div class="mdui-row" id="search-row">
                 <div class="mdui-col-xs-12">
                     
-                    <div class="mdui-textfield mdui-textfield-floating-label ">
+                    <div class="mdui-textfield">
 
                         <label class="mdui-textfield-label">Press Enter to Search</label>
 <!--                        <input class="mdui-textfield-input mdui-text-center" type="text" id="search-input" />-->
-                        <input class="mdui-textfield-input mdui-text-center" type="Press Enter to Search" id="search-input" />
+                        <input class="mdui-textfield-input mdui-text-center" id="search-input" />
 
 
 
