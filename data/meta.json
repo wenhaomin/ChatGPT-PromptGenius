@@ -26,13 +26,31 @@
             "site_title": "Prompt Genius",
             "search_prompt": "Search Prompt...",
             "search_btn_text": "Search",
-            "class_display_title": "Or choose from the following existing classes."
+            "class_display_title": "Or choose from the following existing classes.",
+            "submit_dialog": {
+                "title": "Submit your prompt",
+                "message": "If you happens to know a useful prompt that is not listed in this page, you can submit it here. Thank you for your kind contribution!",
+                "func_desc": "Brief description of the function",
+                "prompt": "ChatGPT prompt content",
+                "user_name": "Your name (optional)",
+                "submit_btn": "Submit",
+                "cancel_btn": "Cancel"
+            }
         },
         "chn": {
             "site_title": "提示精灵",
             "search_prompt": "Search Prompt...",
             "search_btn_text": "Search",
-            "class_display_title": "或者从下列现有类别中选择。"
+            "class_display_title": "或者从下列现有类别中选择。",
+            "submit_dialog": {
+                "title": "提交您的提示词",
+                "message": "如果您正好知道一个实用的提示词但本网站并未列出，您可以在此提交。感谢您的贡献！",
+                "func_desc": "功能描述",
+                "prompt": "ChatGPT提示词",
+                "user_name": "你的名字（可选）",
+                "submit_btn": "提交",
+                "cancel_btn": "取消"
+            }
         },
         "jpn": {
             "site_title": "Prompt Genius",

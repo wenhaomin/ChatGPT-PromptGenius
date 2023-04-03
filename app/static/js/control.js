@@ -37,10 +37,22 @@ function render_page_basic(selected_lan_code) {
         contentType: 'application/json',
         success: function (data) {
             let index_content = data['content'][selected_lan_code];
+            console.log(index_content);
+
             $('#page-browser-title, #page-header-title').text(index_content['site_title']);
             $('#search-input').attr('placeholder', index_content['search_prompt']);
             $('#search-btn').text(index_content['search_btn_text']);
             $('#class-display-title').text(index_content['class_display_title']);
+
+            // Render contents in submit dialog.
+            $('#submit-dialog-title').text(index_content['submit_dialog']['title']);
+            $('#submit-dialog-message').text(index_content['submit_dialog']['message']);
+            $('#submit-dialog-funcdesc-label').text(index_content['submit_dialog']['func_desc']);
+            $('#submit-dialog-prompt-label').text(index_content['submit_dialog']['prompt']);
+            $('#submit-dialog-username-label').text(index_content['submit_dialog']['user_name']);
+            $('#submit-enter-btn').text(index_content['submit_dialog']['submit_btn']);
+            $('#submit-cancel-btn').text(index_content['submit_dialog']['cancel_btn']);
+            mdui.mutation();
         }
     })
 }
@@ -341,10 +353,8 @@ function copy_to_clipboard(text) {
     copyContent();
 }
 
-
-
-
-
-
-
-
+function clear_submit_dialog_input() {
+    $('#submit-dialog-funcdesc-input').val("");
+    $('#submit-dialog-prompt-input').val("");
+    $('#submit-dialog-username-input').val("");
+}

@@ -38,3 +38,12 @@ function scroll_listenser() {
         $('#back-top-btn').addClass('mdui-fab-hide');
     }
 }
+
+function submit_dialog_open_listener() {
+    clear_submit_dialog_input();
+    submit_dialog.open();
+}
+
+function submit_enter_listener() {
+    submit_dialog.close();
+}

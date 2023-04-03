@@ -8,3 +8,5 @@ let all_languages;
 let cur_lan_code = 'eng';
 
 let cur_class = 'popular'
+
+let submit_dialog = new mdui.Dialog($('#submit-dialog'));

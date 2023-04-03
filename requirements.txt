@@ -3,3 +3,4 @@ numpy
 flask
 waitress
 easydict
+flask-sqlalchemy

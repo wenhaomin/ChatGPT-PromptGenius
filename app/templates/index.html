@@ -9,7 +9,7 @@
     <title id="page-browser-title"></title>
     <link rel="stylesheet" href="/static/module/mdui/css/mdui.css">
     <link rel="stylesheet" href="/static/css/index.css">
-<!--    <link rel="stylesheet" href="/static/css/card_style.css">-->
+    <!--    <link rel="stylesheet" href="/static/css/card_style.css">-->
     <script src="/static/module/mdui/js/mdui.js"></script>
     <script src="/static/module/jquery.js"></script>
 
@@ -20,16 +20,17 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TY2Y50CCNH"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-TY2Y50CCNH');
+    gtag('config', 'G-TY2Y50CCNH');
 </script>
 
 <!-- mdui-color-indigo-50 -->
 
 <!-- class="mdui-typo-title" for header title -->
+
 <body class="mdui-drawer-body-left  mdui-color-grey-100 mdui-appbar-with-toolbar">
     <header class="appbar mdui-appbar mdui-appbar-fixed mdui-color-indigo mdui-shadow-1 mdui-hoverable">
         <div class="mdui-toolbar" id="main-toolbar">
@@ -40,9 +41,13 @@
             <!-- <a class="mdui-btn mdui-btn-icon" id="home-btn">
                 <i class="mdui-icon material-icons">home</i>
             </a> -->
-            <a  class="mdui-typo-headline" id="page-header-title"></a>
+            <a class="mdui-typo-headline" id="page-header-title"></a>
 
-{#            <div class="mdui-text-color-theme-text">ChatGPT工具传送门</div>#}
+            <button class="mdui-btn mdui-btn-icon" id="submit-dialog-open-btn">
+                <i class="mdui-icon material-icons">file_upload</i>
+            </button>
+
+            {# <div class="mdui-text-color-theme-text">ChatGPT工具传送门</div>#}
             <!-- <a href="/app/static/logo.svg">  </a> -->
             <!-- <img src="/app/static/logo.svg">  -->
             <div class="mdui-toolbar-spacer"></div>
@@ -64,7 +69,7 @@
 
     <!--drawer-->
     <div class="mdui-drawer" id="left-drawer" style="width:auto;">
-        <div id="hierarchy-tree" class="mdui-collapse mdui-m-t-1" style="{accordion: true}" ></div>
+        <div id="hierarchy-tree" class="mdui-collapse mdui-m-t-1" style="{accordion: true}"></div>
         <!--<button class="mdui-btn" mdui-drawer-close>close</button>-->
     </div>
 
@@ -81,37 +86,38 @@
             <!-- Row for the search input. -->
             <div class="mdui-row" id="search-row">
                 <div class="mdui-col-xs-12">
-                    
+
                     <div class="mdui-textfield">
 
                         <label class="mdui-textfield-label">Press Enter to Search</label>
-<!--                        <input class="mdui-textfield-input mdui-text-center" type="text" id="search-input" />-->
+                        <!--                        <input class="mdui-textfield-input mdui-text-center" type="text" id="search-input" />-->
                         <input class="mdui-textfield-input mdui-text-center" id="search-input" />
 
 
 
                     </div>
                 </div>
-<!--                <div class="mdui-col-xs-1">-->
-<!--                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple" id="search-btn"></button>-->
-<!--                </div>-->
+                <!--                <div class="mdui-col-xs-1">-->
+                <!--                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple" id="search-btn"></button>-->
+                <!--                </div>-->
             </div>
 
-<!--            <div class="mdui-divider"></div>-->
+            <!--            <div class="mdui-divider"></div>-->
 
-            
-            <div class="mdui-textfield mdui-text-center" id="prompt_num" ></div>
-           
+
+            <div class="mdui-textfield mdui-text-center" id="prompt_num"></div>
+
 
 
             <!-- Row for display prompt classes. mdui-typo-subheading is used to set the text to a smaller size   -->
             <div class="mdui-row" id="class-display-row">
-<!--                <div class="mdui-row">-->
-<!--                    <div class="mdui-typo-subheading mdui-text-center" id="class-display-title"></div>-->
-<!--                </div>-->
+                <!--                <div class="mdui-row">-->
+                <!--                    <div class="mdui-typo-subheading mdui-text-center" id="class-display-title"></div>-->
+                <!--                </div>-->
 
-                <div class="mdui-row mdui-row-sm-2 mdui-row-md-3 mdui-row-xs-3  mdui-row-lg-4 mdui-row-xl-5" id="class-card-row"></div>
-                
+                <div class="mdui-row mdui-row-sm-2 mdui-row-md-3 mdui-row-xs-3  mdui-row-lg-4 mdui-row-xl-5"
+                    id="class-card-row"></div>
+
             </div>
 
         </div>
@@ -119,8 +125,32 @@
 
     <button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-blue mdui-fab-hide" id="back-top-btn">
         <i class="mdui-icon material-icons">arrow_upward</i>
-      </button>
+    </button>
 
+    <div class="mdui-dialog" id="submit-dialog">
+        <div class="mdui-dialog-title" id="submit-dialog-title"></div>
+        <div class="mdui-dialog-content" id="submit-dialog-content">
+            <div class="mdui-row"><span id="submit-dialog-message"></span></div>
+            <div class="mdui-row">
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label" id="submit-dialog-funcdesc-label"></label>
+                    <textarea class="mdui-textfield-input" type="email" rows="1" id="submit-dialog-funcdesc-input" type="text" required></textarea>
+                </div>
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label" id="submit-dialog-prompt-label"></label>
+                    <textarea class="mdui-textfield-input" type="email" rows="2" id="submit-dialog-prompt-input" type="text" required></textarea>
+                </div>
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label" id="submit-dialog-username-label"></label>
+                    <textarea class="mdui-textfield-input" type="email" rows="1" id="submit-dialog-username-input"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" id="submit-enter-btn"></button>
+            <button class="mdui-btn mdui-ripple mdui-dialog-close" id="submit-cancel-btn"></button>
+        </div>
+    </div>
 
 
 </body>
@@ -129,7 +159,8 @@
 <script src="/static/js/control.js"></script>
 <script src="/static/js/listener.js"></script>
 <script src="/static/js/init_page.js"></script>
-{#<script src="/static/js/tree_menu.js"></script>#}
+{#
+<script src="/static/js/tree_menu.js"></script>#}
 
 
 </html>

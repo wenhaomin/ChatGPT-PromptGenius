@@ -20,19 +20,20 @@ var inst = new mdui.Collapse('#hierarchy-tree');
 window.onscroll = scroll_listenser;
 $('#back-top-btn').on('click', back_top_listener);
 $('#language-select').on('change', languageSelectListenser);
-
-
-
 $("#search-btn").on('click', prompt_search_listener);
 
+$('#submit-dialog-open-btn').on('click', submit_dialog_open_listener);
+$('#submit-enter-btn').on('click', submit_enter_listener);
+$('#submit-cancel-btn').on('click', function () { submit_dialog.close(); })
+
 $(document).ready(function () {
-        $("#search-input").keydown(function (e) {
+    $("#search-input").keydown(function (e) {
         var curKey = e.which;
         if (curKey == 13) {
             console.log('enter')
             prompt_search_listener()
             // $("#search-btn").click();
-        return false;
-            }
-     });
+            return false;
+        }
+    });
 });
