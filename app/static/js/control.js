@@ -6,6 +6,29 @@
 
 // const { CONNREFUSED } = require("dns");
 
+function set_cookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function get_cookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 function render_page_basic(selected_lan_code) {
     // Render the basic elements on the page.
     $.ajax({
@@ -46,6 +69,11 @@ function render_class_display(selected_lan_code) {
 
 
 function init_language_select() {
+    // Load saved language code from cookie.
+    var save_lan_code = get_cookie('lancode');
+    if (save_lan_code != "") {
+        cur_lan_code = save_lan_code;
+    }
     // Intialize the options in #language-select.
     $.ajax({
         type: 'GET',
@@ -233,12 +261,12 @@ function render_class_tree(selected_lan_code) {
 }
 
 // By Haomin Wen: display all prompts of a given class
-function render_search_prompt_by_class(class_id, selected_lan_code){
+function render_search_prompt_by_class(class_id, selected_lan_code) {
     $.ajax({
         type: 'GET',
-        url: 'fetch_prompt/'+ class_id + '/' + selected_lan_code,
+        url: 'fetch_prompt/' + class_id + '/' + selected_lan_code,
         contentType: 'application/json',
-        success: function(data) { // use a function to handle the response data
+        success: function (data) { // use a function to handle the response data
             // call another function to render the fetched prompt data
             render_prompt_display(data['content']);
         }
@@ -246,70 +274,70 @@ function render_search_prompt_by_class(class_id, selected_lan_code){
 }
 
 // display all prompts
-function render_all_prompt(selected_lan_code){
+function render_all_prompt(selected_lan_code) {
     $.ajax({
         type: 'GET',
-        url: 'fetch_prompt/'+ "all_class" + '/' + selected_lan_code,
+        url: 'fetch_prompt/' + "all_class" + '/' + selected_lan_code,
         contentType: 'application/json',
-        success: function(data) {
+        success: function (data) {
             render_prompt_display(data['content']);
         }
     });
 }
 
 // search prompt by give string
-function render_search_prompt_by_string(search_text, selected_lan_code){
+function render_search_prompt_by_string(search_text, selected_lan_code) {
     $.ajax({
         type: 'GET',
-        url: 'search_prompt/'+ search_text + '/' + selected_lan_code,
+        url: 'search_prompt/' + search_text + '/' + selected_lan_code,
         contentType: 'application/json',
-      success: function(data) {
+        success: function (data) {
             render_prompt_display(data['content']);
         }
     });
 }
 
 // render given prompts
-function render_prompt_display(prompt_list){
+function render_prompt_display(prompt_list) {
     $('#class-card-row').empty();
     $('#prompt_num').text("Prompt Number:" + prompt_list.length.toString());
     console.log(prompt_list.length)
     prompt_list.forEach(function (item, index) {
-        
+
         prompt_card_html = generate_prompt_card_html(index, item);
         $('#class-card-row').append(prompt_card_html);
 
-        cur_copy_button = '#copy-message-'+ index.toString();
-        $(cur_copy_button).on('click', function() {
+        cur_copy_button = '#copy-message-' + index.toString();
+        $(cur_copy_button).on('click', function () {
 
             // copy
-            const cur_prompt = document.getElementById('class-card-'+ index.toString());
+            const cur_prompt = document.getElementById('class-card-' + index.toString());
             copy_to_clipboard($(cur_prompt).text());
 
             // show the copy information
             const copy_message = document.getElementById('copy-message-' + index.toString());
             copy_message.textContent = 'copied'
-            setTimeout(function() {
+            setTimeout(function () {
                 copy_message.textContent = 'copy'
             }, 1500);
 
         });
 
-        })
-    }
-    //The # symbol is used in jQuery for selecting an element by its ID, but when using document.getElementById, you should only pass the ID string without the # symbol.
+    })
+}
+//The # symbol is used in jQuery for selecting an element by its ID, but when using document.getElementById, you should only pass the ID string without the # symbol.
 
 // copy text
 function copy_to_clipboard(text) {
     const copyContent = async () => {
         try {
-        await navigator.clipboard.writeText(text);
-        console.log('Content copied to clipboard');
+            await navigator.clipboard.writeText(text);
+            console.log('Content copied to clipboard');
         } catch (err) {
-        console.error('Failed to copy: ', err);
+            console.error('Failed to copy: ', err);
         }
     }
-    
+
     copyContent();
 }
 

@@ -14,6 +14,9 @@ function languageSelectListenser() {
     render_search_prompt_by_class(cur_class, selected_lan_code);
     render_class_tree(selected_lan_code);
 
+    // If the user changed language, save language code to cookie.
+    // The cookie will be expired after 30 days.
+    set_cookie("lancode", cur_lan_code, 30);
 }
 
 
