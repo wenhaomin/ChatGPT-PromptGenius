@@ -22,3 +22,16 @@ function prompt_search_listener(){
     console.log(search_text);
     render_search_prompt_by_string(search_text, cur_lan_code)
 }
+
+function back_top_listener() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function scroll_listenser() {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 180) {
+        $('#back-top-btn').removeClass('mdui-fab-hide');
+    } else {
+        $('#back-top-btn').addClass('mdui-fab-hide');
+    }
+}

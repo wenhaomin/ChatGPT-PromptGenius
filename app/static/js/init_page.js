@@ -17,6 +17,8 @@ render_class_tree(cur_lan_code);
 var inst = new mdui.Collapse('#hierarchy-tree');
 
 
+window.onscroll = scroll_listenser;
+$('#back-top-btn').on('click', back_top_listener);
 $('#language-select').on('change', languageSelectListenser);
 
 
