@@ -69,7 +69,7 @@
 
     <!--drawer-->
     <div class="mdui-drawer" id="left-drawer" style="width:auto;">
-        <div id="hierarchy-tree" class="mdui-collapse mdui-m-t-1" style="{accordion: true}"></div>
+        <div id="hierarchy-tree" class="mdui-collapse mdui-m-t-1" style="accordion: true"></div>
         <!--<button class="mdui-btn" mdui-drawer-close>close</button>-->
     </div>
 
@@ -132,17 +132,19 @@
         <div class="mdui-dialog-content" id="submit-dialog-content">
             <div class="mdui-row"><span id="submit-dialog-message"></span></div>
             <div class="mdui-row">
-                <div class="mdui-textfield mdui-textfield-floating-label">
-                    <label class="mdui-textfield-label" id="submit-dialog-funcdesc-label"></label>
-                    <textarea class="mdui-textfield-input" type="email" rows="1" id="submit-dialog-funcdesc-input" type="text" required></textarea>
+                <div class="mdui-textfield mdui-textfield-floating-label" id="submit-dialog-funcdesc-tf">
+                    <label class="mdui-textfield-label"></label>
+                    <textarea class="mdui-textfield-input" type="email" rows="1" type="text"></textarea>
+                    <div class="mdui-textfield-error"></div>
                 </div>
-                <div class="mdui-textfield mdui-textfield-floating-label">
+                <div class="mdui-textfield mdui-textfield-floating-label" id="submit-dialog-prompt-tf">
                     <label class="mdui-textfield-label" id="submit-dialog-prompt-label"></label>
-                    <textarea class="mdui-textfield-input" type="email" rows="2" id="submit-dialog-prompt-input" type="text" required></textarea>
+                    <textarea class="mdui-textfield-input" type="email" rows="2" type="text"></textarea>
+                    <div class="mdui-textfield-error"></div>
                 </div>
-                <div class="mdui-textfield mdui-textfield-floating-label">
+                <div class="mdui-textfield mdui-textfield-floating-label" id="submit-dialog-username-tf">
                     <label class="mdui-textfield-label" id="submit-dialog-username-label"></label>
-                    <textarea class="mdui-textfield-input" type="email" rows="1" id="submit-dialog-username-input"></textarea>
+                    <textarea class="mdui-textfield-input" type="email" rows="1"></textarea>
                 </div>
             </div>
         </div>

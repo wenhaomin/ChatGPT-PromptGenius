@@ -2,3 +2,4 @@
 .vscode
 app/__pycache__
 /meta/
+instance/

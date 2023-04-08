@@ -40,10 +40,36 @@ function scroll_listenser() {
 }
 
 function submit_dialog_open_listener() {
-    clear_submit_dialog_input();
+    $('#submit-dialog .mdui-textfield').removeClass('mdui-textfield-invalid');
+    $('#submit-dialog textarea').val("");
     submit_dialog.open();
 }
 
 function submit_enter_listener() {
-    submit_dialog.close();
+    var func_desc = validate_textarea('submit-dialog-funcdesc-tf');
+    var prompt_content = validate_textarea('submit-dialog-prompt-tf');
+    var user_name = $('#submit-dialog-username-tf textarea').val();
+    var submit_btn_text_origin = $('#submit-enter-btn').text();
+    if (func_desc.length > 0 & prompt_content.length > 0) {
+        $('#submit-enter-btn').text('...');
+        $.ajax({
+            type: 'POST',
+            url: '/submit_function',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                func_desc: func_desc,
+                prompt_content: prompt_content,
+                user_name: user_name
+            }),
+            success: function(data) {
+                if (data['message'] == 'success') {
+                    submit_dialog.close();
+                    mdui.snackbar('Submit success!');
+                } else {
+                    mdui.snackbar(data['error']);
+                }
+                $('#submit-enter-btn').text(submit_btn_text_origin);
+            }
+        })
+    }
 }

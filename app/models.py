@@ -5,8 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-class UserSubmit(db.Model):
-    __tablename__ = 'user_submit'
-    rowIndex = db.Column(db.Integer, primary_key=True)
-    funcDesc = db.Column(db.String)
+class SubmitFunction(db.Model):
+    __tablename__ = 'user_submit_function'
+    funcDesc = db.Column(db.String, primary_key=True)
+    createTime = db.Column(db.String, primary_key=True)
     promptContent = db.Column(db.String)
+    userName = db.Column(db.String)

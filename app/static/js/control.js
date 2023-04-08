@@ -37,19 +37,19 @@ function render_page_basic(selected_lan_code) {
         contentType: 'application/json',
         success: function (data) {
             let index_content = data['content'][selected_lan_code];
-            console.log(index_content);
 
             $('#page-browser-title, #page-header-title').text(index_content['site_title']);
             $('#search-input').attr('placeholder', index_content['search_prompt']);
             $('#search-btn').text(index_content['search_btn_text']);
             $('#class-display-title').text(index_content['class_display_title']);
+            $('.mdui-textfield-error').text(index_content['input_error_info']);
 
             // Render contents in submit dialog.
             $('#submit-dialog-title').text(index_content['submit_dialog']['title']);
             $('#submit-dialog-message').text(index_content['submit_dialog']['message']);
-            $('#submit-dialog-funcdesc-label').text(index_content['submit_dialog']['func_desc']);
-            $('#submit-dialog-prompt-label').text(index_content['submit_dialog']['prompt']);
-            $('#submit-dialog-username-label').text(index_content['submit_dialog']['user_name']);
+            $('#submit-dialog-funcdesc-tf label').text(index_content['submit_dialog']['func_desc']);
+            $('#submit-dialog-prompt-tf label').text(index_content['submit_dialog']['prompt']);
+            $('#submit-dialog-username-tf label').text(index_content['submit_dialog']['user_name']);
             $('#submit-enter-btn').text(index_content['submit_dialog']['submit_btn']);
             $('#submit-cancel-btn').text(index_content['submit_dialog']['cancel_btn']);
             mdui.mutation();
@@ -115,6 +115,15 @@ function switch_selected_language(selected_lan_code) {
     });
 }
 
+function validate_textarea(tf_id) {
+    var input_val = $(`#${tf_id} textarea`).val();
+    if (input_val.length > 0) {
+        $(`#${tf_id}`).removeClass('mdui-textfield-invalid');
+    } else {
+        $(`#${tf_id}`).addClass('mdui-textfield-invalid');
+    }
+    return input_val;
+}
 
 
 // function render_hierarchy_tree(data, parent_element, selected_lan_code) {
@@ -351,10 +360,4 @@ function copy_to_clipboard(text) {
     }
 
     copyContent();
-}
-
-function clear_submit_dialog_input() {
-    $('#submit-dialog-funcdesc-input').val("");
-    $('#submit-dialog-prompt-input').val("");
-    $('#submit-dialog-username-input').val("");
 }
