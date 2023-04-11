@@ -78,8 +78,6 @@ function render_class_display(selected_lan_code) {
     })
 }
 
-
-
 function init_language_select() {
     // Load saved language code from cookie.
     var save_lan_code = get_cookie('lancode');
@@ -264,9 +262,6 @@ function render_hierarchy_tree(data, parent_element, selected_lan_code) {
     });
 }
 
-
-
-
 function render_class_tree(selected_lan_code) {
     // Intialize the options in #language-select.
     $.ajax({
@@ -322,31 +317,19 @@ function render_search_prompt_by_string(search_text, selected_lan_code) {
 function render_prompt_display(prompt_list) {
     $('#class-card-row').empty();
     $('#prompt_num').text("Prompt Number:" + prompt_list.length.toString());
-    console.log(prompt_list.length)
-    prompt_list.forEach(function (item, index) {
-
+    prompt_list.forEach((item, index) => {
         prompt_card_html = generate_prompt_card_html(index, item);
         $('#class-card-row').append(prompt_card_html);
-
-        cur_copy_button = '#copy-message-' + index.toString();
-        $(cur_copy_button).on('click', function () {
-
-            // copy
-            const cur_prompt = document.getElementById('class-card-' + index.toString());
-            copy_to_clipboard($(cur_prompt).text());
-
-            // show the copy information
-            const copy_message = document.getElementById('copy-message-' + index.toString());
-            copy_message.textContent = 'copied'
-            setTimeout(function () {
-                copy_message.textContent = 'copy'
-            }, 1500);
-
-        });
-
+    });
+    $('.copy-prompt-btn').on('click', (e) => {
+        const prompt_content = $(e.target).parents('.prompt-card').find('.prompt-card-content').text();
+        copy_to_clipboard(prompt_content);
+        $(e.target).text('copied');
+        setTimeout(() => {
+            $(e.target).text('copy');
+        }, 1500);
     })
 }
-//The # symbol is used in jQuery for selecting an element by its ID, but when using document.getElementById, you should only pass the ID string without the # symbol.
 
 // copy text
 function copy_to_clipboard(text) {

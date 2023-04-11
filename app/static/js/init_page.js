@@ -11,11 +11,7 @@ render_page_basic(cur_lan_code);
 render_search_prompt_by_class('popular', cur_lan_code)
 render_class_tree(cur_lan_code);
 
-
-
-
 var inst = new mdui.Collapse('#hierarchy-tree');
-
 
 window.onscroll = scroll_listenser;
 $('#back-top-btn').on('click', back_top_listener);
