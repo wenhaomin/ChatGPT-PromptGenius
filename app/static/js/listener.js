@@ -19,8 +19,7 @@ function languageSelectListenser() {
     set_cookie("lancode", cur_lan_code, 30);
 }
 
-
-function prompt_search_listener(){
+function prompt_search_listener() {
     var search_text = $("#search-input").val();
     console.log(search_text);
     render_search_prompt_by_string(search_text, cur_lan_code)
@@ -61,7 +60,7 @@ function submit_enter_listener() {
                 prompt_content: prompt_content,
                 user_name: user_name
             }),
-            success: function(data) {
+            success: function (data) {
                 if (data['message'] == 'success') {
                     submit_dialog.close();
                     mdui.snackbar('Submit success!');
