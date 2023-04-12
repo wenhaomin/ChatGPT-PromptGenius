@@ -14,7 +14,7 @@
 - 🚀 **Popular prompts**: Continuously collecting and displaying popular prompts to help users get expected, high-quality responses, thus improving productivity.
 - 🌎 **Multi-language support**: Currently supporting Chinese, English, Japanese, Korean, and German among other languages.
 - 🤏 **Convenient operation**: Supports prompt copying feature
-- 🆕 **Regularly updated**: Prompts are sourced from curated online selections and Awesome ChatGPT Prompts, with regular updates.
+- 🆕 **Regularly updated**: Prompts are sourced from curated online selections and Awesome ChatGPT Prompts and user contribution, with regular updates.
 - 📦 **Ready-to-use**: [PromptGenius website](http://8.130.82.126:8080/)
 
 ## Usage instructions
@@ -43,6 +43,13 @@ After keyword search, click the "copy" button in the upper-left corner of the ca
 
 The website defaults to English, as ChatGPT and others have more English training data, making it easier to obtain high-quality results. If you need to use Chinese or other languages, such as Japanese, Korean, German, etc., you can switch languages in the upper right corner of the page.
 After switching, the prompts for the new language will be displayed in the current category.
+
+### User Submit
+If you happens to know a useful prompt that is not listed in this page, you can submit it here. Thank you for your kind contribution!
+
+![image](./img/user_submit.png)
+
+
 
 ## Installation
 
