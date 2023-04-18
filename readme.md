@@ -16,7 +16,7 @@
 - 🌎 **多语言支持**：目前支持中文、英文、日语、韩语和德语等多种语言。
 - 🤏 **便捷操作**：支持提示词复制功能
 - 🆕 **定期更新**：提示词来自网络精选和 Awesome ChatGPT Prompts和用户投稿，定期进行更新。
-- 📦 **开箱即用**：[PromptGenius网站](http://8.130.82.126:8080/)
+- 📦 **开箱即用**：[www.promptgenius.site](www.promptgenius.site)
 
 
 ## 使用说明
