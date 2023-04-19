@@ -1,16 +1,100 @@
 [
     {
         "eng": {
-            "name": "ChatGPT",
+            "name": "[Chat]: ChatGPT",
             "desc": "OpenAI's ChatGPT is an AI language model based on the GPT-4 architecture. Its primary purpose is to understand and generate human-like text based on the input it receives. As a highly advanced language model, ChatGPT is capable of answering questions, providing information, assisting with various tasks, and engaging in conversations across a wide range of topics.",
             "url": "https://chat.openai.com/",
             "icon": "static/icons/chatgpt.png"
         },
         "chn": {
-            "name": "ChatGPT",
+            "name": "[Chat]: ChatGPT",
             "desc": "OpenAI的ChatGPT是一款基于GPT-4架构的AI语言模型。其主要目的是根据收到的输入理解并生成类似人类的文本。作为一款高度先进的语言模型，ChatGPT能够回答问题、提供信息、协助完成各种任务，并在广泛的主题范围内进行对话。",
             "url": "https://chat.openai.com/",
             "icon": "static/icons/chatgpt.png"
+        }
+    },
+    {
+        "eng": {
+            "name": "[Chat]: New Bing",
+            "desc": "New Bing is a chat-based search engine developed by Microsoft that uses ChatGPT technologies. It can be used to search, chat, and create.",
+            "url": "https://www.bing.com/new",
+            "icon": "static/icons/bing.png"
+        },
+        "chn": {
+            "name": "[Chat]: New Bing",
+            "desc": "New Bing 是 Microsoft 使用 ChatGPT 技术开发的基于聊天的搜索引擎。 它可用于搜索、聊天和内容创作。",
+            "url": "https://www.bing.com/new",
+            "icon": "static/icons/bing.png"
+        }
+    },
+    {
+        "eng": {
+            "name": "[Chat]: Perplexity AI",
+            "desc": "Perplexity AI is a ChatGPT alternative that has also been trained on OpenAI’s API, and as such, performs well with good responses. The website itself has been packaged in a minimalist manner and is simple to use. The tool offers ChatGPT-like functionality, including the ability to hold conversations and provide simple to nuanced responses. However, unlike ChatGPT, Perplexity even cites the sources it is using to answer your queries.",
+            "url": "https://www.perplexity.ai/",
+            "icon": "static/icons/perplexity.ico"
+        },
+        "chn": {
+            "name": "[Chat]: Perplexity AI",
+            "desc": "Perplexity AI 是 ChatGPT 的另一种选择，通过了 OpenAI 的 API 进行了训练。该工具提供类似于 ChatGPT 的功能，包括进行对话和提供简单到复杂的回复的能力。但是，与 ChatGPT 不同的是，Perplexity 会显示回答的来源。",
+            "url": "https://www.perplexity.ai/",
+            "icon": "static/icons/perplexity.ico"
+        }
+    },
+    {
+        "eng": {
+            "name": "[Chat]: Chatsonic",
+            "desc": "Chatsonic is one of the newest and quite expansive ChatGPT alternatives that has been making the rounds lately. It has been built on top of ChatGPT, and hence, inherits its vast potential. However, this AI chatbot comes backed by more features and broader knowledge as it can access the Internet, which is something the former still can’t do.",
+            "url": "https://writesonic.com/?via=devinder14",
+            "icon": "static/icons/chatsonic.png"
+        },
+        "chn": {
+            "name": "[Chat]: Chatsonic",
+            "desc": "Chatsonic 是最近流行的最新且功能广泛的 ChatGPT 替代方案之一。 它建立在 ChatGPT 之上，因此继承了其巨大的潜力。相比于ChatGPT ，Chatsonic 拥有更多的功能和更广泛的知识，因为其可以访问互联网，这是前者无法做到的。",
+            "url": "https://writesonic.com/?via=devinder14",
+            "icon": "static/icons/chatsonic.png"
+        }
+    },
+    {
+        "eng": {
+            "name": "[Chat]: Colossal Chat",
+            "url": "https://chat.colossalai.org/",
+            "icon": "static/icons/coati_title.png",
+            "desc": "Colossal Chat is one of the few AI models that goes completely away from ChatGPT. No need to create account, and free to use. A powerful ChatGPT alternative, Colossal’s language model is based on a mixture of Meta’s LLaMA model and an RHLF pipeline which is a reinforcement learning system. This makes the AI a very capable alternative to ChatGPT which can respond while learning from its chats."
+        },
+        "chn": {
+            "name": "[Chat]: Colossal Chat",
+            "url": "https://chat.colossalai.org/",
+            "icon": "static/icons/coati_title.png",
+            "desc": "Colossal Chat 是为数不多的完全脱离 ChatGPT 的人工智能模型之一。其无需创建账号，并且可以免费使用。 作为一种强大的 ChatGPT 替代方案，Colossal 的语言模型基于 Meta 的 LLaMA 模型和 RHLF 训练流程。"
+        }
+    },
+    {
+        "eng": {
+            "name": "[Coding]: GitHub Copilot X",
+            "url": "https://github.com/features/copilot",
+            "icon": "static/icons/github.png",
+            "desc": "Github Copilot is on OpenAI’s latest GPT-4 model and has been trained on millions of lines of code. Pros: 1) Helps generate code 2) Provides in-depth analysis and explanation of code 3) ChatGPT-like experience with coding; Cons: 1) Cannot write perfect code; 2) Tad expensive."
+        },
+        "chn": {
+            "name": "[Coding]: GitHub Copilot X",
+            "url": "https://github.com/features/copilot",
+            "icon": "static/icons/github.png",
+            "desc": "Github Copilot 基于 OpenAI 最新的 GPT-4 模型，并接受了数百万行代码的训练。 优点：1) 帮助生成代码 2) 提供对代码的深入分析和解释 3) 类似 ChatGPT 的编码体验； 缺点：1）不能写出完美的代码； 2）有点贵。"
+        }
+    },
+    {
+        "eng": {
+            "name": "[Coding]: Amazon Codewhisperer",
+            "url": "https://aws.amazon.com/cn/codewhisperer/",
+            "icon": "static/icons/aws.png",
+            "desc": "Like Copilot X, Amazon Codewhisperer works across a variety of languages including Javascript, Python, C#, Java, and more. Pros: 1) Intelligently suggests code based on comments; 2) Can be used across and outside the Amazon ecosystem; 3) Free to use for now; Cons: 1) Supports fewer languages compared to Copilot X."
+        },
+        "chn": {
+            "name": "[Coding]: Amazon Codewhisperer",
+            "url": "https://aws.amazon.com/cn/codewhisperer/",
+            "icon": "static/icons/aws.png",
+            "desc": "与 Copilot X 一样，Amazon Codewhisperer 支持多种语言，包括 Javascript、Python、C#、Java 等。 优点： 1）代码优化建议； 2）可以在亚马逊生态系统内外使用； 3）暂时免费使用； 缺点：1) 与 Copilot X 相比支持的语言更少"
         }
     }
 ]
