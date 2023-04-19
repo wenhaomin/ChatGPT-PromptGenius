@@ -15,7 +15,7 @@
 - 🌎 **Multi-language support**: Currently supporting Chinese, English, Japanese, Korean, and German among other languages.
 - 🛠  **Convenient operation**: Supports prompt copying feature
 - 🆕 **Regularly updated**: Prompts are sourced from curated online selections and Awesome ChatGPT Prompts and user contribution, with regular updates.
-- 📦 **Ready-to-use**: [www.promptgenius.site](www.promptgenius.site)
+- 📦 **Ready-to-use**: [www.promptgenius.site](https://www.promptgenius.site)
 
 ## Usage instructions
 
