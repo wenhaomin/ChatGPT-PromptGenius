@@ -12,20 +12,29 @@ function gen_class_card_html(class_id, class_name, example_desc) {
     return html
 }
 
-function gen_tool_card(tool_name, tool_desc, tool_url, icon_src) {
+function gen_tool_card(tool_name, tool_desc, tool_url, tags, icon_src) {
+    let tag_html = []
+    tags.forEach(tag => {
+        tag_html.push(`<div class="mdui-chip mdui-color-grey-300">
+            <span class="mdui-chip-title">${tag}</span>
+        </div>`);
+    });
+    tag_html = tag_html.join('\n');
     html = `
     <a href="${tool_url}" target="_blank" style="text-decoration: none;">
-        <div class="mdui-card mdui-hoverable mdui-color-grey-200 mdui-m-t-1">
+        <div class="mdui-card mdui-hoverable mdui-color-grey-200 mdui-m-b-2">
             <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title">${tool_name}
+                <div class="mdui-row mdui-p-x-2">
+                <span class="mdui-typo-title mdui-m-r-1">${tool_name}</span>
+                ${tag_html}
                 <img class="mdui-chip-icon mdui-float-right" src="${icon_src}"/>
                 </div>
                 <div class="mdui-card-content">${tool_desc}</div>
             </div>
         </div>
     </a>
-    `
-    return html
+    `;
+    return html;
 }
 
 function generate_prompt_card_html(index, item) {

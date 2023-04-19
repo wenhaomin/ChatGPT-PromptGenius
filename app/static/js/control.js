@@ -73,7 +73,7 @@ function render_tools(selected_lan_code) {
             tools_content.forEach((item) => {
                 const tool_content = item[selected_lan_code];
                 const card_html = gen_tool_card(tool_content['name'], tool_content['desc'],
-                    tool_content['url'], tool_content['icon']);
+                    tool_content['url'], tool_content['tags'], tool_content['icon']);
                 $('#tools-dialog .mdui-dialog-content').append(`
                 <div class="mdui-row">
                     ${card_html}
