@@ -13,7 +13,7 @@
 - 🌟 **Well-organized, easy to search**: Adopting a tree structure to categorize usage scenarios (see categories below), covering a wide range of scenarios such as research, copywriting, and Office productivity prompts.
 - 🚀 **Popular prompts**: Continuously collecting and displaying popular prompts to help users get expected, high-quality responses, thus improving productivity.
 - 🌎 **Multi-language support**: Currently supporting Chinese, English, Japanese, Korean, and German among other languages.
-- 🤏 **Convenient operation**: Supports prompt copying feature
+- 🛠  **Convenient operation**: Supports prompt copying feature
 - 🆕 **Regularly updated**: Prompts are sourced from curated online selections and Awesome ChatGPT Prompts and user contribution, with regular updates.
 - 📦 **Ready-to-use**: [www.promptgenius.site](www.promptgenius.site)
 
