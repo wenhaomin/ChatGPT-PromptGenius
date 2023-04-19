@@ -77,6 +77,7 @@ meta = load_json_file(['data', 'meta.json'])
 functions = load_json_file(['data', 'functions.json'])
 prompts = load_json_file(['data', 'prompts.json'])
 classes_tree = load_json_file(['data', 'class_tree.json'])
+tools = load_json_file(['data', 'tools.json'])
 
 # get function dict:
 functions_dict = {f['function_id']: f for f in functions}

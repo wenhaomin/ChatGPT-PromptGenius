@@ -66,9 +66,13 @@ html, body {
     padding-bottom: 2px;
 }
 
-.hierarchy-tree-content {
-    max-width: 180px;
+#left-drawer {
+    width: 270px;
 }
+
+/* .hierarchy-tree-content {
+    max-width: 180px;
+} */
 
 
 

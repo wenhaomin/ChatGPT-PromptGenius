@@ -12,6 +12,22 @@ function gen_class_card_html(class_id, class_name, example_desc) {
     return html
 }
 
+function gen_tool_card(tool_name, tool_desc, tool_url, icon_src) {
+    html = `
+    <a href="${tool_url}" target="_blank" style="text-decoration: none;">
+        <div class="mdui-card mdui-hoverable mdui-color-grey-200 mdui-m-t-1">
+            <div class="mdui-card-primary">
+                <div class="mdui-card-primary-title">${tool_name}
+                <img class="mdui-chip-icon mdui-float-right" src="${icon_src}"/>
+                </div>
+                <div class="mdui-card-content">${tool_desc}</div>
+            </div>
+        </div>
+    </a>
+    `
+    return html
+}
+
 function generate_prompt_card_html(index, item) {
     chat_list = item['chat_list']
     class_list = item['class_list']

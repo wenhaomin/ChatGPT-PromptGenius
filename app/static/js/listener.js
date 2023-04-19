@@ -9,6 +9,7 @@ function languageSelectListenser() {
     cur_lan_code = selected_lan_code;
     switch_selected_language(selected_lan_code);
     render_page_basic(selected_lan_code);
+    render_tools(selected_lan_code);
     // render_all_prompt(selected_lan_code);
     console.log(cur_class, selected_lan_code);
     render_search_prompt_by_class(cur_class, selected_lan_code);
@@ -71,4 +72,8 @@ function submit_enter_listener() {
             }
         })
     }
+}
+
+function tools_dialog_open_listener() {
+    tools_dialog.open();
 }

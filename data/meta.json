@@ -36,6 +36,10 @@
                 "user_name": "Your name (optional)",
                 "submit_btn": "Submit",
                 "cancel_btn": "Cancel"
+            },
+            "tools": {
+                "btn": "Tool Links",
+                "title": "Tool Links"
             }
         },
         "chn": {
@@ -52,6 +56,10 @@
                 "user_name": "你的名字（可选）",
                 "submit_btn": "提交",
                 "cancel_btn": "取消"
+            },
+            "tools": {
+                "btn": "工具链接",
+                "title": "工具链接"
             }
         },
         "jpn": {

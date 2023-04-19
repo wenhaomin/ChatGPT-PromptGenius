@@ -1,0 +1,16 @@
+[
+    {
+        "eng": {
+            "name": "ChatGPT",
+            "desc": "OpenAI's ChatGPT is an AI language model based on the GPT-4 architecture. Its primary purpose is to understand and generate human-like text based on the input it receives. As a highly advanced language model, ChatGPT is capable of answering questions, providing information, assisting with various tasks, and engaging in conversations across a wide range of topics.",
+            "url": "https://chat.openai.com/",
+            "icon": "static/icons/chatgpt.png"
+        },
+        "chn": {
+            "name": "ChatGPT",
+            "desc": "OpenAI的ChatGPT是一款基于GPT-4架构的AI语言模型。其主要目的是根据收到的输入理解并生成类似人类的文本。作为一款高度先进的语言模型，ChatGPT能够回答问题、提供信息、协助完成各种任务，并在广泛的主题范围内进行对话。",
+            "url": "https://chat.openai.com/",
+            "icon": "static/icons/chatgpt.png"
+        }
+    }
+]

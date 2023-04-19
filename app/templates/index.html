@@ -37,6 +37,7 @@
                 <i class="mdui-icon material-icons">dehaze</i>
             </button>
             <a class="mdui-typo-headline" id="page-header-title"></a>
+            <button class="mdui-btn" id="tools-btn"></button>
 
             <!-- <div class="mdui-text-color-theme-text">ChatGPT工具传送门</div> -->
             <div class="mdui-toolbar-spacer"></div>
@@ -76,7 +77,7 @@
     </div>
 
     <!--drawer-->
-    <div class="mdui-drawer" id="left-drawer" style="width:auto;">
+    <div class="mdui-drawer" id="left-drawer">
         <div id="hierarchy-tree" class="mdui-collapse mdui-m-t-1" style="accordion: true"></div>
         <!--<button class="mdui-btn" mdui-drawer-close>close</button>-->
     </div>
@@ -130,6 +131,11 @@
             <button class="mdui-btn mdui-ripple" id="submit-enter-btn"></button>
             <button class="mdui-btn mdui-ripple mdui-dialog-close" id="submit-cancel-btn"></button>
         </div>
+    </div>
+
+    <div class="mdui-dialog" id="tools-dialog">
+        <div class="mdui-dialog-title"></div>
+        <div class="mdui-dialog-content"></div>
     </div>
 </body>
 

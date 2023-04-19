@@ -52,7 +52,34 @@ function render_page_basic(selected_lan_code) {
             $('#submit-dialog-username-tf label').text(index_content['submit_dialog']['user_name']);
             $('#submit-enter-btn').text(index_content['submit_dialog']['submit_btn']);
             $('#submit-cancel-btn').text(index_content['submit_dialog']['cancel_btn']);
+
+            // Render contents in tools dialog.
+            const tools_content = index_content['tools'];
+            $('#tools-btn').text(tools_content['btn']);
+            $('#tools-dialog .mdui-dialog-title').text(tools_content['title']);
             mdui.mutation();
+        }
+    })
+}
+
+function render_tools(selected_lan_code) {
+    $.ajax({
+        type: 'GET',
+        url: 'fetch_tools',
+        contentType: 'application/json',
+        success: function (data) {
+            $('#tools-dialog .mdui-dialog-content').html('');
+            let tools_content = data['content'];
+            tools_content.forEach((item) => {
+                const tool_content = item[selected_lan_code];
+                const card_html = gen_tool_card(tool_content['name'], tool_content['desc'],
+                    tool_content['url'], tool_content['icon']);
+                $('#tools-dialog .mdui-dialog-content').append(`
+                <div class="mdui-row">
+                    ${card_html}
+                </div>
+                `);
+            })
         }
     })
 }

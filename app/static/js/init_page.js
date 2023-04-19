@@ -8,8 +8,9 @@ init_language_select();
 render_page_basic(cur_lan_code);
 //render_class_display(cur_lan_code);
 // render_all_prompt(cur_lan_code);
-render_search_prompt_by_class('popular', cur_lan_code)
+render_search_prompt_by_class('popular', cur_lan_code);
 render_class_tree(cur_lan_code);
+render_tools(cur_lan_code);
 
 var inst = new mdui.Collapse('#hierarchy-tree');
 
@@ -21,6 +22,8 @@ $("#search-btn").on('click', prompt_search_listener);
 $('#submit-dialog-open-btn').on('click', submit_dialog_open_listener);
 $('#submit-enter-btn').on('click', submit_enter_listener);
 $('#submit-cancel-btn').on('click', function () { submit_dialog.close(); })
+
+$('#tools-btn').on('click', tools_dialog_open_listener);
 
 $(document).ready(function () {
     $("#search-input").keydown(function (e) {

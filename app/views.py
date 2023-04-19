@@ -21,6 +21,11 @@ def fetch_meta(meta_name):
     return jsonify({"content": meta[meta_name], "message": "success"})
 
 
+@bp.route('/fetch_tools')
+def fetch_tools():
+    return jsonify({'content': tools, 'message': 'success'})
+
+
 @bp.route('/submit_function', methods=['GET', 'POST'])
 def submit_function():
     if request.method == 'POST':
