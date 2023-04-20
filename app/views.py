@@ -4,7 +4,6 @@ from datetime import datetime
 from flask import Blueprint, jsonify, render_template, request
 
 from app.utils import *
-from app.models import *
 
 
 bp = Blueprint('views', __name__)
@@ -16,14 +15,25 @@ def index():
     return render_template('index.html')
 
 
-@bp.route('/fetch_meta/<meta_name>')
-def fetch_meta(meta_name):
-    return jsonify({"content": meta[meta_name], "message": "success"})
+@bp.route('/fetch_lan')
+def fetch_lan():
+    languages = [{"code": item.code, "name": item.name} for item in Languages.query.all()]
+    return jsonify(languages)
 
 
-@bp.route('/fetch_tools')
-def fetch_tools():
-    return jsonify({'content': tools, 'message': 'success'})
+@bp.route('/fetch_index_contents/<lan_code>/<location>')
+def fetch_index_contents(lan_code, location):
+    contents = {item.ID: item.content for item in IndexContents.query.filter(and_(IndexContents.lanCode == lan_code,
+                                                                                  IndexContents.location == location)).all()}
+    return jsonify(contents)
+
+
+@bp.route('/fetch_tools/<lan_code>')
+def fetch_tools(lan_code):
+    tools = [{'name': item.name, 'desc': item.desc, 'url': item.url,
+              'icon_src': item.icon_src, 'tags': item.tags.split(',')}
+             for item in Tools.query.filter(Tools.lanCode == lan_code).all()]
+    return jsonify(tools)
 
 
 @bp.route('/submit_function', methods=['GET', 'POST'])
@@ -35,7 +45,8 @@ def submit_function():
             user_name = request.json['user_name']
             cur_time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
 
-            new_function = SubmitFunction(funcDesc=func_desc, createTime=cur_time, promptContent=prompt_content, userName=user_name)
+            new_function = SubmitFunction(funcDesc=func_desc, createTime=cur_time,
+                                          promptContent=prompt_content, userName=user_name)
             db.session.add(new_function)
             db.session.commit()
 
@@ -45,38 +56,47 @@ def submit_function():
             return jsonify({'message': 'error', 'error': str(e)})
 
 
-# By Haomin Wen
-@bp.route('/fetch_tree/')
-def fetch_tree():
-
-    result = copy.deepcopy(classes_tree)
-
-    return jsonify({"content": result, "message": "success"})
+@bp.route('/fetch_classes/<lan_code>')
+def fetch_classes(lan_code):
+    class_names = {item.ID: item.name
+                   for item in ClassNames.query.filter(ClassNames.lanCode == lan_code).all()}
+    classes = [{'ID': item.ID, 'name': class_names[item.ID],
+                'childrens': [{'ID': child, 'name': class_names[child]} for child in item.childrens.split(',')]
+                if item.childrens is not None else [],
+                'icon': item.icon, 'icon_style': item.icon_style}
+               for item in Classes.query.all()]
+    return jsonify(classes)
 
 
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
 def fetch_prompt(class_id, lan_code):
     result = []
+    function_ids = [item.functionID
+                    for item in FunctionPrompts.query.with_entities(FunctionPrompts.functionID).all()]
 
     # find all funcions that has the class
     if class_id == 'all_class' or class_id == 'popular':
-        f_lst = [f['function_id'] for f in functions]
+        function_ids = [item.functionID
+                        for item in FunctionPrompts.query.with_entities(FunctionPrompts.functionID).all()]
     else:
-        f_lst = [f['function_id'] for f in functions if class_id in f['class']]
+        function_ids = [item.ID
+                        for item in Functions.query.with_entities(Functions.ID).
+                        filter(Functions.classes.contains(class_id)).all()]
 
     # find all prompts that has the function
-    for data in prompts:
-        fid = data['function_id']
-        if fid not in f_lst:
+    for prompt in FunctionPrompts.query.\
+        filter(and_(FunctionPrompts.functionID.in_(function_ids),
+                    FunctionPrompts.lanCode == lan_code)).all():
+        # prompt filter condition
+        if class_id == 'popular' and int(prompt.priority) != 2:
             continue
-        for p in data['content'][lan_code]:
-            # prompt filter condition
-            if class_id == 'popular' and int(p['priority']) != 2:
-                continue  # priority=2, means popular
 
-            tmp = get_prompt_info_for_render(fid, p, lan_code)
+        entry = {'content': prompt.content, 'lan_code': lan_code,
+                 'author': prompt.author, 'author_link': prompt.author_link,
+                 'model': prompt.model, 'function_id': prompt.functionID}
+        tmp = get_prompt_info_for_render(entry)
 
-            result.append(tmp)
+        result.append(tmp)
     return jsonify({"content": result, "message": "success"})
 
 
@@ -84,24 +104,14 @@ def fetch_prompt(class_id, lan_code):
 def search_prompt(search_text, lan_code):
     result = []
 
-    for data in prompts:
-        fid = data['function_id']
-        if fid not in functions_dict.keys():
-            continue
-        function_desc = functions_dict[fid]['desc'][lan_code]
-        class_list = [name[lan_code] for name in fid_to_cnames[fid]]
-        for p in data['content'][lan_code]:
-            p_text = p['content'][0]
+    for prompt in FunctionPrompts.query.\
+            filter(and_(FunctionPrompts.lanCode == lan_code,
+                        FunctionPrompts.content.contains(search_text))).all():
 
-            # also take output the class label
-            compare_text_lst = class_list + [p_text, function_desc]
+        entry = {'content': prompt.content, 'lan_code': lan_code,
+                 'author': prompt.author, 'author_link': prompt.author_link,
+                 'model': prompt.model, 'function_id': prompt.functionID}
+        tmp = get_prompt_info_for_render(entry)
+        result.append(tmp)
 
-            for c_text in compare_text_lst:
-                score = text_similarity_score(search_text, c_text, lan_code)
-                if score > 0.5:
-
-                    tmp = get_prompt_info_for_render(fid, p, lan_code)
-
-                    result.append(tmp)
-                    continue
     return jsonify({"content": result, "message": "success"})

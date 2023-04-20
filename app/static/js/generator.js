@@ -80,23 +80,25 @@ function generate_prompt_card_html(index, item) {
     return html;
 }
 
-function render_hierarchy_tree(data, parent_element, selected_lan_code) {
-    data.forEach(function (item) {
+function render_hierarchy_tree(data, parent_element) {
+    data.forEach((item) => {
         // Wrap the loop body with an IIFE to create a new scope for each iteration
-        (function (item) {
+        ((item) => {
             // Create a new MDUI Collapse item
             var collapseItem = $('<div class="mdui-collapse-item mdui-collapse-item-close"></div>');
 
-            var head_name = item['names'][selected_lan_code];
-            var is_has_children = (item.children && item.children.length);
-            var class_id = item.id;
+            var head_name = item['name'];
+            var is_has_children = (item['childrens'] != undefined && item['childrens'].length);
+            var class_id = item['ID'];
 
-            var icon_style = item['icon_style'] || '';
-            var icon_name = item['icon_name'] || 'none';
+            var icon_style = '';
+            var icon_name = 'none';
+            if (item['icon'] != undefined) {
+                icon_style = item['icon_style'];
+                icon_name = item['icon'];
+            }
 
-            var header_html = `
-          <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-      `;
+            var header_html = `<div class="mdui-collapse-item-header mdui-list-item mdui-ripple">`;
 
             // icon
             if ((icon_name != 'none')) {
@@ -106,13 +108,11 @@ function render_hierarchy_tree(data, parent_element, selected_lan_code) {
 
             // content
             header_html += `<div class="mdui-list-item-content mdui-text-truncate hierarchy-tree-content">${head_name}</div>`;
-
             // arrow
             if (is_has_children) {
                 var header_html_arrow = `
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-">keyboard_arrow_down</i>
-              </div>
-          `;
+                </div>`;
                 header_html += header_html_arrow;
             }
             header_html += `</div>`;
@@ -123,7 +123,7 @@ function render_hierarchy_tree(data, parent_element, selected_lan_code) {
                     // Custom click event listener code
                     console.log('Clicked on item with id:', class_id);
                     cur_class = class_id;
-                    render_search_prompt_by_class(item.id, cur_lan_code);
+                    render_search_prompt_by_class(item['ID'], cur_lan_code);
                 });
 
             // Append the header to the Collapse item
@@ -133,10 +133,8 @@ function render_hierarchy_tree(data, parent_element, selected_lan_code) {
             if (is_has_children) {
                 // Create a new MDUI Collapse item body
                 var body = $('<div class="mdui-collapse-item-body mdui-list mdui-list-dense"></div>');
-
                 // Recursively call the 'renderHierarchyTree' function to render the child items
-                render_hierarchy_tree(item.children, body, selected_lan_code);
-
+                render_hierarchy_tree(item.childrens, body);
                 // Append the body to the Collapse item
                 collapseItem.append(body);
             }

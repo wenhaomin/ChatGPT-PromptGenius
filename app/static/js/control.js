@@ -32,48 +32,75 @@ function get_cookie(cname) {
 function render_page_basic(selected_lan_code) {
     // Render the basic elements on the page.
     $.ajax({
-        type: 'GET',
-        url: 'fetch_meta/index_content',
+        type: 'GET', url: `fetch_index_contents/${selected_lan_code}/site`,
         contentType: 'application/json',
-        success: function (data) {
-            let index_content = data['content'][selected_lan_code];
-
-            $('#page-browser-title, #page-header-title').text(index_content['site_title']);
-            $('#search-input').attr('placeholder', index_content['search_prompt']);
-            $('#search-btn').text(index_content['search_btn_text']);
-            $('#class-display-title').text(index_content['class_display_title']);
-            $('.mdui-textfield-error').text(index_content['input_error_info']);
-
-            // Render contents in submit dialog.
-            $('#submit-dialog-title').text(index_content['submit_dialog']['title']);
-            $('#submit-dialog-message').text(index_content['submit_dialog']['message']);
-            $('#submit-dialog-funcdesc-tf label').text(index_content['submit_dialog']['func_desc']);
-            $('#submit-dialog-prompt-tf label').text(index_content['submit_dialog']['prompt']);
-            $('#submit-dialog-username-tf label').text(index_content['submit_dialog']['user_name']);
-            $('#submit-enter-btn').text(index_content['submit_dialog']['submit_btn']);
-            $('#submit-cancel-btn').text(index_content['submit_dialog']['cancel_btn']);
-
-            // Render contents in tools dialog.
-            const tools_content = index_content['tools'];
-            $('#tools-btn').text(tools_content['btn']);
-            $('#tools-dialog .mdui-dialog-title').text(tools_content['title']);
-            mdui.mutation();
+        success: (data) => {
+            $('#page-browser-title, #page-header-title').text(data['title']);
         }
-    })
+    });
+
+    $.ajax({
+        type: 'GET', url: `fetch_index_contents/${selected_lan_code}/submit_dialog`,
+        contentType: 'application/json',
+        success: (data) => {
+            // Render contents in submit dialog.
+            $('#submit-dialog-title').text(data['title']);
+            $('#submit-dialog-message').text(data['message']);
+            $('#submit-dialog-funcdesc-tf label').text(data['func']);
+            $('#submit-dialog-prompt-tf label').text(data['prompt']);
+            $('#submit-dialog-username-tf label').text(data['user_name']);
+            $('#submit-enter-btn').text(data['ok_btn_text']);
+            $('#submit-cancel-btn').text(data['cancel_btn_text']);
+        }
+    });
+
+    $.ajax({
+        type: 'GET', url: `fetch_index_contents/${selected_lan_code}/tools_dialog`,
+        contentType: 'application/json',
+        success: (data) => {
+            // Render contents in tools dialog.
+            $('#tools-btn').text(data['open_btn_text']);
+            $('#tools-dialog .mdui-dialog-title').text(data['title']);
+        }
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: `fetch_index_contents/${selected_lan_code}/search`,
+        contentType: 'application/json',
+        success: (data) => {
+            $('#search-input').attr('placeholder', data['prompt']);
+            $('#search-btn').text(data['btn_text']);
+        }
+    });
+
+    $.ajax({
+        type: 'GET', url: `fetch_index_contents/${selected_lan_code}/cards`,
+        contentType: 'application/json',
+        success: (data) => {
+            $('#class-display-title').text(data['title']);
+        }
+    });
+
+    $.ajax({
+        type: 'GET', url: `fetch_index_contents/${selected_lan_code}/input`,
+        contentType: 'application/json',
+        success: (data) => {
+            $('.mdui-textfield-error').text(data['error_info']);
+        }
+    });
 }
 
 function render_tools(selected_lan_code) {
     $.ajax({
         type: 'GET',
-        url: 'fetch_tools',
+        url: `fetch_tools/${selected_lan_code}`,
         contentType: 'application/json',
-        success: function (data) {
+        success: (data) => {
             $('#tools-dialog .mdui-dialog-content').html('');
-            let tools_content = data['content'];
-            tools_content.forEach((item) => {
-                const tool_content = item[selected_lan_code];
-                const card_html = gen_tool_card(tool_content['name'], tool_content['desc'],
-                    tool_content['url'], tool_content['tags'], tool_content['icon']);
+            data.forEach((item) => {
+                const card_html = gen_tool_card(item['name'], item['desc'],
+                    item['url'], item['tags'], item['icon_src']);
                 $('#tools-dialog .mdui-dialog-content').append(`
                 <div class="mdui-row">
                     ${card_html}
@@ -114,11 +141,10 @@ function init_language_select() {
     // Intialize the options in #language-select.
     $.ajax({
         type: 'GET',
-        url: 'fetch_meta/languages',
+        url: 'fetch_lan',
         contentType: 'application/json',
         success: function (data) {
-            all_languages = data["content"];
-            all_languages.forEach(function (item) {
+            data.forEach(function (item) {
                 let lan_code = item['code'];
                 let lan_display = item['name'];
                 $('#language-select').append(`<option value=${lan_code}>${lan_display}</option>`);
@@ -154,12 +180,13 @@ function render_class_tree(selected_lan_code) {
     // Intialize the options in #language-select.
     $.ajax({
         type: 'GET',
-        url: 'fetch_tree/',
+        url: `fetch_classes/${selected_lan_code}`,
         contentType: 'application/json',
         success: function (data) {
             // console.log('tree data', data)
             $('#hierarchy-tree').empty();
-            render_hierarchy_tree(data['content'], $('#hierarchy-tree'), selected_lan_code);
+            // console.log(data);
+            render_hierarchy_tree(data, $('#hierarchy-tree'));
         }
     })
 }
