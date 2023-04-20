@@ -85,10 +85,14 @@ function render_hierarchy_tree(data, parent_element) {
         // Wrap the loop body with an IIFE to create a new scope for each iteration
         ((item) => {
             // Create a new MDUI Collapse item
-            var collapseItem = $('<div class="mdui-collapse-item mdui-collapse-item-close"></div>');
+            var is_has_children = (item['childrens'] != undefined && item['childrens'].length);
+
+            var collapseItem = $('<li class="mdui-list-item mdui-ripple"></li>');
+            if (is_has_children) {
+                collapseItem = $('<li class="mdui-collapse-item mdui-collapse-item-close"></li>');
+            }
 
             var head_name = item['name'];
-            var is_has_children = (item['childrens'] != undefined && item['childrens'].length);
             var class_id = item['ID'];
 
             var icon_style = '';
@@ -98,7 +102,10 @@ function render_hierarchy_tree(data, parent_element) {
                 icon_name = item['icon'];
             }
 
-            var header_html = `<div class="mdui-collapse-item-header mdui-list-item mdui-ripple">`;
+            var header_html = '';
+            if (is_has_children) {
+                header_html = `<div class="mdui-collapse-item-header mdui-list-item mdui-ripple">`;
+            }
 
             // icon
             if ((icon_name != 'none')) {
@@ -111,17 +118,16 @@ function render_hierarchy_tree(data, parent_element) {
             // arrow
             if (is_has_children) {
                 var header_html_arrow = `
-                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-">keyboard_arrow_down</i>
-                </div>`;
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-">keyboard_arrow_down</i>
+                    </div>`;
                 header_html += header_html_arrow;
+                header_html += `</div>`;
             }
-            header_html += `</div>`;
 
             var header = $(header_html)
                 .attr('data-title', class_id)
                 .on('click', function () {
                     // Custom click event listener code
-                    console.log('Clicked on item with id:', class_id);
                     cur_class = class_id;
                     render_search_prompt_by_class(item['ID'], cur_lan_code);
                 });
@@ -132,7 +138,7 @@ function render_hierarchy_tree(data, parent_element) {
             // Check if the current item has children
             if (is_has_children) {
                 // Create a new MDUI Collapse item body
-                var body = $('<div class="mdui-collapse-item-body mdui-list mdui-list-dense"></div>');
+                var body = $('<ul class="mdui-collapse-item-body mdui-list mdui-list-dense"></ul>');
                 // Recursively call the 'renderHierarchyTree' function to render the child items
                 render_hierarchy_tree(item.childrens, body);
                 // Append the body to the Collapse item
