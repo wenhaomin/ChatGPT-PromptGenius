@@ -11,7 +11,6 @@ function languageSelectListenser() {
     render_page_basic(selected_lan_code);
     render_tools(selected_lan_code);
     // render_all_prompt(selected_lan_code);
-    console.log(cur_class, selected_lan_code);
     render_search_prompt_by_class(cur_class, selected_lan_code);
     render_class_tree(selected_lan_code);
 

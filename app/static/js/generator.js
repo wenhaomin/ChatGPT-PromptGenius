@@ -50,7 +50,7 @@ function generate_prompt_card_html(index, item) {
     icon_style = item['icon_style']
     example_desc = prompt_text
 
-    icon_html = `<span class="${icon_style}">${icon_name}</span>`
+    icon_html = `<span class="${icon_style} mdui-m-r-1">${icon_name}</span>`
 
     html = `
     <div class="mdui-col-xs-12 mdui-col-sm-12 mdui-col-md-12 mdui-col-lg-12 mdui-col-xl-12 mdui-m-t-12 mdui-m-b-2">
@@ -68,7 +68,7 @@ function generate_prompt_card_html(index, item) {
             <div class="mdui-chip-title mdui-text-color-theme-text">${author}</div>
             </a>
           </span>
-          <button class="mdui-btn mdui-float-right mdui-color-light-blue-50 copy-prompt-btn">copy</button>
+          <button class="mdui-btn mdui-float-right copy-prompt-btn">copy</button>
         </div>
         <div class="mdui-card-primary mdui-p-a-0">    
           <div class="mdui-card-content mdui-text-color-theme-text prompt-card-content"> ${prompt_text} </div>
@@ -126,7 +126,7 @@ function render_hierarchy_tree(data, parent_element) {
 
             var header = $(header_html)
                 .attr('data-title', class_id)
-                .on('click', function () {
+                .on('click', () => {
                     // Custom click event listener code
                     cur_class = class_id;
                     render_search_prompt_by_class(item['ID'], cur_lan_code);

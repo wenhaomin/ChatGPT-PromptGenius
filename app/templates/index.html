@@ -21,7 +21,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
     <link rel="Shortcut Icon" href="/static/img/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="/static/img/favicon.ico"  type="image/x-icon">
+    <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon">
 
 </head>
 
@@ -59,8 +59,7 @@
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 36 36"
                     enable-background="new 0 0 36 36" xml:space="preserve" class="mdui-icon"
                     style="width: 24px;height:24px;">
-                    <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"
-                        d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,
+                    <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,
                         0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1c1.6,0.1,2.5,
                         1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,
                         0.6-3.2,1.7-4.4c-0.2-0.4-0.7-2.1,0.2-4.3c0,0,1.4-0.4,4.5,1.7c1.3-0.4,2.7-0.5,4.1-0.5c1.4,
@@ -77,11 +76,11 @@
     <!-- mdui-collapse="{accordion: true}" -->
 
     <div>
-<!--        <div class="navbar__logo"><img src="/img/logo.svg" alt="ChatGPT Shortcuts" class="themedImage_ToTc themedImage&#45;&#45;light_HNdA"></div>-->
+        <!--        <div class="navbar__logo"><img src="/img/logo.svg" alt="ChatGPT Shortcuts" class="themedImage_ToTc themedImage&#45;&#45;light_HNdA"></div>-->
 
         <div class="mdui-text-center mdui-m-t-2 mdui-typo-display-2">
 
-            <img class="mdui-img-circle" src="/static/img/favicon.ico"/>
+            <img class="mdui-img-circle" src="/static/img/favicon.ico" />
 
             PromptGenius
         </div>
@@ -92,7 +91,7 @@
 
     <!--drawer-->
     <div class="mdui-drawer" id="left-drawer">
-        <ul id="hierarchy-tree" class="mdui-collapse mdui-m-t-1 mdui-list" style="accordion: true"></ul>
+        <ul id="hierarchy-tree" class="mdui-collapse mdui-list" style="accordion: true"></ul>
         <!--<button class="mdui-btn" mdui-drawer-close>close</button>-->
     </div>
 
@@ -148,8 +147,14 @@
     </div>
 
     <div class="mdui-dialog" id="tools-dialog">
+        <div class="mdui-btn mdui-btn-icon mdui-float-right" id="tools-dialog-close-btn">
+            <i class="mdui-icon material-icons">close</i>
+        </div>
         <div class="mdui-dialog-title"></div>
         <div class="mdui-dialog-content"></div>
+    </div>
+
+    <div class="mdui-dialog" id="about-dialog">
     </div>
 </body>
 
@@ -160,4 +165,5 @@
 <script src="/static/js/listener.js"></script>
 <script src="/static/js/init_page.js"></script>
 <!-- <script src="/static/js/tree_menu.js"></script> -->
+
 </html>

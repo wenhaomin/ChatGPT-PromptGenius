@@ -195,7 +195,7 @@ function render_class_tree(selected_lan_code) {
 function render_search_prompt_by_class(class_id, selected_lan_code) {
     $.ajax({
         type: 'GET',
-        url: 'fetch_prompt/' + class_id + '/' + selected_lan_code,
+        url: `fetch_prompt/${class_id}/${selected_lan_code}`,
         contentType: 'application/json',
         success: function (data) { // use a function to handle the response data
             // call another function to render the fetched prompt data
@@ -208,7 +208,7 @@ function render_search_prompt_by_class(class_id, selected_lan_code) {
 function render_all_prompt(selected_lan_code) {
     $.ajax({
         type: 'GET',
-        url: 'fetch_prompt/' + "all_class" + '/' + selected_lan_code,
+        url: `fetch_prompt/all_class/${selected_lan_code}`,
         contentType: 'application/json',
         success: function (data) {
             render_prompt_display(data['content']);
@@ -220,7 +220,7 @@ function render_all_prompt(selected_lan_code) {
 function render_search_prompt_by_string(search_text, selected_lan_code) {
     $.ajax({
         type: 'GET',
-        url: 'search_prompt/' + search_text + '/' + selected_lan_code,
+        url: `search_prompt/${search_text}/${selected_lan_code}`,
         contentType: 'application/json',
         success: function (data) {
             render_prompt_display(data['content']);
@@ -251,9 +251,9 @@ function copy_to_clipboard(text) {
     const copyContent = async () => {
         try {
             await navigator.clipboard.writeText(text);
-            console.log('Content copied to clipboard');
         } catch (err) {
-            console.error('Failed to copy: ', err);
+            mdui.snackbar('Failed to copy.');
+            console.log(err);
         }
     }
     copyContent();
