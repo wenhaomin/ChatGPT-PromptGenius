@@ -10,7 +10,6 @@ function languageSelectListenser() {
     switch_selected_language(selected_lan_code);
     render_page_basic(selected_lan_code);
     render_tools(selected_lan_code);
-    // render_all_prompt(selected_lan_code);
     render_search_prompt_by_class(cur_class, selected_lan_code);
     render_class_tree(selected_lan_code);
 
@@ -60,7 +59,7 @@ function submit_enter_listener() {
                 prompt_content: prompt_content,
                 user_name: user_name
             }),
-            success: function (data) {
+            success: (data) => {
                 if (data['message'] == 'success') {
                     submit_dialog.close();
                     mdui.snackbar('Submit success!');
