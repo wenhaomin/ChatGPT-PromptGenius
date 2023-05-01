@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="PromptGenius [3]">
+  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.32">
+    <root id="1">
+      <ServerVersion>3.40.1</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="main">
+      <Current>1</Current>
+    </schema>
+  </database-model>
+</dataSource>

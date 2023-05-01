@@ -55,14 +55,15 @@ def get_prompt_info_for_render(p: dict):
         tmp['author'] = ''
     tmp['author_link'] = p.get('author_link', '')
     tmp['model'] = p.get('model', 'GPT 3.5')
-
-    tmp['function_desc'] = FunctionNames.query.filter(and_(
-        FunctionNames.ID == p['function_id'], FunctionNames.lanCode == p['lan_code'])).first().name
+    try:
+        tmp['function_desc'] = FunctionNames.query.filter(and_(
+            FunctionNames.ID == p['function_id'], FunctionNames.lanCode == p['lan_code'])).first().name
+    except:
+        print(p['function_id'], p['lan_code'] )
     class_ids = Functions.query.filter(Functions.ID == p['function_id']).first().classes.split(',')
     classes = Classes.query.filter(Classes.ID.in_(class_ids)).all()
     tmp['class_list'] = [item.name for item in ClassNames.query.filter(and_(ClassNames.ID.in_(class_ids),
                                                                             ClassNames.lanCode == p['lan_code'])).all()]
-
     # get one class icon
     tmp['icon_style'] = classes[0].icon_style
     tmp['icon_name'] = classes[0].icon

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="PromptGenius [2]">
+  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.32">
+    <root id="1">
+      <ServerVersion>3.40.1</ServerVersion>
+    </root>
+    <collation id="2" parent="1" name="BINARY"/>
+    <collation id="3" parent="1" name="NOCASE"/>
+    <collation id="4" parent="1" name="RTRIM"/>
+    <schema id="5" parent="1" name="main">
+      <Current>1</Current>
+    </schema>
+    <table id="6" parent="5" name="class_names"/>
+    <table id="7" parent="5" name="classes"/>
+    <table id="8" parent="5" name="function_names"/>
+    <table id="9" parent="5" name="function_prompts"/>
+    <table id="10" parent="5" name="functions"/>
+    <table id="11" parent="5" name="index_contents"/>
+    <table id="12" parent="5" name="languages"/>
+    <table id="13" parent="5" name="sqlite_master">
+      <System>1</System>
+    </table>
+    <table id="14" parent="5" name="tools"/>
+    <table id="15" parent="5" name="user_submit_function"/>
+    <column id="16" parent="6" name="ID">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="17" parent="6" name="lanCode">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="18" parent="6" name="name">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <index id="19" parent="6" name="sqlite_autoindex_class_names_1">
+      <ColNames>ID
+lanCode</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="20" parent="6">
+      <ColNames>ID
+lanCode</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_class_names_1</UnderlyingIndexName>
+    </key>
+    <column id="21" parent="7" name="ID">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="22" parent="7" name="icon">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <column id="23" parent="7" name="icon_style">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="24" parent="7" name="childrens">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <index id="25" parent="7" name="sqlite_autoindex_classes_1">
+      <ColNames>ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="26" parent="7">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_classes_1</UnderlyingIndexName>
+    </key>
+    <column id="27" parent="8" name="ID">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="28" parent="8" name="lanCode">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="29" parent="8" name="name">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <index id="30" parent="8" name="sqlite_autoindex_function_names_1">
+      <ColNames>ID
+lanCode</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="31" parent="8">
+      <ColNames>ID
+lanCode</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_function_names_1</UnderlyingIndexName>
+    </key>
+    <column id="32" parent="9" name="functionID">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="33" parent="9" name="semanticID">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="34" parent="9" name="lanCode">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="35" parent="9" name="priority">
+      <DataType>INTEGER|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <column id="36" parent="9" name="model">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>5</Position>
+    </column>
+    <column id="37" parent="9" name="content">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>6</Position>
+    </column>
+    <column id="38" parent="9" name="author">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>7</Position>
+    </column>
+    <column id="39" parent="9" name="author_link">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>8</Position>
+    </column>
+    <index id="40" parent="9" name="sqlite_autoindex_function_prompts_1">
+      <ColNames>functionID
+semanticID
+lanCode</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="41" parent="9">
+      <ColNames>functionID
+semanticID
+lanCode</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_function_prompts_1</UnderlyingIndexName>
+    </key>
+    <column id="42" parent="10" name="ID">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="43" parent="10" name="classes">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <index id="44" parent="10" name="sqlite_autoindex_functions_1">
+      <ColNames>ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="45" parent="10">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_functions_1</UnderlyingIndexName>
+    </key>
+    <column id="46" parent="11" name="lanCode">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="47" parent="11" name="location">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="48" parent="11" name="ID">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="49" parent="11" name="content">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <index id="50" parent="11" name="sqlite_autoindex_index_contents_1">
+      <ColNames>lanCode
+location
+ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="51" parent="11">
+      <ColNames>lanCode
+location
+ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_index_contents_1</UnderlyingIndexName>
+    </key>
+    <column id="52" parent="12" name="code">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="53" parent="12" name="name">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <index id="54" parent="12" name="sqlite_autoindex_languages_1">
+      <ColNames>code</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="55" parent="12">
+      <ColNames>code</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_languages_1</UnderlyingIndexName>
+    </key>
+    <column id="56" parent="13" name="type">
+      <DataType>TEXT|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="57" parent="13" name="name">
+      <DataType>TEXT|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <column id="58" parent="13" name="tbl_name">
+      <DataType>TEXT|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="59" parent="13" name="rootpage">
+      <DataType>INT|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <column id="60" parent="13" name="sql">
+      <DataType>TEXT|0s</DataType>
+      <Position>5</Position>
+    </column>
+    <column id="61" parent="14" name="lanCode">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="62" parent="14" name="name">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="63" parent="14" name="desc">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="64" parent="14" name="url">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <column id="65" parent="14" name="icon_src">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>5</Position>
+    </column>
+    <column id="66" parent="14" name="tags">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>6</Position>
+    </column>
+    <index id="67" parent="14" name="sqlite_autoindex_tools_1">
+      <ColNames>lanCode
+name</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="68" parent="14">
+      <ColNames>lanCode
+name</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_tools_1</UnderlyingIndexName>
+    </key>
+    <column id="69" parent="15" name="funcDesc">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="70" parent="15" name="createTime">
+      <DataType>VARCHAR|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="71" parent="15" name="promptContent">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="72" parent="15" name="userName">
+      <DataType>VARCHAR|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <index id="73" parent="15" name="sqlite_autoindex_user_submit_function_1">
+      <ColNames>funcDesc
+createTime</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="74" parent="15">
+      <ColNames>funcDesc
+createTime</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_user_submit_function_1</UnderlyingIndexName>
+    </key>
+  </database-model>
+</dataSource>
