@@ -1,0 +1,3 @@
+{
+    "SQLALCHEMY_DATABASE_URI": "sqlite:///PromptGenius.db"
+}

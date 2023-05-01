@@ -58,13 +58,34 @@ Prompt Genius将所有提示词，按照使用场景进行层次化的分类，�
 ![image](./img/user_submit.png)
 
 
+## Technical Design
 
-## Installation
+The frontend is build with [MDUI](https://www.mdui.org/) and [jQuery](https://jquery.com/).
+
+The backend is implemented with [Flask](https://flask.palletsprojects.com/) plus other Python packages (please refer to [requirements](./requirements.txt)).
+
+Huge shout-out to those excellent works. This project would be impossible without them.
+
+### Start the server
 
 ```shell
-# install packages
+# Install packages
 pip install -r requirements.txt
 
-# run
+# Start the Flask server in debug mode.
+export FLASK_APP=app
+export FLASK_DEBUG=true
+flask run --port 9000
+
+# Start the server with waitress for better performance in production environment.
 waitress-serve --port=8080 --call app:create_app
 ```
+
+### Data model and database
+
+Most data of this project, including some element contents, languages, class trees, and prompts are stored in a database.
+
+The data model is defined in [the model file](./app/models.py) based on SqlAlchemy.
+Technically, the abstracted model design makes it possible to freely choose various database solutions.
+
+The database server to connect is claimed in [the configuration file](./app/app_config.json). We give an example of using SQLite as the database. It is fully file-based and good for lightwight application like this. If no existing database are given, SqlAlchemy will create a new database file (located in `./instance` directory) with empty tables. You can then add your own data accordingly.
