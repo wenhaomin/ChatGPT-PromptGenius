@@ -81,3 +81,8 @@ The data model is defined in [the model file](./app/models.py) based on SqlAlche
 Technically, the abstracted model design makes it possible to freely choose various database solutions.
 
 The database server to connect is claimed in [the configuration file](./app/app_config.json). We give an example of using SQLite as the database. It is fully file-based and good for lightwight application like this. If no existing database are given, SqlAlchemy will create a new database file (located in `./instance` directory) with empty tables. You can then add your own data accordingly.
+
+## We thank all the users for their kindly contributions!
+```
+@x7peeps: I hope you can act as my academic paper translator. I will talk to you in any language and you will detect the language, translate and answer with a corrected and improved English text. I hope you can use more precise and easy to understand. Please only reply with the translation, do not write an explanation.
+```

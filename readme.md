@@ -58,15 +58,14 @@ Prompt Genius将所有提示词，按照使用场景进行层次化的分类，�
 ![image](./img/user_submit.png)
 
 
-## Technical Design
+## 技术设计
 
-The frontend is build with [MDUI](https://www.mdui.org/) and [jQuery](https://jquery.com/).
+前端使用 [MDUI](https://www.mdui.org/) 和 [jQuery](https://jquery.com/)实现.
 
-The backend is implemented with [Flask](https://flask.palletsprojects.com/) plus other Python packages (please refer to [requirements](./requirements.txt)).
+后台使用 [Flask](https://flask.palletsprojects.com/) 和其他python包实现 (参见 [requirements](./requirements.txt)).
 
-Huge shout-out to those excellent works. This project would be impossible without them.
 
-### Start the server
+### 启动服务
 
 ```shell
 # Install packages
@@ -81,23 +80,20 @@ flask run --port 9000
 waitress-serve --port=8080 --call app:create_app
 ```
 
-<<<<<<< HEAD
-## ChatGPT自己写
+### 数据模型和数据库
 
-I want you to become my Expert Prompt Creator. Your goal is to help me craft the best possible prompt for my needs. The prompt you provide should be written from the perspective of me making the request to ChatGPT. Consider in your prompt creation that this prompt will be entered into an interface for GPT3 or ChatGPT. The process is as follows:
+这个项目的大部分数据，包括一些元素内容、语言、类别树和提示，都存储在数据库中
 
-1. You will generate the following sections:
-2. I will provide my answers to your response which you will then incorporate into your next response using the same format. We will continue this iterative process with me providing additional information to you and you updating the prompt until the prompt is perfected.
-   Remember, the prompt we are creating should be written from the perspective of me making a request to ChatGPT (a GPT3 interface). Think carefully and use your imagination to create an amazing prompt for me.
-   Your first response should only be a greeting to the user and to ask what the prompt should be about. All output shall be in Chinese.
+数据模型定义基于SqlAlchemy, 参考文件 [the model file](./app/models.py).
+从技术上来说，抽象的数据模型设计使得可以自由选择各种不同的数据库解决方案。
 
-=======
-### Data model and database
 
-Most data of this project, including some element contents, languages, class trees, and prompts are stored in a database.
+数据库配置参考文件 [the configuration file](./app/app_config.json). 我们提供了一个使用 SQLite 作为数据库的示例。SQLite完全基于文件，非常适合像这样的轻量级应用程序。如果运行时没有数据库，SqlAlchemy 将在`./instance` 文件夹下，创建一个新的数据库文件。之后可以根据需要添加自己的数据。
 
-The data model is defined in [the model file](./app/models.py) based on SqlAlchemy.
-Technically, the abstracted model design makes it possible to freely choose various database solutions.
+## 感谢以下用户的贡献！
+```
+@x7peeps: 我希望你能充当我的学术文献翻译角色。我会用任何语言与你交谈，你将检测语言，翻译并用纠正和改进过的英语文本回答。我希望你能用更精准、通俗易懂。请只回复翻译的译文即可，不要写解释。 
+```
 
-The database server to connect is claimed in [the configuration file](./app/app_config.json). We give an example of using SQLite as the database. It is fully file-based and good for lightwight application like this. If no existing database are given, SqlAlchemy will create a new database file (located in `./instance` directory) with empty tables. You can then add your own data accordingly.
->>>>>>> cb69e9412c6446eb77cc90bae4edea83f697c993
+
+
