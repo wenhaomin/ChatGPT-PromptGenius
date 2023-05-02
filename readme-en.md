@@ -50,6 +50,14 @@ If you happens to know a useful prompt that is not listed in this page, you can 
 ![image](./img/user_submit.png)
 
 
+## Management System
+
+Cooperate with the database design of this website, a GUI system that is convenient for operators to manage content.
+Refer to [PromptGenius Manager](https://github.com/Logan-Lin/PromptGenuius-Manager) for details.
+
+![image](img/PGManager.png)
+
+
 ## Technical Design
 
 The frontend is build with [MDUI](https://www.mdui.org/) and [jQuery](https://jquery.com/).
