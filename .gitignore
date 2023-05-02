@@ -1,6 +1,5 @@
 .DS_Store
 .vscode
-app/app_config.json
 app/__pycache__
 /meta/
 instance/

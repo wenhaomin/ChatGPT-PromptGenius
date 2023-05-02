@@ -5,7 +5,6 @@ from flask import Blueprint, jsonify, render_template, request
 
 from app.utils import *
 
-
 bp = Blueprint('views', __name__)
 
 
@@ -65,20 +64,24 @@ def fetch_classes(lan_code):
                 if item.childrens is not None else [],
                 'icon': item.icon, 'icon_style': item.icon_style}
                for item in Classes.query.all()]
-    print(type(classes),len(classes),classes[0]['ID'])
-    classes=sort_classes(classes)
+    print(type(classes), len(classes), classes[0]['ID'])
+    classes = sort_classes(classes)
     return jsonify(classes)
 
+
 def sort_classes(classes):
-    sorted_list=["popular","research_assistance","copywriting_generation","code_development","language_learning","office","leisure_and_entertainment","study_tutoring","teacher_education","gift_selection"]
-    sorted_classes=[]
+    sorted_list = ["popular", "research_assistance", "copywriting_generation", "code_development", "language_learning",
+                   "office", "leisure_and_entertainment", "study_tutoring", "teacher_education", "gift_selection"]
+    sorted_classes = []
     for i in range(len(sorted_list)):
         for j in range(len(classes)):
-            if(sorted_list[i]==classes[j]['ID']):
+            if (sorted_list[i] == classes[j]['ID']):
                 sorted_classes.append(classes[j])
     return sorted_classes
 
     return classes
+
+
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
 def fetch_prompt(class_id, lan_code):
     result = []
@@ -92,12 +95,12 @@ def fetch_prompt(class_id, lan_code):
     else:
         function_ids = [item.ID
                         for item in Functions.query.with_entities(Functions.ID).
-                        filter(Functions.classes.contains(class_id)).all()]
+                            filter(Functions.classes.contains(class_id)).all()]
 
     # find all prompts that has the function
-    for prompt in FunctionPrompts.query.\
-        filter(and_(FunctionPrompts.functionID.in_(function_ids),
-                    FunctionPrompts.lanCode == lan_code)).all():
+    for prompt in FunctionPrompts.query. \
+            filter(and_(FunctionPrompts.functionID.in_(function_ids),
+                        FunctionPrompts.lanCode == lan_code)).all():
         # prompt filter condition
         if class_id == 'popular' and int(prompt.priority) != 2:
             continue
@@ -115,10 +118,9 @@ def fetch_prompt(class_id, lan_code):
 def search_prompt(search_text, lan_code):
     result = []
 
-    for prompt in FunctionPrompts.query.\
+    for prompt in FunctionPrompts.query. \
             filter(and_(FunctionPrompts.lanCode == lan_code,
                         FunctionPrompts.content.contains(search_text))).all():
-
         entry = {'content': prompt.content, 'lan_code': lan_code,
                  'author': prompt.author, 'author_link': prompt.author_link,
                  'model': prompt.model, 'function_id': prompt.functionID}
