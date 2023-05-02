@@ -65,21 +65,8 @@ def fetch_classes(lan_code):
                 'icon': item.icon, 'icon_style': item.icon_style}
                for item in Classes.query.all()]
     print(type(classes), len(classes), classes[0]['ID'])
-    classes = sort_classes(classes)
     return jsonify(classes)
 
-
-def sort_classes(classes):
-    sorted_list = ["popular", "research_assistance", "copywriting_generation", "code_development", "language_learning",
-                   "office", "leisure_and_entertainment", "study_tutoring", "teacher_education", "gift_selection"]
-    sorted_classes = []
-    for i in range(len(sorted_list)):
-        for j in range(len(classes)):
-            if (sorted_list[i] == classes[j]['ID']):
-                sorted_classes.append(classes[j])
-    return sorted_classes
-
-    return classes
 
 
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
