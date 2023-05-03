@@ -171,15 +171,15 @@ function render_prompt_display(prompt_list) {
             $('#class-card-container').append(prompt_card_html);
         });
         $('#class-card-container').show('drop', 500);
-    });
 
-    $('.copy-prompt-btn').on('click', (e) => {
-        const prompt_content = $(e.target).parents('.prompt-card').find('.prompt-card-content').text();
-        copy_to_clipboard(prompt_content);
-        $(e.target).text('copied');
-        setTimeout(() => {
-            $(e.target).text('copy');
-        }, 1500);
+        $('.copy-prompt-btn').on('click', (e) => {
+            const prompt_content = $(e.target).parents('.prompt-card').find('.prompt-card-content').text();
+            copy_to_clipboard(prompt_content);
+            $(e.target).text('copied');
+            setTimeout(() => {
+                $(e.target).text('copy');
+            }, 1500);
+        });
     });
 }
 
