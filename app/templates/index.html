@@ -15,7 +15,7 @@
     <script src="/static/module/jquery-ui/jquery-ui.min.js"></script>
 
 
-<!--    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/apple-touch-icon.png">-->
+    <!--    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/apple-touch-icon.png">-->
     <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
     <link rel="Shortcut Icon" href="/static/img/favicon.ico" type="image/x-icon" />
@@ -38,7 +38,8 @@
 <!-- class="mdui-typo-title" for header title -->
 
 <body class="mdui-drawer-body-left  mdui-color-grey-100 mdui-appbar-with-toolbar">
-    <header class="appbar mdui-appbar mdui-appbar-fixed mdui-shadow-1 mdui-hoverable normal-bar mdui-text-color-white" id="main-bar">
+    <header class="appbar mdui-appbar mdui-appbar-fixed mdui-shadow-1 mdui-hoverable normal-bar mdui-text-color-white"
+        id="main-bar">
         <div class="mdui-toolbar" id="main-toolbar">
             <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
                 <i class="mdui-icon material-icons">dehaze</i>
@@ -106,10 +107,7 @@
             </div>
             <div class="mdui-textfield mdui-text-center" id="prompt_num"></div>
             <!-- Row for display prompt classes. mdui-typo-subheading is used to set the text to a smaller size   -->
-            <div class="mdui-row" id="class-display-row">
-                <div class="mdui-row mdui-row-sm-2 mdui-row-md-3 mdui-row-xs-3  mdui-row-lg-4 mdui-row-xl-5"
-                    id="class-card-row"></div>
-            </div>
+            <div class="mdui-container-fluid mdui-m-t-2" id="class-card-container"></div>
         </div>
     </div>
 

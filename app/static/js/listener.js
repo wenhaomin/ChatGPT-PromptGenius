@@ -4,18 +4,22 @@
  * Listener functions.
  */
 
-function languageSelectListenser() {
+async function languageSelectListenser() {
+    $('#main-bar').switchClass('normal-bar', 'loading-bar', 200);
+
     let selected_lan_code = $('#language-select').find(':selected').val();
     cur_lan_code = selected_lan_code;
     switch_selected_language(selected_lan_code);
-    render_page_basic(selected_lan_code);
-    render_tools(selected_lan_code);
-    render_search_prompt_by_class(cur_class, selected_lan_code);
-    render_class_tree(selected_lan_code);
+    await render_page_basic(selected_lan_code);
+    await render_tools(selected_lan_code);
+    await render_search_prompt_by_class(cur_class, selected_lan_code);
+    await render_class_tree(selected_lan_code);
 
     // If the user changed language, save language code to cookie.
     // The cookie will be expired after 30 days.
     set_cookie("lancode", cur_lan_code, 30);
+
+    $('#main-bar').switchClass('loading-bar', 'normal-bar', 200);
 }
 
 function prompt_search_listener() {
