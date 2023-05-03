@@ -39,6 +39,13 @@ html, body {
 }
 
 
+.normal-bar {
+    background-color: #3F51B5;
+}
+
+.loading-bar {
+    background-color: #FF6F00;
+}
 
 
 

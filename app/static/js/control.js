@@ -150,12 +150,11 @@ function render_class_tree(selected_lan_code) {
 }
 
 // By Haomin Wen: display all prompts of a given class
-function render_search_prompt_by_class(class_id, selected_lan_code) {
-    get_data(`fetch_prompt/${class_id}/${selected_lan_code}`).then(data => {
-        // use a function to handle the response data
-        // call another function to render the fetched prompt data
-        render_prompt_display(data['content']);
-    })
+async function render_search_prompt_by_class(class_id, selected_lan_code) {
+    var data = await get_data(`fetch_prompt/${class_id}/${selected_lan_code}`)
+    // use a function to handle the response data
+    // call another function to render the fetched prompt data
+    render_prompt_display(data['content']);
 }
 
 // display all prompts

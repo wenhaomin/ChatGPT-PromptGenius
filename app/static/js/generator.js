@@ -129,7 +129,10 @@ function render_hierarchy_tree(data, parent_element) {
                 .on('click', () => {
                     // Custom click event listener code
                     cur_class = class_id;
-                    render_search_prompt_by_class(item['ID'], cur_lan_code);
+                    $('#main-bar').switchClass('normal-bar', 'loading-bar', 200);
+                    render_search_prompt_by_class(item['ID'], cur_lan_code).then(() => {
+                        $('#main-bar').switchClass('loading-bar', 'normal-bar', 200);
+                    });
                 });
 
             // Append the header to the Collapse item
