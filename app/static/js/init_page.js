@@ -11,7 +11,7 @@ init_language_select();
     await render_class_tree(cur_lan_code);
     await render_tools(cur_lan_code);
 })().then(() => {
-    $('#main-bar').switchClass('loading-bar', 'normal-bar', 200);
+    $('#main-bar').switchClass('loading-bar', 'normal-bar', 500);
 
     var inst = new mdui.Collapse('#hierarchy-tree');
 

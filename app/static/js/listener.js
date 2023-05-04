@@ -5,7 +5,7 @@
  */
 
 async function languageSelectListenser() {
-    $('#main-bar').switchClass('normal-bar', 'loading-bar', 200);
+    $('#main-bar').switchClass('normal-bar', 'loading-bar', 500);
 
     let selected_lan_code = $('#language-select').find(':selected').val();
     cur_lan_code = selected_lan_code;
@@ -19,7 +19,7 @@ async function languageSelectListenser() {
     // The cookie will be expired after 30 days.
     set_cookie("lancode", cur_lan_code, 30);
 
-    $('#main-bar').switchClass('loading-bar', 'normal-bar', 200);
+    $('#main-bar').switchClass('loading-bar', 'normal-bar', 500);
 }
 
 function prompt_search_listener() {
