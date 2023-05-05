@@ -65,6 +65,8 @@ async function init_language_select() {
                 set_cookie('lancode', cur_lan_code, 30);
                 switch_active_language(cur_lan_code);
 
+                action_sidebar_bs.hide();
+
                 render_page_basic(cur_lan_code);
                 render_class_tree(cur_lan_code);
                 render_search_prompt_by_class(cur_selected_class, cur_lan_code);
@@ -79,6 +81,8 @@ async function render_page_basic(selected_lan_code) {
 
     data = await get_data(`fetch_index_contents/${selected_lan_code}/site`);
     $('#page-browser-title, #page-header-title').text(data['title']);
+    $('#class-offcanvas-title').text(data['class_title']);
+    $('#action-offcanvas-title').text(data['action_title']);
 
     data = await get_data(`fetch_index_contents/${selected_lan_code}/navbar`)
     $('#nav-submit-btn span').text(data['submit_btn']);

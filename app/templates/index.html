@@ -20,11 +20,21 @@
     <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon">
 </head>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TY2Y50CCNH"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-TY2Y50CCNH');
+</script>
+
 <body>
     <!-- The top-fixed nav bar. -->
-    <nav class="navbar bg-dark fixed-top" id="main-navbar">
-        <div class="container-xxl d-flex justify-content-between flex-wrap">
-            <button type="button" class="btn btn-dark d-block d-lg-none" data-bs-toggle="offcanvas"
+    <nav class="navbar navbar-expand-lg bg-dark fixed-top" id="main-navbar">
+        <div class="container-xxl d-flex justify-content-between">
+            <button type="button" class="navbar-toggler text-light" data-bs-toggle="offcanvas"
                 data-bs-target="#class-sidebar">
                 <i class="bi bi-grid-3x3-gap-fill"></i>
             </button>
@@ -34,37 +44,48 @@
                 <span id="page-header-title" class="text-white fs-4 ms-2 d-none d-lg-block"></span>
             </a>
 
-            <div class="input-group d-none d-lg-flex" id="search-input-group">
-                <input type="text" class="form-control text-bg-light" placeholder="Search">
-                <button class="btn btn-secondary" type="button"></button>
-            </div>
-
-            <div class="btn-group d-none d-lg-flex" role="group" id="nav-button-group">
-                <button type="button" class="btn btn-secondary" id="nav-submit-btn" data-bs-toggle="modal"
-                    data-bs-target="#submit-dialog">
-                    <i class="bi bi-upload"></i>
-                    <span>Submit</span>
-                </button>
-                <a type="button" class="btn btn-secondary" id="nav-github-btn"
-                    href="https://github.com/wenhaomin/PromptGenius" target="_blank">
-                    <i class="bi bi-github"></i>
-                    <span>GitHub</span>
-                </a>
-
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="bi bi-globe"></i>
-                        <span>Language</span>
+            <!-- Right offcanvas for actions. -->
+            <div class="offcanvas-lg offcanvas-end flex-grow-1 text-bg-dark" tabindex="-1" id="action-sidebar">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="action-offcanvas-title"></h5>
+                    <button type="button" class="btn text-white" data-bs-dismiss="offcanvas"
+                        data-bs-target="#action-sidebar" aria-label="Close">
+                        <i class="bi bi-x-lg"></i>
                     </button>
-                    <ul class="dropdown-menu" id="nav-language-select">
-                    </ul>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="input-group ms-lg-auto mb-3 mb-lg-0" id="search-input-group">
+                        <input type="text" class="form-control text-bg-light" placeholder="Search">
+                        <button class="btn btn-secondary" type="button"></button>
+                    </div>
+                    <div class="btn-group flex-row ms-lg-4" role="group" id="nav-button-group">
+                        <button type="button" class="btn btn-secondary" id="nav-submit-btn" data-bs-toggle="modal"
+                            data-bs-target="#submit-dialog">
+                            <i class="bi bi-upload"></i>
+                            <span>Submit</span>
+                        </button>
+                        <a type="button" class="btn btn-secondary" id="nav-github-btn"
+                            href="https://github.com/wenhaomin/PromptGenius" target="_blank">
+                            <i class="bi bi-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="bi bi-globe"></i>
+                                <span>Language</span>
+                            </button>
+                            <ul class="dropdown-menu" id="nav-language-select">
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <button type="button" class="btn btn-dark d-block d-lg-none" data-bs-toggle="offcanvas"
+            <button type="button" class="text-light navbar-toggler" data-bs-toggle="offcanvas"
                 data-bs-target="#action-sidebar">
-                <i class="bi bi-search"></i>
+                <i class="bi bi-three-dots"></i>
             </button>
         </div>
     </nav>
@@ -75,7 +96,7 @@
         <div class="d-flex flex-column flex-shrink-0 overflow-y-scroll">
             <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="class-sidebar">
                 <div class="offcanvas-header border-bottom">
-                    <h5 class="offcanvas-title" id="class-offcanvas-title">Browse classes</h5>
+                    <h5 class="offcanvas-title" id="class-offcanvas-title"></h5>
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                         data-bs-target="#class-sidebar" aria-label="Close"></button>
                 </div>
@@ -90,17 +111,6 @@
         <!-- Center container for prompt display. -->
         <div class="container-fluid overflow-y-scroll">
             <div class="row py-3 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-2" id="prompt-display">
-            </div>
-        </div>
-
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="action-sidebar">
-            <div class="offcanvas-header">
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                    aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body p-0">
-                <div class="container-fluid d-flex flex-column flex-shrink-0 p-3">
-                </div>
             </div>
         </div>
     </main>

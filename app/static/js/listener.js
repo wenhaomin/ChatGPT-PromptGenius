@@ -7,6 +7,7 @@
 function prompt_search_listener() {
     var search_text = validate_input($('#search-input-group'));
     if (search_text.length > 0) {
+        action_sidebar_bs.hide();
         $('.class-nav-link, .child-class-nav-link').removeClass('active');
         render_search_prompt_by_string(search_text, cur_lan_code)
     }
