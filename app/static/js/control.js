@@ -42,6 +42,37 @@ async function get_data(url) {
     }
 }
 
+async function init_language_select() {
+    // Load saved language code from cookie.
+    var save_lan_code = get_cookie('lancode');
+    if (save_lan_code != "") {
+        cur_lan_code = save_lan_code;
+    }
+    // Intialize the options in #language-select.
+    var data = await get_data('fetch_lan');
+    data.forEach(function (item) {
+        var language_select_item = $(`
+            <li lan-code="${item['code']}"><a class="dropdown-item">${item['name']}</a></li>
+        `);
+
+        $('#nav-language-select').append(language_select_item);
+        switch_active_language(cur_lan_code);
+
+        language_select_item.on('click', () => {
+            var selected_lan_code = item['code'];
+            if (cur_lan_code !== selected_lan_code) {
+                cur_lan_code = selected_lan_code;
+                set_cookie('lancode', cur_lan_code, 30);
+                switch_active_language(cur_lan_code);
+
+                render_page_basic(cur_lan_code);
+                render_class_tree(cur_lan_code);
+                render_search_prompt_by_class(cur_selected_class, cur_lan_code);
+            }
+        });
+    });
+}
+
 async function render_page_basic(selected_lan_code) {
     // Render the basic elements on the page.
     var data;
@@ -49,29 +80,65 @@ async function render_page_basic(selected_lan_code) {
     data = await get_data(`fetch_index_contents/${selected_lan_code}/site`);
     $('#page-browser-title, #page-header-title').text(data['title']);
 
+    data = await get_data(`fetch_index_contents/${selected_lan_code}/navbar`)
+    $('#nav-submit-btn span').text(data['submit_btn']);
+
     data = await get_data(`fetch_index_contents/${selected_lan_code}/submit_dialog`);
     // Render contents in submit dialog.
     $('#submit-dialog-title').text(data['title']);
     $('#submit-dialog-message').text(data['message']);
-    $('#submit-dialog-funcdesc-tf label').text(data['func']);
-    $('#submit-dialog-prompt-tf label').text(data['prompt']);
-    $('#submit-dialog-username-tf label').text(data['user_name']);
-    $('#submit-enter-btn').text(data['ok_btn_text']);
-    $('#submit-cancel-btn').text(data['cancel_btn_text']);
+    $('#submit-dialog-funcdesc-group input').attr('placeholder', data['func']);
+    $('#submit-dialog-prompt-group textarea').attr('placeholder', data['prompt']);
+    $('#submit-dialog-user-group input').attr('placeholder', data['user_name']);
+    $('#submit-clear-btn').text(data['clear_btn_text']);
+    $('#submit-enter-btn-text').text(data['ok_btn_text']);
 
     data = await get_data(`fetch_index_contents/${selected_lan_code}/tools_dialog`);
     $('#tools-btn').text(data['open_btn_text']);
     $('#tools-dialog .mdui-dialog-title').text(data['title']);
 
     data = await get_data(`fetch_index_contents/${selected_lan_code}/search`);
-    $('#search-input').attr('placeholder', data['prompt']);
-    $('#search-btn').text(data['btn_text']);
+    $('#search-input-group input').attr('placeholder', data['prompt']);
+    $('#search-input-group button').text(data['btn_text']);
 
     data = await get_data(`fetch_index_contents/${selected_lan_code}/cards`);
     $('#class-display-title').text(data['title']);
+}
 
-    data = await get_data(`fetch_index_contents/${selected_lan_code}/input`);
-    $('.mdui-textfield-error').text(data['error_info']);
+async function render_class_tree(selected_lan_code) {
+    var saved_selected_class = get_cookie('selected_class');
+    if (saved_selected_class !== "") {
+        cur_selected_class = saved_selected_class;
+    }
+
+    // Intialize the options in #language-select.
+    var data = await get_data(`fetch_classes/${selected_lan_code}`);
+    $('#class-selection-list').empty();
+    data.forEach((item, index) => {
+        var class_selection = gen_class_selection(item);
+        $('#class-selection-list').append(class_selection);
+        if (item['childrens'] != undefined && item['childrens'].length) {
+            $('#class-selection-list').append(gen_child_class_selection(item['childrens']));
+        }
+        if (index < data.length - 1) {
+            $('#class-selection-list').append(`<hr class="class-selection-divider">`);
+        }
+    });
+
+    $('.class-nav-link, .child-class-nav-link').on('click', (event) => {
+        var clicked_class = $(event.target).attr('class-id');
+        if (cur_selected_class !== clicked_class) {
+            cur_selected_class = clicked_class;
+            switch_active_class(cur_selected_class);
+
+            render_search_prompt_by_class(cur_selected_class, cur_lan_code);
+            class_sidebar_bs.hide();
+
+            set_cookie('selected_class', cur_selected_class, 30);
+        }
+    })
+
+    switch_active_class(cur_selected_class);
 }
 
 async function render_tools(selected_lan_code) {
@@ -87,63 +154,24 @@ async function render_tools(selected_lan_code) {
     })
 }
 
-async function render_class_display(selected_lan_code) {
-    // Render the display of all classes.
-    var data = await get_data('fetch_class/with_example')
-    $('#class-card-container').text("");
-    let classes = data['content'];
-    classes.forEach(function (item) {
-        class_card_html = gen_class_card_html(item['id'],
-            item['names'][selected_lan_code],
-            item['example']['desc'][selected_lan_code]);
-        $('#class-card-container').append(class_card_html);
-    })
-}
-
-function init_language_select() {
-    // Load saved language code from cookie.
-    var save_lan_code = get_cookie('lancode');
-    if (save_lan_code != "") {
-        cur_lan_code = save_lan_code;
-    }
-    // Intialize the options in #language-select.
-    get_data('fetch_lan').then(data => {
-        data.forEach(function (item) {
-            let lan_code = item['code'];
-            let lan_display = item['name'];
-            $('#language-select').append(`<option value=${lan_code}>${lan_display}</option>`);
-            switch_selected_language(cur_lan_code);
-        })
-    })
-}
-
-function switch_selected_language(selected_lan_code) {
+function switch_active_language(selected_lan_code) {
     // Change the selected option of #language-select to the given lan_code.
-    $('#language-select option').each(function () {
-        if ($(this).val() == selected_lan_code) {
-            $(this).attr("selected", "selected");
-        }
-        else {
-            $(this).removeAttr("selected");
+    $('#nav-language-select').children('li').each((index, item) => {
+        if ($(item).attr('lan-code') === selected_lan_code) {
+            $(item).children('a').addClass('active');
+        } else {
+            $(item).children('a').removeClass('active');
         }
     });
 }
 
-function validate_textarea(tf_id) {
-    var input_val = $(`#${tf_id} textarea`).val();
-    if (input_val.length > 0) {
-        $(`#${tf_id}`).removeClass('mdui-textfield-invalid');
-    } else {
-        $(`#${tf_id}`).addClass('mdui-textfield-invalid');
-    }
-    return input_val;
-}
-
-function render_class_tree(selected_lan_code) {
-    // Intialize the options in #language-select.
-    get_data(`fetch_classes/${selected_lan_code}`).then(data => {
-        $('#hierarchy-tree').empty();
-        render_hierarchy_tree(data, $('#hierarchy-tree'));
+function switch_active_class(selected_class_id) {
+    var all_class_nav = $('.class-nav-link, .child-class-nav-link');
+    all_class_nav.removeClass('active');
+    all_class_nav.each((index, item) => {
+        if ($(item).attr('class-id') === selected_class_id) {
+            $(item).addClass('active');
+        }
     })
 }
 
@@ -152,35 +180,13 @@ async function render_search_prompt_by_class(class_id, selected_lan_code) {
     var data = await get_data(`fetch_prompt/${class_id}/${selected_lan_code}`)
     // use a function to handle the response data
     // call another function to render the fetched prompt data
-    render_prompt_display(data['content']);
+    gen_prompt_display(data['content']);
 }
 
 // search prompt by give string
 async function render_search_prompt_by_string(search_text, selected_lan_code) {
     var data = await get_data(`search_prompt/${search_text}/${selected_lan_code}`)
-    render_prompt_display(data['content']);
-}
-
-// render given prompts
-function render_prompt_display(prompt_list) {
-    $('#class-card-container').hide('drop', 500, () => {
-        $('#class-card-container').empty()
-        $('#prompt_num').text("Prompt Number:" + prompt_list.length.toString());
-        prompt_list.forEach((item, index) => {
-            prompt_card_html = generate_prompt_card_html(index, item);
-            $('#class-card-container').append(prompt_card_html);
-        });
-        $('#class-card-container').show('drop', 500);
-
-        $('.copy-prompt-btn').on('click', (e) => {
-            const prompt_content = $(e.target).parents('.prompt-card').find('.prompt-card-content').text();
-            copy_to_clipboard(prompt_content);
-            $(e.target).text('copied');
-            setTimeout(() => {
-                $(e.target).text('copy');
-            }, 1500);
-        });
-    });
+    gen_prompt_display(data['content']);
 }
 
 // copy text

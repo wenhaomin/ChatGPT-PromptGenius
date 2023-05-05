@@ -1,3 +1,54 @@
+main {
+    margin-top: 60px;
+}
+
+.overflow-y-scroll {
+    height: calc(100vh - 60px);
+}
+
+#search-input-group {
+    max-width: 350px;
+}
+
+#class-sidebar {
+    width: 260px;
+}
+
+.class-selection-divider {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.class-icon {
+    margin-right: 5px !important;
+}
+
+.class-list-item {
+    margin-bottom: 0 !important;
+    height: 30px;
+}
+
+.class-nav-link:hover, .child-class-nav-link:hover {
+    background-color: #f7f7f7;
+}
+
+.class-nav-link {
+    width: 250px;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.child-class-list-item {
+    height: 28px;
+}
+
+.child-class-nav-link {
+    width: 250px;
+    padding-left: 40px !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}
+
 /*
 html, body {
     width: 100%;
@@ -165,9 +216,3 @@ html, body {
 /*.tree-collapsed > ul {*/
 /*    display: none;*/
 /*}*/
-
-
-
-
-
-

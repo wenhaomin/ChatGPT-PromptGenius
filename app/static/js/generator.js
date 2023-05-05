@@ -37,119 +37,109 @@ function gen_tool_card(tool_name, tool_desc, tool_url, tags, icon_src) {
     return html;
 }
 
-function generate_prompt_card_html(index, item) {
-    chat_list = item['chat_list']
-    class_list = item['class_list']
-    author = item['author']
-    author_link = item['author_link']
-    model = item['model']
-    function_desc = item['function_desc']
-    prompt_text = chat_list[0]
-    class_name = class_list[0]
-    icon_name = item['icon_name']
-    icon_style = item['icon_style']
-    example_desc = prompt_text
-
-    icon_html = `<span class="${icon_style} mdui-m-r-1">${icon_name}</span>`
-
-    html = `
-    <div class="mdui-col-xs-12 mdui-col-sm-12 mdui-col-md-12 mdui-col-lg-12 mdui-col-xl-12 mdui-m-t-12 mdui-m-b-2">
-      <div class="mdui-card mdui-shadow-4 prompt-card">
-        <div class="mdui-card-primary mdui-color-grey-50 prompt-card-header">
-          ${icon_html}
-          <span class="mdui-chip mdui-color-theme-200">
-            <div class="mdui-chip-title">${class_name}</div>
-          </span>
-          <span class="mdui-chip mdui-color-theme-400">
-              <div class="mdui-chip-title ">${function_desc}</div>
-          </span>
-          <span class="mdui-chip mdui-color-grey-50">
-            <a href="${author_link}" target="_blank"> 
-            <div class="mdui-chip-title mdui-text-color-theme-text">${author}</div>
+function gen_class_selection(item) {
+    var nav_item = $(`
+        <li class="nav-item h6 class-list-item">
+            <a class="nav-link link-body-emphasis text-truncate d-inline-block class-nav-link" 
+                class-id="${item['ID']}">
+                <i class="bi bi-${item['icon']} class-icon"></i>
+                ${item['name']}
             </a>
-          </span>
-          <button class="mdui-btn mdui-float-right copy-prompt-btn">copy</button>
-        </div>
-        <div class="mdui-card-primary mdui-p-a-0">    
-          <div class="mdui-card-content mdui-text-color-theme-text prompt-card-content"> ${prompt_text} </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  `
-    return html;
+        </li>
+    `);
+    return nav_item;
 }
 
-function render_hierarchy_tree(data, parent_element) {
-    data.forEach((item) => {
-        // Wrap the loop body with an IIFE to create a new scope for each iteration
-        ((item) => {
-            // Create a new MDUI Collapse item
-            var is_has_children = (item['childrens'] != undefined && item['childrens'].length);
-
-            var collapseItem = $('<li class="mdui-list-item mdui-ripple"></li>');
-            if (is_has_children) {
-                collapseItem = $('<li class="mdui-collapse-item mdui-collapse-item-close"></li>');
-            }
-
-            var head_name = item['name'];
-            var class_id = item['ID'];
-
-            var icon_style = '';
-            var icon_name = 'none';
-            if (item['icon'] != undefined) {
-                icon_style = item['icon_style'];
-                icon_name = item['icon'];
-            }
-
-            var header_html = '';
-            if (is_has_children) {
-                header_html = `<div class="mdui-collapse-item-header mdui-list-item mdui-ripple">`;
-            }
-
-            // icon
-            if ((icon_name != 'none')) {
-                var icon_html = `<i class="${icon_style}">${icon_name}</i>`;
-                header_html += icon_html;
-            }
-
-            // content
-            header_html += `<div class="mdui-list-item-content mdui-text-truncate hierarchy-tree-content">${head_name}</div>`;
-            // arrow
-            if (is_has_children) {
-                var header_html_arrow = `
-                    <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-">keyboard_arrow_down</i>
-                    </div>`;
-                header_html += header_html_arrow;
-                header_html += `</div>`;
-            }
-
-            var header = $(header_html)
-                .attr('data-title', class_id)
-                .on('click', () => {
-                    // Custom click event listener code
-                    cur_class = class_id;
-                    $('#main-bar').switchClass('normal-bar', 'loading-bar', 500);
-                    render_search_prompt_by_class(item['ID'], cur_lan_code).then(() => {
-                        $('#main-bar').switchClass('loading-bar', 'normal-bar', 500);
-                    });
-                });
-
-            // Append the header to the Collapse item
-            collapseItem.append(header);
-
-            // Check if the current item has children
-            if (is_has_children) {
-                // Create a new MDUI Collapse item body
-                var body = $('<ul class="mdui-collapse-item-body mdui-list mdui-list-dense"></ul>');
-                // Recursively call the 'renderHierarchyTree' function to render the child items
-                render_hierarchy_tree(item.childrens, body);
-                // Append the body to the Collapse item
-                collapseItem.append(body);
-            }
-
-            // Append the MDUI Collapse item to the parent element
-            parent_element.append(collapseItem);
-        })(item); // Pass the 'item' variable as an argument to the IIFE
+function gen_child_class_selection(childrens) {
+    var child_list = $(`<ul class="nav nav-pills flex-column child-class-list">`);
+    childrens.forEach(({ ID, name }) => {
+        child_list.append($(`
+            <li class="nav-item small child-class-list-item">
+                <a class="nav-link link-body-emphasis text-truncate d-inline-block child-class-nav-link" 
+                class-id="${ID}">
+                    ${name}
+                </a>
+            </li>
+        `));
     });
+    return child_list;
+}
+
+function gen_prompt_card(item) {
+    var chat_list = item['chat_list']
+    var class_list = item['class_list']
+    var author = item['author']
+    var author_link = item['author_link']
+    var model = item['model']
+    var function_desc = item['function_desc']
+    var prompt_text = chat_list[0]
+    var class_name = class_list[0]
+    var icon_name = item['icon_name']
+    var icon_style = item['icon_style']
+
+    if (author === undefined || author.length === 0) {
+        author = 'Anonymous'
+    }
+
+    if (author_link === undefined || author_link === null || author_link.length === 0 || author_link === '-') {
+        author_link = '';
+    } else {
+        author_link = `href="${author_link}"`;
+    }
+
+    var card = $(`
+        <div class="card shadow-sm text-bg-light">
+            <div class="card-body">
+                <div class="card-title d-flex justify-content-between">
+                    <div class="prompt-tag-row">
+                        <span class="badge rounded-pill text-bg-secondary">${function_desc}</span>
+                        <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info">${author}</a>
+                    </div>
+                    <div class="btn-group ms-2" style="height: 25px">
+                        <a class="btn badge border-0 text-dark prompt-like-btn"><i class="bi bi-hand-thumbs-up"></i></a>
+                        <a class="btn badge border-0 text-dark prompt-copy-btn"><i class="bi bi-clipboard"></i></a>
+                    </div>
+                </div>
+                <div class="card-text small">
+                    ${prompt_text}
+                </div>
+            </div>
+        </div>
+    `)
+    return card;
+}
+
+function gen_prompt_display(prompt_list) {
+    var display = $("#prompt-display");
+    display.text('');
+
+    prompt_list.forEach((item, index) => {
+        var col = $(`<div class="prompt-col col">`);
+        var card = gen_prompt_card(item);
+        display.append(col.append(card));
+
+        var like_btn = card.find('.prompt-like-btn');
+        like_btn.on('click', () => {
+            like_btn.find('.bi').switchClass('bi-hand-thumbs-up', 'bi-hand-thumbs-up-fill');
+            setTimeout(() => {
+                like_btn.find('.bi').switchClass('bi-hand-thumbs-up-fill', 'bi-hand-thumbs-up');
+            }, 2000);
+        })
+
+        var copy_btn = card.find('.prompt-copy-btn');
+        copy_btn.on('click', () => {
+            copy_to_clipboard(card.find('.card-text').text());
+            copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
+            setTimeout(() => {
+                copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
+            }, 2000);
+        })
+    });
+    display.show();
+
+    display.masonry({
+        itemSelector: '.prompt-col',
+        columnWidth: '.prompt-col',
+        percentPosition: true
+    }).masonry('reloadItems').masonry('layout');
 }
