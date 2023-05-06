@@ -42,7 +42,7 @@ function gen_class_selection(item) {
         <li class="nav-item h6 class-list-item">
             <a class="nav-link link-body-emphasis text-truncate d-inline-block class-nav-link" 
                 class-id="${item['ID']}">
-                <i class="bi bi-${item['icon']} class-icon"></i>
+                <i class="bi bi-${item['icon']} class-icon" style="color: #${item['icon_style']}"></i>
                 ${item['name']}
             </a>
         </li>
@@ -88,16 +88,18 @@ function gen_prompt_card(item) {
     }
 
     var card = $(`
-        <div class="card shadow-sm text-bg-light">
+        <div class="card shadow-sm" style="background-color: #${icon_style}1a">
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between">
                     <div class="prompt-tag-row">
-                        <span class="badge rounded-pill text-bg-secondary">${function_desc}</span>
+                        <a class="btn badge rounded-pill" style="background-color: #${icon_style}">${function_desc}</a>
                         <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info">${author}</a>
                     </div>
                     <div class="btn-group ms-2" style="height: 25px">
-                        <a class="btn badge border-0 text-dark prompt-like-btn"><i class="bi bi-hand-thumbs-up"></i></a>
-                        <a class="btn badge border-0 text-dark prompt-copy-btn"><i class="bi bi-clipboard"></i></a>
+                        <a class="btn badge border-0 text-dark prompt-copy-btn">
+                            <span class="copied-count-display"></span>
+                            <i class="bi bi-clipboard"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="card-text small">
