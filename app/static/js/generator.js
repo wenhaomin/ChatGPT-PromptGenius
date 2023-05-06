@@ -92,7 +92,10 @@ function gen_prompt_card(item) {
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between">
                     <div class="prompt-tag-row">
-                        <a class="btn badge rounded-pill" style="background-color: #${icon_style}">${function_desc}</a>
+                        <a class="btn badge rounded-pill" style="background-color: #${icon_style}">
+                            <i class="bi bi-${icon_name}"></i>
+                            ${function_desc}
+                        </a>
                         <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info">${author}</a>
                     </div>
                     <div class="btn-group ms-2" style="height: 25px">
