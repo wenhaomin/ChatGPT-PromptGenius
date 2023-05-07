@@ -56,3 +56,8 @@ main {
 .top-banner-item {
     background-color: #eee;
 }
+
+.navbar-toggler {
+    width: 69px;
+    height: 29px;
+}
