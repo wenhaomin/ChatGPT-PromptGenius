@@ -108,23 +108,27 @@
         </div>
 
         <!-- Center container for prompt display. -->
-        <div class="container-xxl overflow-y-scroll">
-            <div id="top-banner" class="carousel slide mt-3" data-bs-ride="carousel" data-bs-interval="10000">
-                <div class="carousel-indicators mb-0" id="top-banner-indicator">
+        <div class="container-fluid overflow-y-scroll">
+            <div class="container-xxl">
+                <div id="top-banner" class="carousel slide mt-3" data-bs-ride="carousel" data-bs-interval="10000">
+                    <div class="carousel-indicators mb-0" id="top-banner-indicator">
+                    </div>
+                    <div class="carousel-inner" id="top-banner-inner">
+                        <div class="carousel-item rounded active top-banner-item"></div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#top-banner"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#top-banner"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
                 </div>
-                <div class="carousel-inner" id="top-banner-inner">
-                    <div class="carousel-item rounded active top-banner-item"></div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#top-banner" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#top-banner" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-            </div>
 
-            <div class="row py-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-2"
-                id="prompt-display">
+                <div class="row py-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-2"
+                    id="prompt-display">
+                </div>
             </div>
         </div>
     </main>
