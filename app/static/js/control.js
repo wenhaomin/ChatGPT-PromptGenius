@@ -125,13 +125,13 @@ async function render_page_basic(selected_lan_code) {
     $('#top-banner-indicator').empty();
     data.forEach(({image, url}, index) => {
         var banner_item = gen_top_banner_item(image, url);
+        var indicator_item = $(`<button type="button" data-bs-target="#top-banner" data-bs-slide-to="${index}"></button>`);
         if (index === 0) {
             banner_item.addClass('active');
+            indicator_item.addClass('active');
         }
-        $('#top-banner-indicator').append(`
-            <button type="button" data-bs-target="#top-banner" data-bs-slide-to="${index}" class="active"></button>
-        `);
         $('#top-banner-inner').append(banner_item);
+        $('#top-banner-indicator').append(indicator_item);
     })
 }
 
