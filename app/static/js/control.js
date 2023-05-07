@@ -42,11 +42,13 @@ async function get_data(url) {
     }
 }
 
-async function send_post(url) {
+async function send_post(url, data) {
     try {
         const response = await $.ajax({
             url: url,
-            type: 'POST'
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
         });
         return response;
     } catch (error) {
@@ -123,7 +125,7 @@ async function render_page_basic(selected_lan_code) {
     data = await get_data(`fetch_banners/${selected_lan_code}`)
     $('#top-banner-inner').empty();
     $('#top-banner-indicator').empty();
-    data.forEach(({image, url}, index) => {
+    data.forEach(({ image, url }, index) => {
         var banner_item = gen_top_banner_item(image, url);
         var indicator_item = $(`<button type="button" data-bs-target="#top-banner" data-bs-slide-to="${index}"></button>`);
         if (index === 0) {
@@ -240,5 +242,9 @@ function copy_to_clipboard(text) {
 
 // click copy add
 function add_search_prompt(lanCode, functionID, semanticID) {
-    send_post(`increase_count/${lanCode}/${functionID}/${semanticID}`);
+    send_post(`increase_count`, {
+        'lan_code': lanCode,
+        'function_id': functionID,
+        'semantic_id': semanticID
+    });
 }

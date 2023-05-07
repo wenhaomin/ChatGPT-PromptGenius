@@ -75,12 +75,14 @@ def fetch_classes(lan_code):
     return jsonify(classes)
 
 
-@bp.route('/increase_count/<lan_code>/<function_id>/<semantic_id>/', methods=['GET', 'POST'])
-def increase_count(lan_code, function_id, semantic_id):
+@bp.route('/increase_count', methods=['GET', 'POST'])
+def increase_count():
     if request.method == 'POST':
         try:
             functionprompt = FunctionPrompts.query.filter_by(
-                lanCode=lan_code, functionID=function_id, semanticID=semantic_id).first()
+                lanCode=request.json['lan_code'], 
+                functionID=request.json['function_id'], 
+                semanticID=request.json['semantic_id']).first()
             if functionprompt:
                 functionprompt.copied_count += 1
                 db.session.commit()
