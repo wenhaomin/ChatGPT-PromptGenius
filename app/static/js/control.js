@@ -42,6 +42,18 @@ async function get_data(url) {
     }
 }
 
+async function send_post(url) {
+    try {
+        const response = await $.ajax({
+            url: url,
+            type: 'POST'
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function init_language_select() {
     // Load saved language code from cookie.
     var save_lan_code = get_cookie('lancode');
@@ -170,13 +182,19 @@ function switch_active_language(selected_lan_code) {
 }
 
 function switch_active_class(selected_class_id) {
+    if (selected_class_id === 'popular') {
+        $('#top-banner').show('blind', 600);
+    } else {
+        $('#top-banner').hide('blind', 600);
+    }
+
     var all_class_nav = $('.class-nav-link, .child-class-nav-link');
     all_class_nav.removeClass('active');
     all_class_nav.each((index, item) => {
         if ($(item).attr('class-id') === selected_class_id) {
             $(item).addClass('active');
         }
-    })
+    });
 }
 
 // By Haomin Wen: display all prompts of a given class
@@ -204,4 +222,9 @@ function copy_to_clipboard(text) {
         }
     }
     copyContent();
+}
+
+// click copy add
+function add_search_prompt(lanCode, functionID, semanticID) {
+    send_post(`increase_count/${lanCode}/${functionID}/${semanticID}`);
 }

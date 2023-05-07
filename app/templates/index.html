@@ -32,9 +32,9 @@
 
 <body>
     <!-- The top-fixed nav bar. -->
-    <nav class="navbar navbar-expand-lg bg-dark fixed-top" id="main-navbar">
+    <nav class="navbar navbar-expand-lg text-bg-dark fixed-top" id="main-navbar">
         <div class="container-fluid d-flex justify-content-between">
-            <button type="button" class="navbar-toggler text-light" data-bs-toggle="offcanvas"
+            <button type="button" class="navbar-toggler text-light border-0" data-bs-toggle="offcanvas"
                 data-bs-target="#class-sidebar">
                 <i class="bi bi-grid-3x3-gap-fill"></i>
             </button>
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <button type="button" class="text-light navbar-toggler" data-bs-toggle="offcanvas"
+            <button type="button" class="text-light navbar-toggler border-0" data-bs-toggle="offcanvas"
                 data-bs-target="#action-sidebar">
                 <i class="bi bi-three-dots"></i>
             </button>
@@ -109,19 +109,42 @@
 
         <!-- Center container for prompt display. -->
         <div class="container-xxl overflow-y-scroll">
-            <div>
-                <div class="text-center mt-2 display-5">
-                    <img style="margin-top: -20px" src="/static/img/favicon.ico" />
-                    <span style="font-weight: 400 !important;">PromptGenius</span>
+            <div id="top-banner" class="carousel slide mt-3">
+                <div class="carousel-indicators mb-0">
+                    <button type="button" data-bs-target="#top-banner" data-bs-slide-to="0" class="active"></button>
                 </div>
-                <div class="text-center mt-2 ">
-                    <span style="font-weight: 400 !important;">All-purpose prompts: a gateway to creativity !</span>
+                <div class="carousel-inner">
+                    <div class="carousel-item rounded active top-banner-item">
+                        <div class="p-4 d-flex justify-content-center align-items-center">
+                            <div class="display-5 text-center">
+                                <img style="width: 55px; margin-top: -20px" class="me-2" src="static/img/android-chrome-512x512.png" />
+                                <span style="font-weight: 400 !important;">PromptGenius</span>
+                            </div>
+                            <div class="vr color-dark mx-2"></div>
+                            <div class="text-center mt-2">
+                                <span class="h5 d-flex flex-column align-items-start"
+                                    style="font-weight: 600 !important;">
+                                    <span>All-purpose prompts:</span>
+                                    <span>a gateway to creativity!</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#top-banner" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#top-banner" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
             </div>
-            <div class="row py-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-2" id="prompt-display">
+
+            <div class="row py-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-2"
+                id="prompt-display">
             </div>
         </div>
     </main>
+
     <div class="modal fade" id="submit-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

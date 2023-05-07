@@ -66,7 +66,6 @@ function gen_child_class_selection(childrens) {
 }
 
 function gen_prompt_card(item) {
-    console.log(item)
     var chat_list = item['chat_list']
     var class_list = item['class_list']
     var author = item['author']
@@ -77,7 +76,7 @@ function gen_prompt_card(item) {
     var class_name = class_list[0]
     var icon_name = item['icon_name']
     var icon_style = item['icon_style']
-    var copied_count=item['copied_count']
+    var copied_count = item['copied_count']
     if (author === undefined || author.length === 0) {
         author = 'Anonymous'
     }
@@ -101,7 +100,7 @@ function gen_prompt_card(item) {
                     </div>
                     <div class="btn-group ms-2" style="height: 25px">
                         <a class="btn badge border-0 text-dark prompt-copy-btn">
-                            <span class="copied-count-display" style="color:red">${copied_count}</span>
+                            <span class="copied-count-display">${copied_count}</span>
                             <i class="bi bi-clipboard"></i>
                         </a>
                     </div>
@@ -114,16 +113,6 @@ function gen_prompt_card(item) {
     `)
     return card;
 }
-// click copy add
-function add_search_prompt(lanCode,functionID,semanticID) {
-    console.log(lanCode,functionID,semanticID)
-    get_data(`increase_count/${lanCode}/${functionID}/${semanticID}`).then(data => {
-        // use a function to handle the response data
-        // call another function to render the fetched prompt data
-        // render_prompt_display(data['content']);
-    })
-}
-
 
 function gen_prompt_display(prompt_list) {
     var display = $("#prompt-display");
@@ -131,34 +120,28 @@ function gen_prompt_display(prompt_list) {
     prompt_list.forEach((item, index) => {
         var col = $(`<div class="prompt-col col">`);
         var card = gen_prompt_card(item);
-        console.log(typeof  display,typeof col,typeof card)
         display.append(col.append(card));
-
-        var like_btn = card.find('.prompt-like-btn');
-        like_btn.on('click', () => {
-            like_btn.find('.bi').switchClass('bi-hand-thumbs-up', 'bi-hand-thumbs-up-fill');
-            setTimeout(() => {
-                like_btn.find('.bi').switchClass('bi-hand-thumbs-up-fill', 'bi-hand-thumbs-up');
-            }, 2000);
-        })
 
         var copy_btn = card.find('.prompt-copy-btn');
         copy_btn.on('click', () => {
             copy_to_clipboard(card.find('.card-text').text().trim());
             copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
-            if(card.find('.card-text').text().trim()===item['chat_list'][0]){
-                console.log(cur_lan_code)
-                item['copied_count']+=1
-                add_search_prompt(cur_lan_code,item['function_id'],item['semantic_id'])
-                $(this).find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
-                card.find('.copied-count-display').html(item['copied_count']);
-            }
+
+            item['copied_count'] += 1
+            add_search_prompt(cur_lan_code, item['function_id'], item['semantic_id']);
+            card.find('.copied-count-display').html(item['copied_count']);
+
+            display.masonry({
+                itemSelector: '.prompt-col',
+                columnWidth: '.prompt-col',
+                percentPosition: true
+            }).masonry('reloadItems').masonry('layout');
+
             setTimeout(() => {
                 copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
             }, 2000);
         })
     });
-    display.show();
 
     display.masonry({
         itemSelector: '.prompt-col',
