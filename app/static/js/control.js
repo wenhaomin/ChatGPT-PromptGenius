@@ -119,6 +119,20 @@ async function render_page_basic(selected_lan_code) {
 
     data = await get_data(`fetch_index_contents/${selected_lan_code}/cards`);
     $('#class-display-title').text(data['title']);
+
+    data = await get_data(`fetch_banners/${selected_lan_code}`)
+    $('#top-banner-inner').empty();
+    $('#top-banner-indicator').empty();
+    data.forEach(({image, url}, index) => {
+        var banner_item = gen_top_banner_item(image, url);
+        if (index === 0) {
+            banner_item.addClass('active');
+        }
+        $('#top-banner-indicator').append(`
+            <button type="button" data-bs-target="#top-banner" data-bs-slide-to="${index}" class="active"></button>
+        `);
+        $('#top-banner-inner').append(banner_item);
+    })
 }
 
 async function render_class_tree(selected_lan_code) {

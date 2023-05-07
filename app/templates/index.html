@@ -109,27 +109,11 @@
 
         <!-- Center container for prompt display. -->
         <div class="container-xxl overflow-y-scroll">
-            <div id="top-banner" class="carousel slide mt-3">
-                <div class="carousel-indicators mb-0">
-                    <button type="button" data-bs-target="#top-banner" data-bs-slide-to="0" class="active"></button>
+            <div id="top-banner" class="carousel slide mt-3" data-bs-ride="carousel" data-bs-interval="10000">
+                <div class="carousel-indicators mb-0" id="top-banner-indicator">
                 </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item rounded active top-banner-item">
-                        <div class="p-4 d-flex justify-content-center align-items-center">
-                            <div class="display-5 text-center">
-                                <img style="width: 55px; margin-top: -20px" class="me-2" src="static/img/android-chrome-512x512.png" />
-                                <span style="font-weight: 400 !important;">PromptGenius</span>
-                            </div>
-                            <div class="vr color-dark mx-2"></div>
-                            <div class="text-center mt-2">
-                                <span class="h5 d-flex flex-column align-items-start"
-                                    style="font-weight: 600 !important;">
-                                    <span>All-purpose prompts:</span>
-                                    <span>a gateway to creativity!</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="carousel-inner" id="top-banner-inner">
+                    <div class="carousel-item rounded active top-banner-item"></div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#top-banner" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon"></span>

@@ -149,3 +149,11 @@ function gen_prompt_display(prompt_list) {
         percentPosition: true
     }).masonry('reloadItems').masonry('layout');
 }
+
+function gen_top_banner_item(image, url) {
+    return $(`
+        <div class="carousel-item rounded top-banner-item px-0 px-lg-5">
+            <img class="d-block w-100" src="${image}"></img>
+        </div>
+    `)
+}

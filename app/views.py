@@ -27,6 +27,13 @@ def fetch_index_contents(lan_code, location):
     return jsonify(contents)
 
 
+@bp.route('/fetch_banners/<lan_code>')
+def fetch_banners(lan_code):
+    banners = [{'image': item.image, 'url': item.url}
+               for item in Banners.query.filter(Banners.lanCode == lan_code).all()]
+    return jsonify(banners)
+
+
 @bp.route('/fetch_tools/<lan_code>')
 def fetch_tools(lan_code):
     tools = [{'name': item.name, 'desc': item.desc, 'url': item.url,
