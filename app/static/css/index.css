@@ -60,3 +60,7 @@ main {
 .navbar-toggler {
     width: 69px;
 }
+
+.banner-img {
+    max-height: 135px;
+}

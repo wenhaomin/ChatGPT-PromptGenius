@@ -125,7 +125,7 @@ async function render_page_basic(selected_lan_code) {
     data = await get_data(`fetch_banners/${selected_lan_code}`)
     $('#top-banner-inner').empty();
     $('#top-banner-indicator').empty();
-    data.forEach(({ image, url }, index) => {
+    data.forEach(({ size, image, url}, index) => {
         var banner_item = gen_top_banner_item(image, url);
         var indicator_item = $(`<button type="button" data-bs-target="#top-banner" data-bs-slide-to="${index}"></button>`);
         if (index === 0) {
