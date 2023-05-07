@@ -2,7 +2,7 @@ import copy
 from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template, request
-
+from sqlalchemy import text
 from app.utils import *
 
 bp = Blueprint('views', __name__)
@@ -67,7 +67,16 @@ def fetch_classes(lan_code):
     print(type(classes), len(classes), classes[0]['ID'])
     return jsonify(classes)
 
-
+@bp.route('/increase_count/<lan_code>/<function_id>/<semantic_id>/')
+def increase_count(lan_code,function_id,semantic_id):
+    functionprompt = FunctionPrompts.query.filter_by(lanCode=lan_code, functionID=function_id, semanticID=semantic_id).first()
+    if functionprompt:
+        functionprompt.copied_count += 1
+        db.session.commit()
+    # click = Click.query.get(1)
+    # click.click_count += 1
+    # db.session.commit()
+    return 'OK'
 
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
 def fetch_prompt(class_id, lan_code):
@@ -92,9 +101,9 @@ def fetch_prompt(class_id, lan_code):
         if class_id == 'popular' and int(prompt.priority) != 2:
             continue
 
-        entry = {'content': prompt.content, 'lan_code': lan_code,
+        entry = {'content': prompt.content, 'lan_code': lan_code,'semanticID': prompt.semanticID, 'functionID': prompt.functionID,
                  'author': prompt.author, 'author_link': prompt.author_link,
-                 'model': prompt.model, 'function_id': prompt.functionID}
+                 'model': prompt.model, 'function_id': prompt.functionID, 'copied_count': prompt.copied_count}
         tmp = get_prompt_info_for_render(entry)
 
         result.append(tmp)
@@ -108,9 +117,9 @@ def search_prompt(search_text, lan_code):
     for prompt in FunctionPrompts.query. \
             filter(and_(FunctionPrompts.lanCode == lan_code,
                         FunctionPrompts.content.contains(search_text))).all():
-        entry = {'content': prompt.content, 'lan_code': lan_code,
+        entry = {'content': prompt.content, 'lan_code': lan_code,'semanticID': prompt.semanticID, 'functionID': prompt.functionID,
                  'author': prompt.author, 'author_link': prompt.author_link,
-                 'model': prompt.model, 'function_id': prompt.functionID}
+                 'model': prompt.model, 'function_id': prompt.functionID, 'copied_count': prompt.copied_count}
         tmp = get_prompt_info_for_render(entry)
         result.append(tmp)
 

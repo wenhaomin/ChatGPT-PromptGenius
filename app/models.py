@@ -75,3 +75,4 @@ class FunctionPrompts(db.Model):
     content = db.Column(db.String)  # Prompt contents
     author = db.Column(db.String)
     author_link = db.Column(db.String)
+    copied_count = db.Column(db.Integer)

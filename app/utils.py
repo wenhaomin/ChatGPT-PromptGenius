@@ -50,6 +50,9 @@ def similarity_score_levenshtein(A, B):
 def get_prompt_info_for_render(p: dict):
     tmp = {}
     tmp['chat_list'] = [p['content']]
+    tmp['copied_count'] = p['copied_count']
+    tmp['function_id']=p['functionID']
+    tmp['semantic_id']=p['semanticID']
     tmp['author'] = p.get('author', '')
     if tmp['author'] == 'whm':
         tmp['author'] = ''
