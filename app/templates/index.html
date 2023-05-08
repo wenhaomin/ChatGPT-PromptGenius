@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<main class="container-fluid d-flex flex-nowrap">
+<main class="d-flex flex-nowrap">
     <!-- Left offcanvas for class selection. -->
     <div class="d-flex flex-column flex-shrink-0 overflow-y-scroll">
         <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="class-sidebar">
@@ -11,7 +11,7 @@
                 <h5 class="offcanvas-title" id="class-offcanvas-title"></h5>
             </div>
             <div class="offcanvas-body p-0">
-                <div class="container-fluid d-flex flex-column flex-shrink-0 p-1 py-3">
+                <div class="container-fluid d-flex flex-column flex-shrink-0 p-2">
                     <ul class="nav nav-pills flex-column mb-auto" id="class-selection-list"></ul>
                 </div>
             </div>
@@ -72,7 +72,6 @@
     })
 
     function switch_language_listener(selected_lan_code) {
-        action_sidebar_bs.hide();
         render_page_basic(selected_lan_code);
         render_class_tree(selected_lan_code);
         render_search_prompt_by_class(cur_selected_class, cur_lan_code);

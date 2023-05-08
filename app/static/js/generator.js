@@ -137,9 +137,9 @@ function gen_tool_card(name, desc, url, icon, tags) {
         <a href="${url}" target="_blank" class="card shadow-sm text-decoration-none tool-card bg-light">
             <div class="card-body">
                 <div class="card-title d-flex flex-column">
-                    <div class="d-flex flex-nowrap">
-                        <img src="${icon}" class="object-fit-cover rounded tool-icon"></img>
+                    <div class="d-flex flex-nowrap justify-content-between">
                         <h5 class="ms-2">${name}</h5>
+                        <img src="${icon}" class="object-fit-cover rounded tool-icon"></img>
                     </div>
                     <div class="tool-tag-row"></div>
                 </div>
