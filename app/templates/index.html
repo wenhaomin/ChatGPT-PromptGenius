@@ -1,181 +1,81 @@
-<!doctype html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    <title id="page-browser-title"></title>
-    <link rel="stylesheet" href="/static/css/index.css">
-    <script src="/static/module/jquery.min.js"></script>
-    <link rel="stylesheet" href="/static/module/jquery-ui/jquery-ui.min.css">
-    <script src="/static/module/jquery-ui/jquery-ui.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
-    <link rel="Shortcut Icon" href="/static/img/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon">
-</head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TY2Y50CCNH"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-TY2Y50CCNH');
-</script>
-
-<body>
-    <!-- The top-fixed nav bar. -->
-    <nav class="navbar navbar-expand-lg text-bg-dark fixed-top" id="main-navbar">
-        <div class="container-fluid d-flex justify-content-between">
-            <button type="button" class="navbar-toggler text-light border-0" data-bs-toggle="offcanvas"
-                data-bs-target="#class-sidebar">
-                <i class="bi bi-grid-3x3-gap-fill"></i>
-            </button>
-
-            <a class="navbar-brand d-flex align-items-center">
-                <img src="/static/img/favicon.ico" height="35"></img>
-                <span id="page-header-title" class="text-white fs-4 ms-2 d-none d-lg-block"></span>
-            </a>
-
-            <button type="button" class="text-light navbar-toggler border-0 
-                d-flex flex-nowrap d-lg-none justify-content-around" data-bs-toggle="offcanvas" data-bs-target="#action-sidebar">
-                <i class="bi bi-search"></i>
-                <i class="bi bi-three-dots"></i>
-            </button>
-
-            <!-- Right offcanvas for actions. -->
-            <div class="offcanvas-lg offcanvas-end flex-grow-1 text-bg-dark" tabindex="-1" id="action-sidebar">
-                <div class="offcanvas-header border-bottom border-secondary">
-                    <h5 class="offcanvas-title" id="action-offcanvas-title"></h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        data-bs-target="#action-sidebar" aria-label="Close">
-                    </button>
-                </div>
-                <div class="offcanvas-body">
-                    <div class="input-group ms-lg-auto mb-3 mb-lg-0" id="search-input-group">
-                        <input type="text" class="form-control text-bg-light">
-                        <button class="btn btn-secondary" type="button"></button>
-                    </div>
-                    <div class="vr d-none d-lg-block mx-2"></div>
-                    <div class="btn-group flex-row" role="group" id="nav-button-group">
-                        <button type="button" class="btn btn-secondary" id="nav-submit-btn" data-bs-toggle="modal"
-                            data-bs-target="#submit-dialog">
-                            <i class="bi bi-upload"></i>
-                            <span>Submit</span>
-                        </button>
-                        <a type="button" class="btn btn-secondary" id="nav-github-btn"
-                            href="https://github.com/wenhaomin/PromptGenius" target="_blank">
-                            <i class="bi bi-github"></i>
-                            <span>GitHub</span>
-                        </a>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="bi bi-globe"></i>
-                                <span>Language</span>
-                            </button>
-                            <ul class="dropdown-menu" id="nav-language-select">
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
+{% block content %}
+<main class="container-fluid d-flex flex-nowrap">
+    <!-- Left offcanvas for class selection. -->
+    <div class="d-flex flex-column flex-shrink-0 overflow-y-scroll">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="class-sidebar">
+            <div class="offcanvas-header border-bottom">
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    data-bs-target="#class-sidebar" aria-label="Close"></button>
+                <h5 class="offcanvas-title" id="class-offcanvas-title"></h5>
             </div>
-        </div>
-    </nav>
-
-    <!-- Main container -->
-    <main class="container-fluid d-flex flex-nowrap">
-        <!-- Left offcanvas for class selection. -->
-        <div class="d-flex flex-column flex-shrink-0 overflow-y-scroll">
-            <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="class-sidebar">
-                <div class="offcanvas-header border-bottom">
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        data-bs-target="#class-sidebar" aria-label="Close"></button>
-                    <h5 class="offcanvas-title" id="class-offcanvas-title"></h5>
-                </div>
-                <div class="offcanvas-body p-0">
-                    <div class="container-fluid d-flex flex-column flex-shrink-0 p-1 py-3">
-                        <ul class="nav nav-pills flex-column mb-auto" id="class-selection-list"></ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Center container for prompt display. -->
-        <div class="container-xxl overflow-y-scroll">
-            <div id="top-banner" class="carousel slide mt-2 mt-md-3" data-bs-ride="carousel" data-bs-interval="10000">
-                <div class="carousel-indicators mb-0" id="top-banner-indicator">
-                </div>
-                <div class="carousel-inner" id="top-banner-inner">
-                    <div class="carousel-item rounded active top-banner-item"></div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#top-banner" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#top-banner" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-            </div>
-
-            <div class="row py-2 py-md-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-2"
-                id="prompt-display">
-            </div>
-        </div>
-    </main>
-
-    <div class="modal fade" id="submit-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="submit-dialog-title"></h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <span id="submit-dialog-message"></span>
-                    <form class="mt-3">
-                        <div class="input-group mb-2" id="submit-dialog-funcdesc-group">
-                            <span class="input-group-text"><i class="bi bi-tools"></i></span>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="input-group mb-2" id="submit-dialog-prompt-group">
-                            <span class="input-group-text"><i class="bi bi-lightbulb"></i></span>
-                            <textarea class="form-control form-control-sm" rows="3"></textarea>
-                        </div>
-                        <div class="input-group mb-2" id="submit-dialog-user-group">
-                            <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input class="form-control" rows="3" />
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" id="submit-clear-btn"></button>
-                    <button type="button" class="btn btn-primary" id="submit-enter-btn">
-                        <div class="spinner-border spinner-border-sm d-none" id="submit-enter-btn-spinner"></div>
-                        <span id="submit-enter-btn-text"></span>
-                    </button>
+            <div class="offcanvas-body p-0">
+                <div class="container-fluid d-flex flex-column flex-shrink-0 p-1 py-3">
+                    <ul class="nav nav-pills flex-column mb-auto" id="class-selection-list"></ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
-        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
-        async></script>
+    <!-- Center container for prompt display. -->
+    <div class="container-xxl overflow-y-scroll">
+        <div id="top-banner" class="carousel slide mt-2 mt-md-3" data-bs-ride="carousel" data-bs-interval="10000">
+            <div class="carousel-indicators mb-0" id="top-banner-indicator">
+            </div>
+            <div class="carousel-inner" id="top-banner-inner">
+                <div class="carousel-item rounded active top-banner-item"></div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#top-banner" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#top-banner" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
 
-    <script src="/static/js/init_var.js"></script>
-    <script src="/static/js/generator.js"></script>
-    <script src="/static/js/control.js"></script>
-    <script src="/static/js/listener.js"></script>
-    <script src="/static/js/init_page.js"></script>
-</body>
+        <div class="row py-2 py-md-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-2"
+            id="prompt-display">
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block script %}
+<script>
+    (async () => {
+        cur_lan_code = 'eng';
+        cur_selected_class = 'popular';
+        cur_class = 'popular'
+
+        await init_language_select();
+        await render_class_tree(cur_lan_code);
+
+        await render_page_basic(cur_lan_code);
+        await render_search_prompt_by_class(cur_selected_class, cur_lan_code);
+    })().then(() => {
+        class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
+
+        $("#search-input-group button").on('click', prompt_search_listener);
+        $('#submit-clear-btn').on('click', submit_clear_listener);
+        $('#submit-enter-btn').on('click', submit_enter_listener);
+
+        $(document).ready(function () {
+            $("#search-input-group input").keydown(function (e) {
+                var curKey = e.which;
+                if (curKey == 13) {
+                    prompt_search_listener()
+                    return false;
+                }
+            });
+        });
+    })
+
+    function switch_language_listener(selected_lan_code) {
+        action_sidebar_bs.hide();
+        render_page_basic(selected_lan_code);
+        render_class_tree(selected_lan_code);
+        render_search_prompt_by_class(cur_selected_class, cur_lan_code);
+    }
+</script>
+{% endblock %}

@@ -2,6 +2,17 @@ main {
     margin-top: 60px;
 }
 
+.navbar-link {
+    color: #ddd !important;
+}
+
+.active-navbar-link {
+    color: #fff !important;
+    text-decoration: underline !important;
+    text-decoration-color: #fff !important;
+    font-weight: 750 !important;
+}
+
 .overflow-y-scroll {
     height: calc(100vh - 60px);
 }
@@ -15,7 +26,7 @@ main {
 }
 
 #action-sidebar {
-    width: 360px;
+    width: 300px;
 }
 
 .class-selection-divider {
@@ -63,4 +74,9 @@ main {
 
 .banner-img {
     max-height: 135px;
+}
+
+.tool-icon {
+    height: 25px;
+    width: 25px;
 }

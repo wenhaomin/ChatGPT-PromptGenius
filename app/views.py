@@ -14,6 +14,11 @@ def index():
     return render_template('index.html')
 
 
+@bp.route('/tools')
+def tools():
+    return render_template('tools.html')
+
+
 @bp.route('/fetch_lan')
 def fetch_lan():
     languages = [{"code": item.code, "name": item.name} for item in Languages.query.all()]

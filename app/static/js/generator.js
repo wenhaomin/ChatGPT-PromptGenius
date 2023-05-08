@@ -12,31 +12,6 @@ function gen_class_card_html(class_id, class_name, example_desc) {
     return html
 }
 
-function gen_tool_card(tool_name, tool_desc, tool_url, tags, icon_src) {
-    let tag_html = []
-    tags.forEach(tag => {
-        tag_html.push(`<div class="mdui-chip mdui-color-grey-300">
-            <span class="mdui-chip-title">${tag}</span>
-        </div>`);
-    });
-    tag_html = tag_html.join('\n');
-    html = `
-    <a href="${tool_url}" target="_blank" style="text-decoration: none;">
-        <div class="mdui-card mdui-hoverable mdui-color-grey-200 mdui-m-b-2">
-            <div class="mdui-card-primary">
-                <div class="mdui-row mdui-p-x-2">
-                <span class="mdui-typo-title mdui-m-r-1">${tool_name}</span>
-                ${tag_html}
-                <img class="mdui-chip-icon mdui-float-right" src="${icon_src}"/>
-                </div>
-                <div class="mdui-card-content">${tool_desc}</div>
-            </div>
-        </div>
-    </a>
-    `;
-    return html;
-}
-
 function gen_class_selection(item) {
     var nav_item = $(`
         <li class="nav-item h6 class-list-item">
@@ -114,6 +89,14 @@ function gen_prompt_card(item) {
     return card;
 }
 
+function masonry_reload(parent_dom, item_selector) {
+    parent_dom.masonry({
+        itemSelector: item_selector,
+        columnWidth: item_selector,
+        percentPosition: true
+    }).masonry('reloadItems').masonry('layout');
+}
+
 function gen_prompt_display(prompt_list) {
     var display = $("#prompt-display");
     display.text('');
@@ -130,12 +113,7 @@ function gen_prompt_display(prompt_list) {
             item['copied_count'] += 1
             add_search_prompt(cur_lan_code, item['function_id'], item['semantic_id']);
             card.find('.copied-count-display').html(item['copied_count']);
-
-            display.masonry({
-                itemSelector: '.prompt-col',
-                columnWidth: '.prompt-col',
-                percentPosition: true
-            }).masonry('reloadItems').masonry('layout');
+            masonry_reload(display, '.prompt-col');
 
             setTimeout(() => {
                 copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
@@ -143,11 +121,7 @@ function gen_prompt_display(prompt_list) {
         })
     });
 
-    display.masonry({
-        itemSelector: '.prompt-col',
-        columnWidth: '.prompt-col',
-        percentPosition: true
-    }).masonry('reloadItems').masonry('layout');
+    masonry_reload(display, '.prompt-col');
 }
 
 function gen_top_banner_item(image, url) {
@@ -156,4 +130,31 @@ function gen_top_banner_item(image, url) {
             <img class="d-block object-fit-scale w-100 banner-img" src="${image}"></img>
         </div>
     `)
+}
+
+function gen_tool_card(name, desc, url, icon, tags) {
+    var card = $(`
+        <a href="${url}" target="_blank" class="card shadow-sm text-decoration-none tool-card bg-light">
+            <div class="card-body">
+                <div class="card-title d-flex flex-column">
+                    <div class="d-flex flex-nowrap">
+                        <img src="${icon}" class="object-fit-cover rounded tool-icon"></img>
+                        <h5 class="ms-2">${name}</h5>
+                    </div>
+                    <div class="tool-tag-row"></div>
+                </div>
+                <div class="card-text small">
+                    ${desc}
+                </div>
+            </div>
+        </a>
+    `);
+
+    tags.forEach(tag => {
+        card.find('.tool-tag-row').append(`
+            <span class="badge rounded-pill text-bg-info">${tag}</span>
+        `);
+    });
+
+    return card;
 }

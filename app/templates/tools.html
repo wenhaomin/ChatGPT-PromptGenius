@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container-xxl overflow-y-scroll">
+    <div class="row py-2 py-md-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-2" 
+        id="tools-display"></div>
+</main>
+{% endblock%}
+
+{% block script %}
+<script>
+    (async () => {
+        cur_lan_code = 'eng';
+
+        await init_language_select();
+        await render_page_basic(cur_lan_code);
+        await render_tools(cur_lan_code);
+    })().then(() => {
+        $('#class-sidebar-toggler').addClass('disabled');
+        $('#class-sidebar-toggler i').addClass('text-secondary');
+        $('#search-input-group input').attr('disabled', 'disabled');
+        $('#search-input-group button').attr('disabled', 'disabled');
+        $('#nav-submit-btn').attr('disabled', 'disabled');
+    });
+
+    function switch_language_listener(selected_lan_code) {
+        render_page_basic(selected_lan_code);
+        render_tools(selected_lan_code);
+    }
+</script>
+{% endblock %}
