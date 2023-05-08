@@ -1,165 +1,81 @@
-<!-- Author: Yan Lin -->
-<!-- Created on: 2023-03-18 -->
-<!-- The main page of the website. -->
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title id="page-browser-title"></title>
-    <link rel="stylesheet" href="/static/module/mdui/css/mdui.min.css">
-    <link rel="stylesheet" href="/static/css/index.css">
-    <!--    <link rel="stylesheet" href="/static/css/card_style.css">-->
-    <script src="/static/module/jquery.min.js"></script>
-    <link rel="stylesheet" href="/static/module/jquery-ui/jquery-ui.min.css">
-    <script src="/static/module/jquery-ui/jquery-ui.min.js"></script>
+{% block content %}
+<main class="container-fluid d-flex flex-nowrap">
+    <!-- Left offcanvas for class selection. -->
+    <div class="d-flex flex-column flex-shrink-0 overflow-y-scroll">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="class-sidebar">
+            <div class="offcanvas-header border-bottom">
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    data-bs-target="#class-sidebar" aria-label="Close"></button>
+                <h5 class="offcanvas-title" id="class-offcanvas-title"></h5>
+            </div>
+            <div class="offcanvas-body p-0">
+                <div class="container-fluid d-flex flex-column flex-shrink-0 p-1 py-3">
+                    <ul class="nav nav-pills flex-column mb-auto" id="class-selection-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Center container for prompt display. -->
+    <div class="container-xxl overflow-y-scroll">
+        <div id="top-banner" class="carousel slide mt-2 mt-md-3" data-bs-ride="carousel" data-bs-interval="10000">
+            <div class="carousel-indicators mb-0" id="top-banner-indicator">
+            </div>
+            <div class="carousel-inner" id="top-banner-inner">
+                <div class="carousel-item rounded active top-banner-item"></div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#top-banner" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#top-banner" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
 
-    <!--    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/apple-touch-icon.png">-->
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
-    <link rel="Shortcut Icon" href="/static/img/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon">
+        <div class="row py-2 py-md-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-2"
+            id="prompt-display">
+        </div>
+    </div>
+</main>
+{% endblock %}
 
-</head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TY2Y50CCNH"></script>
+{% block script %}
 <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    (async () => {
+        cur_lan_code = 'eng';
+        cur_selected_class = 'popular';
+        cur_class = 'popular'
 
-    gtag('config', 'G-TY2Y50CCNH');
+        await init_language_select();
+        await render_class_tree(cur_lan_code);
+
+        await render_page_basic(cur_lan_code);
+        await render_search_prompt_by_class(cur_selected_class, cur_lan_code);
+    })().then(() => {
+        class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
+
+        $("#search-input-group button").on('click', prompt_search_listener);
+        $('#submit-clear-btn').on('click', submit_clear_listener);
+        $('#submit-enter-btn').on('click', submit_enter_listener);
+
+        $(document).ready(function () {
+            $("#search-input-group input").keydown(function (e) {
+                var curKey = e.which;
+                if (curKey == 13) {
+                    prompt_search_listener()
+                    return false;
+                }
+            });
+        });
+    })
+
+    function switch_language_listener(selected_lan_code) {
+        action_sidebar_bs.hide();
+        render_page_basic(selected_lan_code);
+        render_class_tree(selected_lan_code);
+        render_search_prompt_by_class(cur_selected_class, cur_lan_code);
+    }
 </script>
-
-<!-- mdui-color-indigo-50 -->
-
-<!-- class="mdui-typo-title" for header title -->
-
-<body class="mdui-drawer-body-left  mdui-color-grey-100 mdui-appbar-with-toolbar">
-    <header class="appbar mdui-appbar mdui-appbar-fixed mdui-shadow-1 mdui-hoverable loading-bar mdui-text-color-white"
-        id="main-bar">
-        <div class="mdui-toolbar" id="main-toolbar">
-            <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
-                <i class="mdui-icon material-icons">dehaze</i>
-            </button>
-            <a class="mdui-typo-headline" id="page-header-title"></a>
-            <button class="mdui-btn" id="tools-btn"></button>
-
-            <!-- <div class="mdui-text-color-theme-text">ChatGPT工具传送门</div> -->
-            <div class="mdui-toolbar-spacer"></div>
-
-            <button class="mdui-btn mdui-btn-icon" id="submit-dialog-open-btn">
-                <i class="mdui-icon material-icons">file_upload</i>
-            </button>
-            <a class="mdui-btn mdui-btn-icon" target="_blank" href="https://github.com/wenhaomin/PromptGenius">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 36 36"
-                    enable-background="new 0 0 36 36" xml:space="preserve" class="mdui-icon"
-                    style="width: 24px;height:24px;">
-                    <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,
-                        0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1c1.6,0.1,2.5,
-                        1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,
-                        0.6-3.2,1.7-4.4c-0.2-0.4-0.7-2.1,0.2-4.3c0,0,1.4-0.4,4.5,1.7c1.3-0.4,2.7-0.5,4.1-0.5c1.4,
-                        0,2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4c0,
-                        6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,
-                        11.1-8.3,11.1-15.5C34.3,8.7,27,1.4,18,1.4z">
-                    </path>
-                </svg>
-            </a>
-            <select class="mdui-select" id="language-select"></select>
-        </div>
-    </header>
-
-    <!-- mdui-collapse="{accordion: true}" -->
-
-    <div>
-        <!--        <div class="navbar__logo"><img src="/img/logo.svg" alt="ChatGPT Shortcuts" class="themedImage_ToTc themedImage&#45;&#45;light_HNdA"></div>-->
-
-        <div class="mdui-text-center mdui-m-t-2 mdui-typo-display-2">
-
-            <img class="mdui-img-circle" src="/static/img/favicon.ico" />
-
-            PromptGenius
-        </div>
-        <div class="mdui-text-center mdui-m-t-2 mdui-typo-title">
-            All-purpose prompts: a gateway to creativity !
-        </div>
-    </div>
-
-    <!--drawer-->
-    <div class="mdui-drawer" id="left-drawer">
-        <ul id="hierarchy-tree" class="mdui-collapse mdui-list" style="accordion: true"></ul>
-        <!--<button class="mdui-btn" mdui-drawer-close>close</button>-->
-    </div>
-
-    <div class="container p-helper mdui-container">
-        <div id="main-container">
-            <!-- Row for the search input. -->
-            <div class="mdui-row" id="search-row">
-                <div class="mdui-col-xs-12">
-                    <div class="mdui-textfield">
-                        <label class="mdui-textfield-label">Press Enter to Search</label>
-                        <input class="mdui-textfield-input mdui-text-center" id="search-input" />
-                    </div>
-                </div>
-            </div>
-            <div class="mdui-textfield mdui-text-center" id="prompt_num"></div>
-            <!-- Row for display prompt classes. mdui-typo-subheading is used to set the text to a smaller size   -->
-            <div class="mdui-container-fluid mdui-m-t-2" id="class-card-container"></div>
-        </div>
-    </div>
-
-    <button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-blue mdui-fab-hide" id="back-top-btn">
-        <i class="mdui-icon material-icons">arrow_upward</i>
-    </button>
-
-    <div class="mdui-dialog" id="submit-dialog">
-        <div class="mdui-dialog-title" id="submit-dialog-title"></div>
-        <div class="mdui-dialog-content" id="submit-dialog-content">
-            <div class="mdui-row"><span id="submit-dialog-message"></span></div>
-            <div class="mdui-row">
-                <div class="mdui-textfield mdui-textfield-floating-label" id="submit-dialog-funcdesc-tf">
-                    <label class="mdui-textfield-label"></label>
-                    <textarea class="mdui-textfield-input" type="email" rows="1" type="text"></textarea>
-                    <div class="mdui-textfield-error"></div>
-                </div>
-                <div class="mdui-textfield mdui-textfield-floating-label" id="submit-dialog-prompt-tf">
-                    <label class="mdui-textfield-label" id="submit-dialog-prompt-label"></label>
-                    <textarea class="mdui-textfield-input" type="email" rows="2" type="text"></textarea>
-                    <div class="mdui-textfield-error"></div>
-                </div>
-                <div class="mdui-textfield mdui-textfield-floating-label" id="submit-dialog-username-tf">
-                    <label class="mdui-textfield-label" id="submit-dialog-username-label"></label>
-                    <textarea class="mdui-textfield-input" type="email" rows="1"></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="mdui-dialog-actions">
-            <button class="mdui-btn mdui-ripple" id="submit-enter-btn"></button>
-            <button class="mdui-btn mdui-ripple mdui-dialog-close" id="submit-cancel-btn"></button>
-        </div>
-    </div>
-
-    <div class="mdui-dialog" id="tools-dialog">
-        <div class="mdui-btn mdui-btn-icon mdui-float-right" id="tools-dialog-close-btn">
-            <i class="mdui-icon material-icons">close</i>
-        </div>
-        <div class="mdui-dialog-title"></div>
-        <div class="mdui-dialog-content"></div>
-    </div>
-
-    <div class="mdui-dialog" id="about-dialog">
-    </div>
-</body>
-
-<script src="/static/module/mdui/js/mdui.min.js"></script>
-<script src="/static/js/init_var.js"></script>
-<script src="/static/js/generator.js"></script>
-<script src="/static/js/control.js"></script>
-<script src="/static/js/listener.js"></script>
-<script src="/static/js/init_page.js"></script>
-<!-- <script src="/static/js/tree_menu.js"></script> -->
-
-</html>
+{% endblock %}

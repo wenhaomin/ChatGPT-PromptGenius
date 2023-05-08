@@ -1,173 +1,82 @@
-/*
-html, body {
-    width: 100%;
-    height: 100%;
-}
-*/
-
-/*
-.mdui-container {
-    margin-top: 10px;
-    display: flex;
-}
-*/
-
-.mdui-container {
-    margin-top: 10px;
+main {
+    margin-top: 60px;
 }
 
-
-#search-btn {
-    margin-top: 18px;
+.navbar-link {
+    color: #ddd !important;
 }
 
-#search-row {
-    margin-bottom: 20px;
+.active-navbar-link {
+    color: #fff !important;
+    text-decoration: underline !important;
+    text-decoration-color: #fff !important;
+    font-weight: 750 !important;
 }
 
-#class-display-row {
-    margin-top: 20px;
+.overflow-y-scroll {
+    height: calc(100vh - 60px);
 }
 
-#class-display-title {
-    margin-bottom: 15px;
+#search-input-group {
+    max-width: 350px;
 }
 
-#tools-dialog-close-btn {
-    margin-top: 18px;
-    margin-right: 18px;
+#class-sidebar {
+    width: 260px;
 }
 
-
-.normal-bar {
-    background-color: #3F51B5;
+#action-sidebar {
+    width: 300px;
 }
 
-.loading-bar {
-    background-color: #FF6F00;
+.class-selection-divider {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-
-
-/*
-
-.class-card-col {
-    padding-top: 8px;
-    padding-bottom: 8px;
+.class-icon {
+    margin-right: 5px !important;
 }
 
-
-.class-card {
-    height: 220px;
+.class-list-item {
+    margin-bottom: 0 !important;
+    height: 30px;
 }
 
-.class-card-primary {
-    height: 50px;
-}
-*/
-
-
-.mdui-card-primary.horizontal-flex {
-    display: flex;
-    align-items: center;
-    height: 4px;
+.class-nav-link:hover, .child-class-nav-link:hover {
+    background-color: #f7f7f7;
 }
 
-.prompt-card-header {
-    padding-top: 2px;
-    padding-bottom: 2px;
+.class-nav-link {
+    width: 250px;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
 }
 
-#left-drawer {
-    width: 270px;
+.child-class-list-item {
+    height: 28px;
 }
 
-/* .hierarchy-tree-content {
-    max-width: 180px;
-} */
+.child-class-nav-link {
+    width: 250px;
+    padding-left: 40px !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}
 
+.top-banner-item {
+    background-color: #eee;
+}
 
+.navbar-toggler {
+    width: 69px;
+}
 
+.banner-img {
+    max-height: 135px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*!*for tree menu*!*/
-/*.tree-menu {*/
-/*    margin-top: 200px;*/
-/*    !*margin-bottom: 20px;*!*/
-/*}*/
-
-/*.tree-menu .ui-accordion-header {*/
-/*    background-color: #3f51b5;*/
-/*    color: white;*/
-/*}*/
-
-/*.tree-menu .ui-accordion-header:hover {*/
-/*    background-color: #303f9f;*/
-/*}*/
-
-
-
-/*ul, li {*/
-/*    font-family: 'Arial', sans-serif;*/
-/*    font-size: 14px;*/
-/*}*/
-
-/*ul {*/
-/*    padding-left: 20px;*/
-/*}*/
-
-/*li {*/
-/*    background-color: #f5f5f5;*/
-/*    padding: 5px;*/
-/*    border-radius: 5px;*/
-/*    margin-bottom: 5px;*/
-/*}*/
-
-/*li:hover {*/
-/*    background-color: #ebebeb;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*li.tree-collapsed {*/
-/*    background-color: #d9d9d9;*/
-/*}*/
-
-/*li:before {*/
-/*    !*content: for HierarchyTree node point*!*/
-/*    !*content: '\25b6';*!*/
-/*    margin-right: 5px;*/
-/*}*/
-
-/*li.tree-collapsed:before {*/
-/*    !*content: '\25bc';*!*/
-/*}*/
-
-/*.tree-collapsed > ul {*/
-/*    display: none;*/
-/*}*/
-
-
-
-
-
-
+.tool-icon {
+    height: 25px;
+    width: 25px;
+}

@@ -2,7 +2,7 @@ import copy
 from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template, request
-
+from sqlalchemy import text
 from app.utils import *
 
 bp = Blueprint('views', __name__)
@@ -12,6 +12,11 @@ bp = Blueprint('views', __name__)
 @bp.route('/index')
 def index():
     return render_template('index.html')
+
+
+@bp.route('/tools')
+def tools():
+    return render_template('tools.html')
 
 
 @bp.route('/fetch_lan')
@@ -25,6 +30,13 @@ def fetch_index_contents(lan_code, location):
     contents = {item.ID: item.content for item in IndexContents.query.filter(and_(IndexContents.lanCode == lan_code,
                                                                                   IndexContents.location == location)).all()}
     return jsonify(contents)
+
+
+@bp.route('/fetch_banners/<lan_code>')
+def fetch_banners(lan_code):
+    banners = [{'image': item.image, 'url': item.url}
+               for item in Banners.query.filter(Banners.lanCode == lan_code).all()]
+    return jsonify(banners)
 
 
 @bp.route('/fetch_tools/<lan_code>')
@@ -68,6 +80,22 @@ def fetch_classes(lan_code):
     return jsonify(classes)
 
 
+@bp.route('/increase_count', methods=['GET', 'POST'])
+def increase_count():
+    if request.method == 'POST':
+        try:
+            functionprompt = FunctionPrompts.query.filter_by(
+                lanCode=request.json['lan_code'], 
+                functionID=request.json['function_id'], 
+                semanticID=request.json['semantic_id']).first()
+            if functionprompt:
+                functionprompt.copied_count += 1
+                db.session.commit()
+            return jsonify({'message': 'success'})
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'error', 'error': str(e)})
+
 
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
 def fetch_prompt(class_id, lan_code):
@@ -82,7 +110,7 @@ def fetch_prompt(class_id, lan_code):
     else:
         function_ids = [item.ID
                         for item in Functions.query.with_entities(Functions.ID).
-                            filter(Functions.classes.contains(class_id)).all()]
+                        filter(Functions.classes.contains(class_id)).all()]
 
     # find all prompts that has the function
     for prompt in FunctionPrompts.query. \
@@ -92,9 +120,9 @@ def fetch_prompt(class_id, lan_code):
         if class_id == 'popular' and int(prompt.priority) != 2:
             continue
 
-        entry = {'content': prompt.content, 'lan_code': lan_code,
+        entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID, 'functionID': prompt.functionID,
                  'author': prompt.author, 'author_link': prompt.author_link,
-                 'model': prompt.model, 'function_id': prompt.functionID}
+                 'model': prompt.model, 'function_id': prompt.functionID, 'copied_count': prompt.copied_count}
         tmp = get_prompt_info_for_render(entry)
 
         result.append(tmp)
@@ -108,9 +136,9 @@ def search_prompt(search_text, lan_code):
     for prompt in FunctionPrompts.query. \
             filter(and_(FunctionPrompts.lanCode == lan_code,
                         FunctionPrompts.content.contains(search_text))).all():
-        entry = {'content': prompt.content, 'lan_code': lan_code,
+        entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID, 'functionID': prompt.functionID,
                  'author': prompt.author, 'author_link': prompt.author_link,
-                 'model': prompt.model, 'function_id': prompt.functionID}
+                 'model': prompt.model, 'function_id': prompt.functionID, 'copied_count': prompt.copied_count}
         tmp = get_prompt_info_for_render(entry)
         result.append(tmp)
 

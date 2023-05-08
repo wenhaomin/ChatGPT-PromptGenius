@@ -75,3 +75,12 @@ class FunctionPrompts(db.Model):
     content = db.Column(db.String)  # Prompt contents
     author = db.Column(db.String)
     author_link = db.Column(db.String)
+    copied_count = db.Column(db.Integer)
+
+
+class Banners(db.Model):
+    __tablename__ = 'banners'
+    index = db.Column(db.Integer, primary_key=True)
+    lanCode = db.Column(db.String, primary_key=True)
+    image = db.Column(db.String)
+    url = db.Column(db.String)
