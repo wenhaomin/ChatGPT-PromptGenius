@@ -18,7 +18,11 @@ main {
 }
 
 #search-input-group {
-    max-width: 350px;
+    max-width: 280px;
+}
+
+input.text-bg-dark::placeholder {
+    color: #aaa !important;
 }
 
 #class-sidebar {
