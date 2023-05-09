@@ -90,21 +90,10 @@ async function render_page_basic(selected_lan_code) {
     // Render the basic elements on the page.
     var data;
 
-    data = await get_data(`fetch_index_contents/${selected_lan_code}/site`);
-    $('#page-browser-title, #page-header-title').text(data['title']);
-    $('#class-offcanvas-title').text(data['class_title']);
-    $('#action-offcanvas-title').text(data['action_title']);
+    $('#page-browser-title, #page-header-title').text(site_contents[selected_lan_code]['title']);
+    $('#class-offcanvas-title').text(site_contents[selected_lan_code]['class_canvas_title']);
+    $('#action-offcanvas-title').text(site_contents[selected_lan_code]['action_canvas_title']);
 
-    data = await get_data(`fetch_index_contents/${selected_lan_code}/navbar`)
-    $('#nav-submit-btn span').text(data['submit_btn']);
-
-    navbar_contents = {
-        'eng': ['Home', 'AI Tools'],
-        'chn': ['主页', 'AI工具'],
-        'jpn': ['ホーム', 'AI工具'],
-        'kor': ['홈페이지', 'AI도구'],
-        'deu': ['Startseite', 'KI-Tools']
-    }
     $('#navbar-links').empty();
     ['/', '/tools'].forEach((href, index) => {
         $('#navbar-links').append(`
@@ -117,28 +106,25 @@ async function render_page_basic(selected_lan_code) {
     })
 
     if ($('#submit-dialog').length) {
-        data = await get_data(`fetch_index_contents/${selected_lan_code}/submit_dialog`);
         // Render contents in submit dialog.
-        $('#submit-dialog-title').text(data['title']);
-        $('#submit-dialog-message').text(data['message']);
-        $('#submit-dialog-funcdesc-group input').attr('placeholder', data['func']);
-        $('#submit-dialog-prompt-group textarea').attr('placeholder', data['prompt']);
-        $('#submit-dialog-user-group input').attr('placeholder', data['user_name']);
-        $('#submit-clear-btn').text(data['clear_btn_text']);
-        $('#submit-enter-btn-text').text(data['ok_btn_text']);
+        $('#submit-dialog-title').text(submit_contents[selected_lan_code]['title']);
+        $('#submit-dialog-message').text(submit_contents[selected_lan_code]['message']);
+        $('#submit-dialog-funcdesc-group input').attr('placeholder', submit_contents[selected_lan_code]['func_placeholder']);
+        $('#submit-dialog-prompt-group textarea').attr('placeholder', submit_contents[selected_lan_code]['prompt_placeholder']);
+        $('#submit-dialog-user-group input').attr('placeholder', submit_contents[selected_lan_code]['username_placeholder']);
+        $('#submit-enter-btn-text').text(submit_contents[selected_lan_code]['ok_btn_text']);
+        $('#submit-clear-btn').text(submit_contents[selected_lan_code]['clear_btn_text']);
     }
 
     if ($('#search-input-group').length) {
-        data = await get_data(`fetch_index_contents/${selected_lan_code}/search`);
-        $('#search-input-group input').attr('placeholder', data['prompt']);
-        $('#search-input-group button').text(data['btn_text']);
+        $('#search-input-group input').attr('placeholder', searchbar_contents[selected_lan_code]['placeholder']);
+        $('#search-input-group button').text(searchbar_contents[selected_lan_code]['btn_text']);
     }
 
     if ($('#top-banner').length) {
-        data = await get_data(`fetch_banners/${selected_lan_code}`)
         $('#top-banner-inner').empty();
         $('#top-banner-indicator').empty();
-        data.forEach(({ image, url }, index) => {
+        banner_contents[selected_lan_code].forEach(({ image, url }, index) => {
             var banner_item = gen_top_banner_item(image, url);
             var indicator_item = $(`<button type="button" data-bs-target="#top-banner" data-bs-slide-to="${index}"></button>`);
             if (index === 0) {

@@ -65,13 +65,15 @@ function gen_prompt_card(item) {
     var card = $(`
         <div class="card shadow-sm" style="background-color: #${icon_style}1a">
             <div class="card-body">
-                <div class="card-title d-flex justify-content-between">
-                    <div class="prompt-tag-row">
-                        <a class="btn badge rounded-pill" style="background-color: #${icon_style}">
+                <div class="card-title d-flex justify-content-between mb-0">
+                    <div class="prompt-tag-row d-flex flex-wrap">
+                        <a class="btn badge rounded-pill function-desc-badge text-truncate mb-1 me-1" 
+                        style="background-color: #${icon_style}" 
+                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${function_desc}">
                             <i class="bi bi-${icon_name}"></i>
-                            ${function_desc}
+                            <span class="function-desc-badge-text">${function_desc}</span>
                         </a>
-                        <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info">${author}</a>
+                        <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info mb-1">${author}</a>
                     </div>
                     <div class="btn-group ms-2" style="height: 25px">
                         <a class="btn badge border-0 text-dark prompt-copy-btn">
@@ -85,7 +87,9 @@ function gen_prompt_card(item) {
                 </div>
             </div>
         </div>
-    `)
+    `);
+    const tooltip = new bootstrap.Tooltip(card.find('.function-desc-badge'));
+
     return card;
 }
 

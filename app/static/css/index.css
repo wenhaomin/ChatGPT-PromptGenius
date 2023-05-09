@@ -80,3 +80,7 @@ main {
     height: 25px;
     width: 25px;
 }
+
+.function-desc-badge {
+    max-width: 200px;
+}
