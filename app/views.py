@@ -1,8 +1,8 @@
 import copy
 from datetime import datetime
 
-from flask import Blueprint, jsonify, render_template, request
-from sqlalchemy import text
+from flask import Blueprint, jsonify, render_template, request, flash
+from flask_login import LoginManager
 from app.utils import *
 
 bp = Blueprint('views', __name__)
@@ -14,6 +14,63 @@ def index():
     return render_template('index.html')
 
 
+# 登录路由
+from flask import render_template, request, redirect, url_for
+
+login_manager = LoginManager()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    # 用户未登录，重定向到登录页面
+    return render_template('login.html')
+
+
+@bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return render_template('index.html')
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        if not username or not password or not confirm_password:
+            flash('Please fill in all fields.')
+        elif password != confirm_password:
+            flash('Passwords do not match.')
+        elif User.query.filter_by(username=username).first() is not None:
+            flash('Username already exists.')
+        else:
+            user = User(username=username, password=generate_password_hash(password))
+            db.session.add(user)
+            db.session.commit()
+            flash('Registration succeeded.')
+            return redirect(url_for('auth.login'))
+    return render_template('register.html')
+
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return render_template('index.html')
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user is not None and user.check_password(password):
+            login_user(user)
+            return render_template('index.html')
+        flash('Invalid username or password')
+    return render_template('login.html')
+
+
+# 登出路由
+@bp.route('/logout')
 @bp.route('/tools')
 def tools():
     return render_template('tools.html')
@@ -85,8 +142,8 @@ def increase_count():
     if request.method == 'POST':
         try:
             functionprompt = FunctionPrompts.query.filter_by(
-                lanCode=request.json['lan_code'], 
-                functionID=request.json['function_id'], 
+                lanCode=request.json['lan_code'],
+                functionID=request.json['function_id'],
                 semanticID=request.json['semantic_id']).first()
             if functionprompt:
                 functionprompt.copied_count += 1
@@ -110,7 +167,7 @@ def fetch_prompt(class_id, lan_code):
     else:
         function_ids = [item.ID
                         for item in Functions.query.with_entities(Functions.ID).
-                        filter(Functions.classes.contains(class_id)).all()]
+                            filter(Functions.classes.contains(class_id)).all()]
 
     # find all prompts that has the function
     for prompt in FunctionPrompts.query. \
@@ -120,7 +177,8 @@ def fetch_prompt(class_id, lan_code):
         if class_id == 'popular' and int(prompt.priority) != 2:
             continue
 
-        entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID, 'functionID': prompt.functionID,
+        entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID,
+                 'functionID': prompt.functionID,
                  'author': prompt.author, 'author_link': prompt.author_link,
                  'model': prompt.model, 'function_id': prompt.functionID, 'copied_count': prompt.copied_count}
         tmp = get_prompt_info_for_render(entry)
@@ -136,7 +194,8 @@ def search_prompt(search_text, lan_code):
     for prompt in FunctionPrompts.query. \
             filter(and_(FunctionPrompts.lanCode == lan_code,
                         FunctionPrompts.content.contains(search_text))).all():
-        entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID, 'functionID': prompt.functionID,
+        entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID,
+                 'functionID': prompt.functionID,
                  'author': prompt.author, 'author_link': prompt.author_link,
                  'model': prompt.model, 'function_id': prompt.functionID, 'copied_count': prompt.copied_count}
         tmp = get_prompt_info_for_render(entry)
