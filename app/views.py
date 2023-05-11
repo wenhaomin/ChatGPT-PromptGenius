@@ -51,7 +51,6 @@ def fetch_tools(lan_code):
 def submit_function():
     if request.method == 'POST':
         try:
-            print(request.json)
             func_desc = request.json['func_desc']
             prompt_content = request.json['prompt_content']
             user_name = request.json['user_name']
