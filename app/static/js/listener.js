@@ -47,22 +47,20 @@ function validate_input(input_group) {
 function submit_enter_listener() {
     var func_desc = validate_input($('#submit-dialog-funcdesc-group'));
     var prompt_content = validate_input($('#submit-dialog-prompt-group'));
-    var user_name = $('#submit-dialog-prompt-user-group input').val();
+    var user_name = $('#submit-dialog-user-group input').val();
     if (func_desc.length > 0 & prompt_content.length > 0) {
         $('#submit-enter-btn-spinner').removeClass('d-none');
-        $.ajax({
-            type: 'POST',
-            url: '/submit_function',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                func_desc: func_desc,
-                prompt_content: prompt_content,
-                user_name: user_name
-            }),
-            success: () => {
-                $('#submit-enter-btn-spinner').addClass('d-none');
+        send_post('/submit_function', {
+            'func_desc': func_desc,
+            'prompt_content': prompt_content,
+            'user_name': user_name
+        }).then(() => {
+            $('#submit-enter-btn-spinner').addClass('d-none');
+            $('#submit-ok-indicator').removeClass('d-none');
+            setTimeout(() => {
                 submit_dialog_bs.hide();
-            }
-        })
+                $('#submit-ok-indicator').addClass('d-none');
+            }, 1000);
+        });
     }
 }

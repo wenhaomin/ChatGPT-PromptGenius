@@ -39,22 +39,56 @@
         </div>
     </div>
 </main>
+
+<div class="modal fade" id="submit-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="submit-dialog-title"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span id="submit-dialog-message"></span>
+                <form class="mt-3">
+                    <div class="input-group mb-2" id="submit-dialog-funcdesc-group">
+                        <span class="input-group-text"><i class="bi bi-tools"></i></span>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="input-group mb-2" id="submit-dialog-prompt-group">
+                        <span class="input-group-text"><i class="bi bi-lightbulb"></i></span>
+                        <textarea class="form-control form-control-sm" rows="3"></textarea>
+                    </div>
+                    <div class="input-group mb-2" id="submit-dialog-user-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input class="form-control" rows="3" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="submit-clear-btn"></button>
+                <button type="button" class="btn btn-primary" id="submit-enter-btn">
+                    <div class="spinner-border spinner-border-sm d-none" id="submit-enter-btn-spinner"></div>
+                    <span class="d-none" id="submit-ok-indicator"><i class="bi bi-check-lg"></i></span>
+                    <span id="submit-enter-btn-text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block script %}
 <script>
     (async () => {
-        cur_lan_code = 'eng';
         cur_selected_class = 'popular';
-        cur_class = 'popular'
 
         await init_language_select();
-        await render_class_tree(cur_lan_code);
-
         await render_page_basic(cur_lan_code);
+        await render_class_tree(cur_lan_code);
         await render_search_prompt_by_class(cur_selected_class, cur_lan_code);
     })().then(() => {
         class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
+        submit_dialog_bs = new bootstrap.Modal($('#submit-dialog'));
 
         $("#search-input-group button").on('click', prompt_search_listener);
         $('#submit-clear-btn').on('click', submit_clear_listener);

@@ -10,8 +10,6 @@
 {% block script %}
 <script>
     (async () => {
-        cur_lan_code = 'eng';
-
         await init_language_select();
         await render_page_basic(cur_lan_code);
         await render_tools(cur_lan_code);

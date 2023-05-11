@@ -51,6 +51,7 @@ def fetch_tools(lan_code):
 def submit_function():
     if request.method == 'POST':
         try:
+            print(request.json)
             func_desc = request.json['func_desc']
             prompt_content = request.json['prompt_content']
             user_name = request.json['user_name']
@@ -76,7 +77,6 @@ def fetch_classes(lan_code):
                 if item.childrens is not None else [],
                 'icon': item.icon, 'icon_style': item.icon_style}
                for item in Classes.query.all()]
-    print(type(classes), len(classes), classes[0]['ID'])
     return jsonify(classes)
 
 
