@@ -141,6 +141,7 @@ function gen_prompt_display(prompt_list) {
 
     $('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
     $('.prompt-more-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
+    $('.prompt-fav-btn, .prompt-more-btn').on('click', not_implemented_listener);
 
     if (prompt_list.length === 0) {
         $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['no_prompt']);

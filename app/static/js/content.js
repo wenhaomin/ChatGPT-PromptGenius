@@ -169,32 +169,37 @@ prompt_card_contents = {
     },
     "jpn": {
         "fav_text": "マーク",
-        "more_text": "更多"
+        "more_text": "もっと"
     },
     "kor": {
-        "fav_text": "收藏",
-        "more_text": "更多"
+        "fav_text": "표시",
+        "more_text": "더"
     },
     "deu": {
-        "fav_text": "收藏",
-        "more_text": "更多"
+        "fav_text": "Mark",
+        "more_text": "Mehr"
     },
 }
 
 warning_contents = {
     "eng": {
-        "no_prompt": 'There are currently no prompt under the filter you applied.'
+        "no_prompt": 'There are currently no prompt under the filter you applied.',
+        "not_implemented": 'Sorry, this is a function in developing.'
     },
     "chn": {
-        "no_prompt": '当前未有符合您条件的提示词。'
+        "no_prompt": '当前未有符合您条件的提示词。',
+        "not_implemented": '抱歉，此功能正在开发中。'
     },
     "jpn": {
-        "no_prompt": '現在、適用したフィルターの下にプロンプトはありません。'
+        "no_prompt": '現在、適用したフィルターの下にプロンプトはありません。',
+        "not_implemented": '申し訳ありませんが、これは開発中の機能です。'
     },
     "kor": {
-        "no_prompt": '현재 적용한 필터 아래에 프롬프트가 없습니다.'
+        "no_prompt": '현재 적용한 필터 아래에 프롬프트가 없습니다.',
+        "not_implemented": '죄송합니다. 이것은 개발 중인 기능입니다.'
     },
     "deu": {
-        "no_prompt": 'Unter dem von Ihnen angewendeten Filter gibt es derzeit keine Eingabeaufforderung.'
+        "no_prompt": 'Unter dem von Ihnen angewendeten Filter gibt es derzeit keine Eingabeaufforderung.',
+        'not_implemented': 'Entschuldigung, dies ist eine Funktion in der Entwicklung.'
     }
 }

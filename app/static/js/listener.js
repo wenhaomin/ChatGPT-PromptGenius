@@ -64,3 +64,8 @@ function submit_enter_listener() {
         });
     }
 }
+
+function not_implemented_listener() {
+    $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['not_implemented']);
+    warning_toast.show();
+}
