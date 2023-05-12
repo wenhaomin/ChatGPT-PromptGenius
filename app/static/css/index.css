@@ -86,7 +86,7 @@ input.text-bg-dark::placeholder {
 }
 
 .function-desc-badge {
-    max-width: 200px;
+    max-width: 220px;
 }
 
 .tool-card {
@@ -95,4 +95,16 @@ input.text-bg-dark::placeholder {
 
 .tool-card:hover {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+.prompt-copy-btn {
+    background-color: #BBDEFB !important;
+}
+
+.prompt-fav-btn {
+    background-color: #B3E5FC !important;
+}
+
+.prompt-more-btn {
+    background-color: #B2EBF2 !important;
 }

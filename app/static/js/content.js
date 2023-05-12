@@ -157,3 +157,44 @@ banner_contents = {
         }
     ],
 }
+
+prompt_card_contents = {
+    "eng": {
+        "fav_text": "Mark",
+        "more_text": "More"
+    },
+    "chn": {
+        "fav_text": "收藏",
+        "more_text": "更多"
+    },
+    "jpn": {
+        "fav_text": "マーク",
+        "more_text": "更多"
+    },
+    "kor": {
+        "fav_text": "收藏",
+        "more_text": "更多"
+    },
+    "deu": {
+        "fav_text": "收藏",
+        "more_text": "更多"
+    },
+}
+
+warning_contents = {
+    "eng": {
+        "no_prompt": 'There are currently no prompt under the filter you applied.'
+    },
+    "chn": {
+        "no_prompt": '当前未有符合您条件的提示词。'
+    },
+    "jpn": {
+        "no_prompt": '現在、適用したフィルターの下にプロンプトはありません。'
+    },
+    "kor": {
+        "no_prompt": '현재 적용한 필터 아래에 프롬프트가 없습니다.'
+    },
+    "deu": {
+        "no_prompt": 'Unter dem von Ihnen angewendeten Filter gibt es derzeit keine Eingabeaufforderung.'
+    }
+}

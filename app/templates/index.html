@@ -75,21 +75,31 @@
         </div>
     </div>
 </div>
+
+<div class="toast align-items-center position-fixed bottom-0 end-0 m-3" id="warning-toast" data-bs-delay="8000">
+    <div class="d-flex">
+        <div class="toast-body">
+            <span></span>
+            <i class="bi bi-emoji-frown"></i>
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+</div>
 {% endblock %}
 
 {% block script %}
 <script>
     (async () => {
         cur_selected_class = 'popular';
+        class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
+        submit_dialog_bs = new bootstrap.Modal($('#submit-dialog'));
+        warning_toast = bootstrap.Toast.getOrCreateInstance($('#warning-toast'));
 
         await init_language_select();
         await render_page_basic(cur_lan_code);
         await render_class_tree(cur_lan_code);
         await render_search_prompt_by_class(cur_selected_class, cur_lan_code);
     })().then(() => {
-        class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
-        submit_dialog_bs = new bootstrap.Modal($('#submit-dialog'));
-
         $("#search-input-group button").on('click', prompt_search_listener);
         $('#submit-clear-btn').on('click', submit_clear_listener);
         $('#submit-enter-btn').on('click', submit_enter_listener);

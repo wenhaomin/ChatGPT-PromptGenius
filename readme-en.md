@@ -21,11 +21,15 @@
 
 The Prompt Genius page displays popular categorized prompts by default, with the page divided into category search, search, and prompt display sections.
 
-![image](./img/prompt_genius.png)
+![index_eng](./img/index_eng.png)
 
 ### 🏷︎ Category search
 Prompt Genius categorizes all prompts hierarchically by usage scenario, making it easy for users with different backgrounds and occupations to quickly locate the desired prompts.
-Currently includes 9 main categories: research assistance, copywriting, code development, language learning, Microsoft Office usage, leisure and entertainment, academic tutoring, teacher instruction, and gift selection, each with multiple subcategories containing various prompts. The overall classification system is as follows:
+Currently includes 9 main categories: research assistance, copywriting, code development, language learning, Microsoft Office usage, leisure and entertainment, academic tutoring, teacher instruction, and gift selection, each with multiple subcategories containing various prompts. 
+
+![switch_class_eng](./img/switch_class_eng.gif)
+
+The overall classification system is as follows:
 
 ![image](./img/class_tree.png)
 
@@ -37,7 +41,7 @@ Keyword search scope includes prompt category labels and content. After entering
 
 After keyword search, click the "copy" button in the upper-left corner of the card to copy the prompt and paste it into ChatGPT. Display information includes prompt category labels, author information (with or without links).
 
-![image](./img/prompt_show.png)
+![prompt_display_eng](./img/prompt_display_eng.png)
 
 ### 🌎 Language switch
 
@@ -47,7 +51,7 @@ After switching, the prompts for the new language will be displayed in the curre
 ### User Submit
 If you happens to know a useful prompt that is not listed in this page, you can submit it here. Thank you for your kind contribution!
 
-![image](./img/user_submit.png)
+![submit_eng](./img/submit_eng.png)
 
 
 ## Management System

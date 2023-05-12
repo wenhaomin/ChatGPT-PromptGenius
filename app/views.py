@@ -1,7 +1,7 @@
 import copy
 from datetime import datetime
 
-from flask import Blueprint, jsonify, render_template, request, flash
+from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
 from flask_login import LoginManager
 from app.utils import *
 
@@ -13,9 +13,6 @@ bp = Blueprint('views', __name__)
 def index():
     return render_template('index.html')
 
-
-# 登录路由
-from flask import render_template, request, redirect, url_for
 
 login_manager = LoginManager()
 

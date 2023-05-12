@@ -75,15 +75,29 @@ function gen_prompt_card(item) {
                         </a>
                         <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info mb-1">${author}</a>
                     </div>
-                    <div class="btn-group ms-2" style="height: 25px">
-                        <a class="btn badge border-0 text-dark prompt-copy-btn">
-                            <span class="copied-count-display">${copied_count}</span>
-                            <i class="bi bi-clipboard"></i>
-                        </a>
-                    </div>
                 </div>
                 <div class="card-text small">
                     ${prompt_text}
+                </div>
+                <div class="row prompt-card-action-row g-1 mt-1">
+                    <div class="col-4">
+                        <button class="btn badge text-dark w-100 prompt-copy-btn">
+                            <span>${copied_count}</span>
+                            <i class="bi bi-clipboard"></i>
+                        </button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn badge text-dark w-100 prompt-fav-btn">
+                            <i class="bi bi-bookmark"></i>
+                            <span></span>
+                        </button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn badge text-dark w-100 prompt-more-btn">
+                            <i class="bi bi-three-dots"></i>
+                            <span></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,7 +130,7 @@ function gen_prompt_display(prompt_list) {
 
             item['copied_count'] += 1
             add_search_prompt(cur_lan_code, item['function_id'], item['semantic_id']);
-            card.find('.copied-count-display').html(item['copied_count']);
+            copy_btn.find('span').text(item['copied_count']);
             masonry_reload(display, '.prompt-col');
 
             setTimeout(() => {
@@ -124,6 +138,16 @@ function gen_prompt_display(prompt_list) {
             }, 2000);
         })
     });
+
+    $('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
+    $('.prompt-more-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
+
+    if (prompt_list.length === 0) {
+        $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['no_prompt']);
+        warning_toast.show();
+    } else {
+        warning_toast.hide();
+    }
 
     masonry_reload(display, '.prompt-col');
 }
