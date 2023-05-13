@@ -203,3 +203,31 @@ warning_contents = {
         'not_implemented': 'Entschuldigung, dies ist eine Funktion in der Entwicklung.'
     }
 }
+
+prompt_more_dialog_contents = {
+    "eng": {
+        "title": "Example dialogs",
+        "speakers": ["User", "AI Model"],
+        "no_dialog": "There are currently no example dialog for this prompt."
+    },
+    "chn": {
+        "title": "示例对话",
+        "speakers": ["用户", "AI模型"],
+        "no_dialog": "目前此提示词尚无实例对话。"
+    },
+    "jpn": {
+        "title": "ダイアログの例",
+        "speakers": ["ユーザー", "AIモデル"],
+        "no_dialog": "現在、このプロンプトのダイアログ例はありません。"
+    },
+    "kor": {
+        "title": "예제 대화 상자",
+        "speakers": ["사용자", "AI 모델"],
+        "no_dialog": "현재 이 프롬프트에 대한 예제 대화 상자가 없습니다."
+    },
+    "deu": {
+        "title": "Beispieldialog",
+        "speakers": ["Benutzer", "KI-Modell"],
+        "no_dialog": "Für diese Eingabeaufforderung gibt es derzeit keine Beispieldialoge."
+    },
+}

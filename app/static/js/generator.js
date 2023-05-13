@@ -80,29 +80,37 @@ function gen_prompt_card(item) {
                     ${prompt_text}
                 </div>
                 <div class="row prompt-card-action-row g-1 mt-1">
-                    <div class="col-4">
-                        <button class="btn badge text-dark w-100 prompt-copy-btn">
-                            <span>${copied_count}</span>
-                            <i class="bi bi-clipboard"></i>
-                        </button>
-                    </div>
-                    <div class="col-4">
-                        <button class="btn badge text-dark w-100 prompt-fav-btn">
-                            <i class="bi bi-bookmark"></i>
-                            <span></span>
-                        </button>
-                    </div>
-                    <div class="col-4">
-                        <button class="btn badge text-dark w-100 prompt-more-btn">
-                            <i class="bi bi-three-dots"></i>
-                            <span></span>
-                        </button>
-                    </div>
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-copy-btn">
+                        <span>${copied_count}</span>
+                        <i class="bi bi-clipboard"></i>
+                    </button></div>
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-fav-btn">
+                        <i class="bi bi-bookmark"></i>
+                        <span></span>
+                    </button></div>
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-more-btn">
+                        <div class="spinner-border d-none prompt-more-btn-spinner"></div>
+                        <i class="bi bi-three-dots"></i>
+                        <span></span>
+                    </button></div>
                 </div>
             </div>
         </div>
     `);
     const tooltip = new bootstrap.Tooltip(card.find('.function-desc-badge'));
+
+    var function_id = item['function_id'];
+    var semantic_id = item['semantic_id'];
+    var more_btn = card.find('.prompt-more-btn');
+    card.find('.prompt-fav-btn').on('click', not_implemented_listener);
+    more_btn.on('click', () => {
+        more_btn.find('.spinner-border').removeClass('d-none');
+        more_btn.find('.bi').addClass('d-none');
+        render_prompt_more_display(function_id, semantic_id, cur_lan_code).then(() => {
+            more_btn.find('.spinner-border').addClass('d-none');
+            more_btn.find('.bi').removeClass('d-none');
+        });
+    });
 
     return card;
 }
@@ -141,7 +149,6 @@ function gen_prompt_display(prompt_list) {
 
     $('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
     $('.prompt-more-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
-    $('.prompt-fav-btn, .prompt-more-btn').on('click', not_implemented_listener);
 
     if (prompt_list.length === 0) {
         $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['no_prompt']);
@@ -186,4 +193,63 @@ function gen_tool_card(name, desc, url, icon, tags) {
     });
 
     return card;
+}
+
+function gen_dialog_list(dialog_contents) {
+    var dialog_list = $(`<ul class="list-group list-group-flush rounded">`);
+    const icons = ['person', 'gear-wide'];
+    const colors = ['3949AB', '00ACC1']
+    const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
+    dialog_contents.forEach((content, index) => {
+        const i = index % 2;
+        var dialog_item = $(`
+            <li class="list-group-item d-flex flex-column" 
+            style="background-color: #${colors[i]}1a">
+                <div class="d-flex flex-row justify-content-between">
+                    <span class="badge" style="background-color: #${colors[i]} !important">
+                        <i class="bi bi-${icons[i]}"></i>
+                        ${speakers[i]}
+                    </span>
+                    <button class="btn badge border-0 text-dark dialog-copy-btn">
+                        <i class="bi bi-clipboard"></i>
+                    </button>
+                </div>
+                <small>${content}</small>
+            </li>
+        `);
+        var copy_btn = dialog_item.find('.dialog-copy-btn');
+        copy_btn.on('click', () => {
+            copy_to_clipboard(content.trim());
+            copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
+            setTimeout(() => {
+                copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
+            }, 2000);
+        });
+
+        dialog_list.append(dialog_item);
+    });
+    return dialog_list;
+}
+
+function gen_multimodel_dialog_display(model_dialogs) {
+    var model_nav = $(`<ul class="nav nav-underline mb-2">`);
+    var nav_tabs = $(`<div class="tab-content">`);
+    Object.entries(model_dialogs).forEach(([model_name, dialog_contents], index) => {
+        model_nav.append(`
+            <li class="nav-item">
+                <button class="nav-link ${(index === 0) ? 'active': ''}"
+                    data-bs-toggle="tab" data-bs-target="#dialog-model-${index}">
+                    ${model_name}
+                </button>
+            </li>
+        `);
+
+        var tab_content = $(`
+            <div class="tab-pane fade ${(index === 0) ? 'active show' : ''}" 
+                tabindex="0" id="dialog-model-${index}">
+        `);
+        tab_content.append(gen_dialog_list(dialog_contents));
+        nav_tabs.append(tab_content);
+    })
+    return [model_nav, nav_tabs]
 }

@@ -108,3 +108,8 @@ input.text-bg-dark::placeholder {
 .prompt-more-btn {
     background-color: #B2EBF2 !important;
 }
+
+.prompt-more-btn-spinner {
+    width: 12px !important;
+    height: 12px !important;
+}

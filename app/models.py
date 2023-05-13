@@ -97,6 +97,16 @@ class FunctionPrompts(db.Model):
     copied_count = db.Column(db.Integer)
 
 
+class PromptDialogs(db.Model):
+    __tablename__ = 'prompt_dialogs'
+    functionID = db.Column(db.String, primary_key=True)  # function ID
+    semanticID = db.Column(db.String, primary_key=True)
+    lanCode = db.Column(db.String, primary_key=True)
+    model = db.Column(db.String, primary_key=True)  # AI model name
+    dialog_index = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String)
+
+
 class Banners(db.Model):
     __tablename__ = 'banners'
     index = db.Column(db.Integer, primary_key=True)

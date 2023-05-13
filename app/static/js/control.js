@@ -227,6 +227,21 @@ async function render_search_prompt_by_string(search_text, selected_lan_code) {
     gen_prompt_display(data['content']);
 }
 
+async function render_prompt_more_display(function_id, semantic_id, lan_code) {
+    var data = await get_data(`get_prompt_dialog/${function_id}/${semantic_id}/${lan_code}`);
+    $('#prompt-more-dialog').find('.modal-body').empty();
+    $('#prompt-more-dialog').find('.modal-title').text(prompt_more_dialog_contents[lan_code]['title']);
+    if (data['count'] > 0) {
+        var [nav, nav_tabs] = gen_multimodel_dialog_display(data['content']);
+        $('#prompt-more-dialog').find('.modal-body').append(nav).append(nav_tabs);
+    } else {
+        $('#prompt-more-dialog').find('.modal-body').append(`
+            <span>${prompt_more_dialog_contents[lan_code]['no_dialog']}</span>
+        `);
+    }
+    prompt_more_dialog_bs.show();
+}
+
 // copy text
 function copy_to_clipboard(text) {
     const copyContent = async () => {

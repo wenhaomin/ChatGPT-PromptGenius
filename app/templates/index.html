@@ -76,7 +76,19 @@
     </div>
 </div>
 
-<div class="toast align-items-center position-fixed bottom-0 end-0 m-3" id="warning-toast" data-bs-delay="8000">
+<div class="modal fade" id="prompt-more-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+</div>
+
+<div class="toast align-items-center position-fixed bottom-0 end-0 m-3 text-bg-warning" id="warning-toast" data-bs-delay="8000">
     <div class="d-flex">
         <div class="toast-body">
             <span></span>
@@ -93,6 +105,7 @@
         cur_selected_class = 'popular';
         class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
         submit_dialog_bs = new bootstrap.Modal($('#submit-dialog'));
+        prompt_more_dialog_bs = new bootstrap.Modal($('#prompt-more-dialog'));
         warning_toast = bootstrap.Toast.getOrCreateInstance($('#warning-toast'));
 
         await init_language_select();

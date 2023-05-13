@@ -163,12 +163,13 @@ def fetch_prompt(class_id, lan_code):
     else:
         function_ids = [item.ID
                         for item in Functions.query.with_entities(Functions.ID).
-                            filter(Functions.classes.contains(class_id)).all()]
+                        filter(Functions.classes.contains(class_id)).all()]
 
     # find all prompts that has the function
     for prompt in FunctionPrompts.query. \
             filter(and_(FunctionPrompts.functionID.in_(function_ids),
-                        FunctionPrompts.lanCode == lan_code)).all():
+                        FunctionPrompts.lanCode == lan_code,
+                        FunctionPrompts.priority >= 0)).all():
         # prompt filter condition
         if class_id == 'popular' and int(prompt.priority) != 2:
             continue
@@ -189,7 +190,8 @@ def search_prompt(search_text, lan_code):
 
     for prompt in FunctionPrompts.query. \
             filter(and_(FunctionPrompts.lanCode == lan_code,
-                        FunctionPrompts.content.contains(search_text))).all():
+                        FunctionPrompts.content.contains(search_text),
+                        FunctionPrompts.priority >= 0)).all():
         entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID,
                  'functionID': prompt.functionID,
                  'author': prompt.author, 'author_link': prompt.author_link,
@@ -198,3 +200,14 @@ def search_prompt(search_text, lan_code):
         result.append(tmp)
 
     return jsonify({"content": result, "message": "success"})
+
+
+@bp.route('/get_prompt_dialog/<function_id>/<semantic_id>/<lan_code>')
+def get_prompt_dialog(function_id, semantic_id, lan_code):
+    result = {}
+    for dialog in PromptDialogs.query.filter(and_(PromptDialogs.functionID == function_id,
+                                                  PromptDialogs.semanticID == semantic_id,
+                                                  PromptDialogs.lanCode == lan_code)).\
+            order_by(PromptDialogs.model, PromptDialogs.dialog_index).all():
+        result.setdefault(dialog.model, []).append(dialog.content)
+    return jsonify({'content': result, 'count': len(result), 'message': 'success'})

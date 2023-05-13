@@ -60,6 +60,7 @@ function submit_enter_listener() {
             setTimeout(() => {
                 submit_dialog_bs.hide();
                 $('#submit-ok-indicator').addClass('d-none');
+                submit_clear_listener();
             }, 1000);
         });
     }
