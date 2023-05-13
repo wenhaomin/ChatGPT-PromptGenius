@@ -117,3 +117,7 @@ input.text-bg-dark::placeholder {
     width: 12px !important;
     height: 12px !important;
 }
+
+.btn.badge {
+    height: 23px !important;
+}

@@ -3,8 +3,9 @@ from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
 from flask_login import LoginManager
+
 from app.utils import *
-from markdown import markdown
+
 
 bp = Blueprint('views', __name__)
 
@@ -210,6 +211,6 @@ def get_prompt_dialog(function_id, semantic_id, lan_code):
                                                   PromptDialogs.semanticID == semantic_id,
                                                   PromptDialogs.lanCode == lan_code)).\
             order_by(PromptDialogs.model, PromptDialogs.dialog_index).all():
-        content_html = markdown(dialog.content)
+        content_html = markdown(dialog.content, extras=["fenced-code-blocks"])
         result.setdefault(dialog.model, []).append({'html': content_html, 'raw': dialog.content})
     return jsonify({'content': result, 'count': len(result), 'message': 'success'})

@@ -161,23 +161,23 @@ banner_contents = {
 prompt_card_contents = {
     "eng": {
         "fav_text": "Mark",
-        "more_text": "More"
+        "more_text": "Example"
     },
     "chn": {
         "fav_text": "收藏",
-        "more_text": "更多"
+        "more_text": "示例"
     },
     "jpn": {
         "fav_text": "マーク",
-        "more_text": "もっと"
+        "more_text": "例"
     },
     "kor": {
         "fav_text": "표시",
-        "more_text": "더"
+        "more_text": "예"
     },
     "deu": {
         "fav_text": "Mark",
-        "more_text": "Mehr"
+        "more_text": "Beispiel"
     },
 }
 

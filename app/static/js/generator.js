@@ -86,9 +86,9 @@ function gen_prompt_card(item) {
                         <i class="bi bi-bookmark"></i>
                         <span></span>
                     </button></div>
-                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-more-btn">
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-more-btn border-0" disabled>
                         <div class="spinner-border d-none prompt-more-btn-spinner"></div>
-                        <i class="bi bi-three-dots"></i>
+                        <i class="bi bi-chat-text"></i>
                         <span></span>
                     </button></div>
                 </div>
@@ -119,7 +119,6 @@ function gen_prompt_card(item) {
         item['copied_count'] += 1
         add_search_prompt(cur_lan_code, item['function_id'], item['semantic_id']);
         copy_btn.find('span').text(item['copied_count']);
-        masonry_reload(display, '.prompt-col');
 
         setTimeout(() => {
             copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
@@ -197,13 +196,13 @@ function gen_tool_card(name, desc, url, icon, tags) {
 function gen_dialog_list(dialog_contents) {
     var dialog_list = $(`<ul class="list-group list-group-flush rounded">`);
     const icons = ['person', 'gear-wide'];
-    const colors = ['3949AB', '00ACC1']
+    const colors = ['FFB300', '039BE5']
     const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
     dialog_contents.forEach((content, index) => {
         const i = index % 2;
         var dialog_item = $(`
             <li class="list-group-item d-flex flex-column" 
-            style="background-color: #${colors[i]}1a">
+            style="background-color: #${colors[i]}2a">
                 <div class="d-flex flex-row justify-content-between mb-1">
                     <span class="badge" style="background-color: #${colors[i]} !important">
                         <i class="bi bi-${icons[i]}"></i>
@@ -224,6 +223,8 @@ function gen_dialog_list(dialog_contents) {
                 copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
             }, 2000);
         });
+
+        dialog_item.find('.codehilite').addClass('p-2 rounded')
 
         dialog_list.append(dialog_item);
     });

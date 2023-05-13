@@ -234,12 +234,8 @@ async function render_prompt_more_display(function_id, semantic_id, lan_code) {
     if (data['count'] > 0) {
         var [nav, nav_tabs] = gen_multimodel_dialog_display(data['content']);
         $('#prompt-more-dialog').find('.modal-body').append(nav).append(nav_tabs);
-    } else {
-        $('#prompt-more-dialog').find('.modal-body').append(`
-            <span>${prompt_more_dialog_contents[lan_code]['no_dialog']}</span>
-        `);
+        prompt_more_dialog_bs.show();
     }
-    prompt_more_dialog_bs.show();
 }
 
 // copy text
