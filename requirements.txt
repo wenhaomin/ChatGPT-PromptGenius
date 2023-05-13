@@ -5,3 +5,4 @@ waitress
 easydict
 flask-login
 flask-sqlalchemy
+markdown

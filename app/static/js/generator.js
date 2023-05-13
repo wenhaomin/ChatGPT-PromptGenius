@@ -205,7 +205,7 @@ function gen_dialog_list(dialog_contents) {
         var dialog_item = $(`
             <li class="list-group-item d-flex flex-column" 
             style="background-color: #${colors[i]}1a">
-                <div class="d-flex flex-row justify-content-between">
+                <div class="d-flex flex-row justify-content-between mb-1">
                     <span class="badge" style="background-color: #${colors[i]} !important">
                         <i class="bi bi-${icons[i]}"></i>
                         ${speakers[i]}
@@ -214,12 +214,12 @@ function gen_dialog_list(dialog_contents) {
                         <i class="bi bi-clipboard"></i>
                     </button>
                 </div>
-                <small>${content}</small>
+                <small>${content.html}</small>
             </li>
         `);
         var copy_btn = dialog_item.find('.dialog-copy-btn');
         copy_btn.on('click', () => {
-            copy_to_clipboard(content.trim());
+            copy_to_clipboard(content.raw);
             copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
             setTimeout(() => {
                 copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
