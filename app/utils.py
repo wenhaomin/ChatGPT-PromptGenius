@@ -5,6 +5,7 @@ import os
 import json
 
 from sqlalchemy import and_, or_
+from markdown import markdown
 
 from app.models import *
 
@@ -49,7 +50,8 @@ def similarity_score_levenshtein(A, B):
 
 def get_prompt_info_for_render(p: dict):
     tmp = {}
-    tmp['chat_list'] = [p['content']]
+    tmp['content'] = p['content']
+    tmp['html'] = markdown(p['content'])
     tmp['copied_count'] = p['copied_count']
     tmp['function_id']=p['functionID']
     tmp['semantic_id']=p['semanticID']

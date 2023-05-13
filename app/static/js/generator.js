@@ -41,14 +41,12 @@ function gen_child_class_selection(childrens) {
 }
 
 function gen_prompt_card(item) {
-    var chat_list = item['chat_list']
     var class_list = item['class_list']
     var author = item['author']
     var author_link = item['author_link']
-    var model = item['model']
     var function_desc = item['function_desc']
-    var prompt_text = chat_list[0]
-    var class_name = class_list[0]
+    var prompt_html = item['html']
+    var prompt_text = item['content']
     var icon_name = item['icon_name']
     var icon_style = item['icon_style']
     var copied_count = item['copied_count']
@@ -77,9 +75,9 @@ function gen_prompt_card(item) {
                     </div>
                 </div>
                 <div class="card-text small">
-                    ${prompt_text}
+                    ${prompt_html}
                 </div>
-                <div class="row prompt-card-action-row g-1 mt-1">
+                <div class="row prompt-card-action-row g-1">
                     <div class="col-4"><button class="btn badge text-dark w-100 prompt-copy-btn">
                         <span>${copied_count}</span>
                         <i class="bi bi-clipboard"></i>
@@ -101,6 +99,7 @@ function gen_prompt_card(item) {
 
     var function_id = item['function_id'];
     var semantic_id = item['semantic_id'];
+
     var more_btn = card.find('.prompt-more-btn');
     card.find('.prompt-fav-btn').on('click', not_implemented_listener);
     more_btn.on('click', () => {
@@ -111,6 +110,21 @@ function gen_prompt_card(item) {
             more_btn.find('.bi').removeClass('d-none');
         });
     });
+
+    var copy_btn = card.find('.prompt-copy-btn');
+    copy_btn.on('click', () => {
+        copy_to_clipboard(prompt_text.trim());
+        copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
+
+        item['copied_count'] += 1
+        add_search_prompt(cur_lan_code, item['function_id'], item['semantic_id']);
+        copy_btn.find('span').text(item['copied_count']);
+        masonry_reload(display, '.prompt-col');
+
+        setTimeout(() => {
+            copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
+        }, 2000);
+    })
 
     return card;
 }
@@ -130,21 +144,6 @@ function gen_prompt_display(prompt_list) {
         var col = $(`<div class="prompt-col col">`);
         var card = gen_prompt_card(item);
         display.append(col.append(card));
-
-        var copy_btn = card.find('.prompt-copy-btn');
-        copy_btn.on('click', () => {
-            copy_to_clipboard(card.find('.card-text').text().trim());
-            copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
-
-            item['copied_count'] += 1
-            add_search_prompt(cur_lan_code, item['function_id'], item['semantic_id']);
-            copy_btn.find('span').text(item['copied_count']);
-            masonry_reload(display, '.prompt-col');
-
-            setTimeout(() => {
-                copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
-            }, 2000);
-        })
     });
 
     $('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
@@ -237,7 +236,7 @@ function gen_multimodel_dialog_display(model_dialogs) {
     Object.entries(model_dialogs).forEach(([model_name, dialog_contents], index) => {
         model_nav.append(`
             <li class="nav-item">
-                <button class="nav-link ${(index === 0) ? 'active': ''}"
+                <button class="nav-link ${(index === 0) ? 'active' : ''}"
                     data-bs-toggle="tab" data-bs-target="#dialog-model-${index}">
                     ${model_name}
                 </button>

@@ -2,6 +2,10 @@ main {
     margin-top: 60px;
 }
 
+p {
+    margin-bottom: 6px !important;
+}
+
 .navbar-link {
     color: #ddd !important;
 }
