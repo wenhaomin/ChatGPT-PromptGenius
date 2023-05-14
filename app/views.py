@@ -184,6 +184,6 @@ def get_prompt_dialog(function_id, semantic_id, lan_code):
                                                   PromptDialogs.semanticID == semantic_id,
                                                   PromptDialogs.lanCode == lan_code)).\
             order_by(PromptDialogs.model, PromptDialogs.dialog_index).all():
-        content_html = markdown(dialog.content, extras=["fenced-code-blocks"])
+        content_html = markdown(dialog.content, extras=["fenced-code-blocks", "tables"])
         result.setdefault(dialog.model, []).append({'html': content_html, 'raw': dialog.content})
     return jsonify({'content': result, 'count': len(result), 'message': 'success'})

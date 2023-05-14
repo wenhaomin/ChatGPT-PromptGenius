@@ -67,7 +67,7 @@ function gen_prompt_card(item) {
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between mb-0">
                     <div class="prompt-tag-row d-flex flex-wrap">
-                        <a class="btn badge rounded-pill function-desc-badge text-truncate mb-1 me-1" 
+                        <a class="btn badge rounded-pill function-desc-badge text-light text-truncate mb-1 me-1" 
                         style="background-color: #${icon_color}" 
                         data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${function_name}">
                             <i class="bi bi-${icon}"></i>

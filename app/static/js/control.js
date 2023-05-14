@@ -184,7 +184,7 @@ async function render_class_tree(selected_lan_code) {
         }
     })
 
-    switch_active_class(cur_selected_class);
+    switch_active_class(cur_selected_class, true);
 }
 
 async function render_tools(selected_lan_code) {
@@ -211,7 +211,7 @@ function switch_active_language(selected_lan_code) {
     });
 }
 
-function switch_active_class(selected_class_id) {
+function switch_active_class(selected_class_id, scroll) {
     if (selected_class_id === 'popular') {
         $('#top-banner').show('blind', 600);
     } else {
@@ -223,6 +223,9 @@ function switch_active_class(selected_class_id) {
     all_class_nav.each((index, item) => {
         if ($(item).attr('class-id') === selected_class_id) {
             $(item).addClass('active');
+            if (scroll) {
+                $('#class-sidebar-scroller').scrollTop($(item).position().top - $('#class-sidebar-scroller').height() / 2);
+            }
         }
     });
 }

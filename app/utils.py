@@ -51,7 +51,7 @@ def similarity_score_levenshtein(A, B):
 def gather_prompt_content_dict(prompt):
     return {'functionID': prompt.functionID, 'semanticID': prompt.semanticID, 'lanCode': prompt.lanCode,
             'priority': prompt.priority, 'model': prompt.model,
-            'content': prompt.content, 'html': markdown(prompt.content, extras=["fenced-code-blocks"]),
+            'content': prompt.content, 'html': markdown(prompt.content, extras=["fenced-code-blocks", "tables"]),
             'author': prompt.author, 'author_link': prompt.author_link, 'copied_count': prompt.copied_count,
             'icon': prompt.icon, 'icon_style': prompt.icon_style, 
             'function_name': prompt.function_name, 'dialog_count': prompt.dialog_count}
