@@ -114,6 +114,10 @@ banner_contents = {
         {
             "image": "static/banners/device_eng.png",
             "url": undefined
+        },
+        {
+            "image": "static/banners/ExampleDialog-eng.png",
+            "url": undefined
         }
     ],
     "chn": [
@@ -123,6 +127,10 @@ banner_contents = {
         },
         {
             "image": "static/banners/device_chn.png",
+            "url": undefined
+        },
+        {
+            "image": "static/banners/ExampleDialog-chn.png",
             "url": undefined
         }
     ],

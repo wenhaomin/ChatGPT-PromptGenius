@@ -48,6 +48,12 @@ After keyword search, click the "copy" button in the upper-left corner of the ca
 The website defaults to English, as ChatGPT and others have more English training data, making it easier to obtain high-quality results. If you need to use Chinese or other languages, such as Japanese, Korean, German, etc., you can switch languages in the upper right corner of the page.
 After switching, the prompts for the new language will be displayed in the current category.
 
+### 📱 Multi-device support
+
+The website is optimized for screens of all sizes, including mobile phones, tablets, laptops and desktops, and has a fully responsive layout design. Users get a consistent experience across devices.
+
+![image](./img/devices.png)
+
 ### User Submit
 If you happens to know a useful prompt that is not listed in this page, you can submit it here. Thank you for your kind contribution!
 
