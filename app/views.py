@@ -3,6 +3,7 @@ from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
 from flask_login import LoginManager
+from sqlalchemy import text
 
 from app.utils import *
 
@@ -81,20 +82,6 @@ def fetch_lan():
     return jsonify(languages)
 
 
-@bp.route('/fetch_index_contents/<lan_code>/<location>')
-def fetch_index_contents(lan_code, location):
-    contents = {item.ID: item.content for item in IndexContents.query.filter(and_(IndexContents.lanCode == lan_code,
-                                                                                  IndexContents.location == location)).all()}
-    return jsonify(contents)
-
-
-@bp.route('/fetch_banners/<lan_code>')
-def fetch_banners(lan_code):
-    banners = [{'image': item.image, 'url': item.url}
-               for item in Banners.query.filter(Banners.lanCode == lan_code).all()]
-    return jsonify(banners)
-
-
 @bp.route('/fetch_tools/<lan_code>')
 def fetch_tools(lan_code):
     tools = [{'name': item.name, 'desc': item.desc, 'url': item.url,
@@ -168,21 +155,13 @@ def fetch_prompt(class_id, lan_code):
                         filter(Functions.classes.contains(class_id)).all()]
 
     # find all prompts that has the function
-    for prompt in FunctionPrompts.query. \
-            filter(and_(FunctionPrompts.functionID.in_(function_ids),
-                        FunctionPrompts.lanCode == lan_code,
-                        FunctionPrompts.priority >= 0)).all():
-        # prompt filter condition
+    for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
+                                               PromptView.lanCode == lan_code),
+                                               PromptView.priority >= 0).all():
         if class_id == 'popular' and int(prompt.priority) != 2:
             continue
+        result.append(gather_prompt_content_dict(prompt))
 
-        entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID,
-                 'functionID': prompt.functionID,
-                 'author': prompt.author, 'author_link': prompt.author_link,
-                 'model': prompt.model, 'function_id': prompt.functionID, 'copied_count': prompt.copied_count}
-        tmp = get_prompt_info_for_render(entry)
-
-        result.append(tmp)
     return jsonify({"content": result, "message": "success"})
 
 
@@ -190,16 +169,10 @@ def fetch_prompt(class_id, lan_code):
 def search_prompt(search_text, lan_code):
     result = []
 
-    for prompt in FunctionPrompts.query. \
-            filter(and_(FunctionPrompts.lanCode == lan_code,
-                        FunctionPrompts.content.contains(search_text),
-                        FunctionPrompts.priority >= 0)).all():
-        entry = {'content': prompt.content, 'lan_code': lan_code, 'semanticID': prompt.semanticID,
-                 'functionID': prompt.functionID,
-                 'author': prompt.author, 'author_link': prompt.author_link,
-                 'model': prompt.model, 'function_id': prompt.functionID, 'copied_count': prompt.copied_count}
-        tmp = get_prompt_info_for_render(entry)
-        result.append(tmp)
+    for prompt in PromptView.query.filter(and_(PromptView.content.contains(search_text), 
+                                               PromptView.lanCode == lan_code,
+                                               PromptView.priority >= 0)).all():
+        result.append(gather_prompt_content_dict(prompt))
 
     return jsonify({"content": result, "message": "success"})
 

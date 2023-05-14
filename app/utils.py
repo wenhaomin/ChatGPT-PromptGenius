@@ -48,28 +48,10 @@ def similarity_score_levenshtein(A, B):
     return ratio
 
 
-def get_prompt_info_for_render(p: dict):
-    tmp = {}
-    tmp['content'] = p['content']
-    tmp['html'] = markdown(p['content'], extras=["fenced-code-blocks"])
-    tmp['copied_count'] = p['copied_count']
-    tmp['function_id']=p['functionID']
-    tmp['semantic_id']=p['semanticID']
-    tmp['author'] = p.get('author', '')
-    if tmp['author'] == 'whm':
-        tmp['author'] = ''
-    tmp['author_link'] = p.get('author_link', '')
-    tmp['model'] = p.get('model', 'GPT 3.5')
-    try:
-        tmp['function_desc'] = FunctionNames.query.filter(and_(
-            FunctionNames.ID == p['function_id'], FunctionNames.lanCode == p['lan_code'])).first().name
-    except:
-        print(p['function_id'], p['lan_code'] )
-    class_ids = Functions.query.filter(Functions.ID == p['function_id']).first().classes.split(',')
-    classes = Classes.query.filter(Classes.ID.in_(class_ids)).all()
-    tmp['class_list'] = [item.name for item in ClassNames.query.filter(and_(ClassNames.ID.in_(class_ids),
-                                                                            ClassNames.lanCode == p['lan_code'])).all()]
-    # get one class icon
-    tmp['icon_style'] = classes[0].icon_style
-    tmp['icon_name'] = classes[0].icon
-    return tmp
+def gather_prompt_content_dict(prompt):
+    return {'functionID': prompt.functionID, 'semanticID': prompt.semanticID, 'lanCode': prompt.lanCode,
+            'priority': prompt.priority, 'model': prompt.model,
+            'content': prompt.content, 'html': markdown(prompt.content, extras=["fenced-code-blocks"]),
+            'author': prompt.author, 'author_link': prompt.author_link, 'copied_count': prompt.copied_count,
+            'icon': prompt.icon, 'icon_style': prompt.icon_style, 
+            'function_name': prompt.function_name, 'dialog_count': prompt.dialog_count}

@@ -41,15 +41,15 @@ function gen_child_class_selection(childrens) {
 }
 
 function gen_prompt_card(item) {
-    var class_list = item['class_list']
-    var author = item['author']
-    var author_link = item['author_link']
-    var function_desc = item['function_desc']
+    var function_name = item['function_name']
     var prompt_html = item['html']
     var prompt_text = item['content']
-    var icon_name = item['icon_name']
+    var author = item['author']
+    var author_link = item['author_link']
+    var icon = item['icon']
     var icon_style = item['icon_style']
     var copied_count = item['copied_count']
+    var dialog_count = item['dialog_count']
     if (author === undefined || author.length === 0) {
         author = 'Anonymous'
     }
@@ -67,9 +67,9 @@ function gen_prompt_card(item) {
                     <div class="prompt-tag-row d-flex flex-wrap">
                         <a class="btn badge rounded-pill function-desc-badge text-truncate mb-1 me-1" 
                         style="background-color: #${icon_style}" 
-                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${function_desc}">
-                            <i class="bi bi-${icon_name}"></i>
-                            <span class="function-desc-badge-text">${function_desc}</span>
+                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${function_name}">
+                            <i class="bi bi-${icon}"></i>
+                            <span class="function-desc-badge-text">${function_name}</span>
                         </a>
                         <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info mb-1">${author}</a>
                     </div>
@@ -86,7 +86,8 @@ function gen_prompt_card(item) {
                         <i class="bi bi-bookmark"></i>
                         <span></span>
                     </button></div>
-                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-more-btn border-0" disabled>
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-more-btn border-0" 
+                    ${dialog_count > 0 ? '' : 'disabled'}>
                         <div class="spinner-border d-none prompt-more-btn-spinner"></div>
                         <i class="bi bi-chat-text"></i>
                         <span></span>
@@ -97,8 +98,8 @@ function gen_prompt_card(item) {
     `);
     const tooltip = new bootstrap.Tooltip(card.find('.function-desc-badge'));
 
-    var function_id = item['function_id'];
-    var semantic_id = item['semantic_id'];
+    var function_id = item['functionID'];
+    var semantic_id = item['semanticID'];
 
     var more_btn = card.find('.prompt-more-btn');
     card.find('.prompt-fav-btn').on('click', not_implemented_listener);
