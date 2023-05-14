@@ -157,7 +157,7 @@ def fetch_prompt(class_id, lan_code):
     # find all prompts that has the function
     for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
                                                PromptView.lanCode == lan_code),
-                                               PromptView.priority >= 0).all():
+                                          PromptView.priority >= 0).all():
         if class_id == 'popular' and int(prompt.priority) != 2:
             continue
         result.append(gather_prompt_content_dict(prompt))
@@ -169,7 +169,7 @@ def fetch_prompt(class_id, lan_code):
 def search_prompt(search_text, lan_code):
     result = []
 
-    for prompt in PromptView.query.filter(and_(PromptView.content.contains(search_text), 
+    for prompt in PromptView.query.filter(and_(PromptView.content.contains(search_text),
                                                PromptView.lanCode == lan_code,
                                                PromptView.priority >= 0)).all():
         result.append(gather_prompt_content_dict(prompt))
@@ -185,5 +185,6 @@ def get_prompt_dialog(function_id, semantic_id, lan_code):
                                                   PromptDialogs.lanCode == lan_code)).\
             order_by(PromptDialogs.model, PromptDialogs.dialog_index).all():
         content_html = markdown(dialog.content, extras=["fenced-code-blocks", "tables"])
-        result.setdefault(dialog.model, []).append({'html': content_html, 'raw': dialog.content})
+        result.setdefault(dialog.model, []).append({'html': content_html, 'raw': dialog.content,
+                                                    'role': dialog.role_index})
     return jsonify({'content': result, 'count': len(result), 'message': 'success'})

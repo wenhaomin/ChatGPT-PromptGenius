@@ -199,7 +199,7 @@ function gen_dialog_list(dialog_contents) {
     const colors = ['FFB300', '039BE5']
     const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
     dialog_contents.forEach((content, index) => {
-        const i = index % 2;
+        const i = content.role ? content.role : (index % 2);
         var dialog_item = $(`
             <li class="list-group-item d-flex flex-column" 
             style="background-color: #${colors[i]}2a">

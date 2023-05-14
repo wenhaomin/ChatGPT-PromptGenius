@@ -106,6 +106,7 @@ class PromptDialogs(db.Model):
     lanCode = Column(String, primary_key=True)
     model = Column(String, primary_key=True)  # AI model name
     dialog_index = Column(Integer, primary_key=True)
+    role_index = Column(Integer)
     content = Column(String)
 
 
