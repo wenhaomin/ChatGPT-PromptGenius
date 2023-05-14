@@ -112,10 +112,6 @@ banner_contents = {
             "url": undefined
         },
         {
-            "image": "static/banners/device_eng.png",
-            "url": undefined
-        },
-        {
             "image": "static/banners/ExampleDialog-eng.png",
             "url": undefined
         }
@@ -123,10 +119,6 @@ banner_contents = {
     "chn": [
         {
             "image": "static/banners/pg_chn.png",
-            "url": undefined
-        },
-        {
-            "image": "static/banners/device_chn.png",
             "url": undefined
         },
         {
@@ -140,7 +132,7 @@ banner_contents = {
             "url": undefined
         },
         {
-            "image": "static/banners/device_jpn.png",
+            "image": "static/banners/ExampleDialog-jpn.png",
             "url": undefined
         }
     ],
@@ -150,7 +142,7 @@ banner_contents = {
             "url": undefined
         },
         {
-            "image": "static/banners/device_kor.png",
+            "image": "static/banners/ExampleDialog-kor.png",
             "url": undefined
         }
     ],
@@ -160,7 +152,7 @@ banner_contents = {
             "url": undefined
         },
         {
-            "image": "static/banners/device_deu.png",
+            "image": "static/banners/ExampleDialog-deu.png",
             "url": undefined
         }
     ],

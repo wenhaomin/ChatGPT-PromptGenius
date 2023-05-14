@@ -160,7 +160,7 @@ function gen_prompt_display(prompt_list) {
 
 function gen_top_banner_item(image, url) {
     return $(`
-        <div class="carousel-item rounded top-banner-item py-2 py-md-0 px-0 px-md-2">
+        <div class="carousel-item rounded top-banner-item py-1 py-md-2 px-0">
             <img class="d-block object-fit-scale w-100 banner-img" src="${image}"></img>
         </div>
     `)
