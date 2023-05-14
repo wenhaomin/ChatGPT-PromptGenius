@@ -6,6 +6,20 @@
 
 // const { CONNREFUSED } = require("dns");
 
+
+function hex_to_rgb(hex) {
+    // If it is a shorthand 3 digit hex color, convert to full 6 digits.
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+
+    var r = parseInt(hex.slice(0, 2), 16);
+    var g = parseInt(hex.slice(2, 4), 16);
+    var b = parseInt(hex.slice(4, 6), 16);
+
+    return [r, g, b];
+}
+
 function set_cookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -227,7 +241,7 @@ async function render_search_prompt_by_string(search_text, selected_lan_code) {
     gen_prompt_display(data['content']);
 }
 
-async function render_prompt_more_display(function_id, semantic_id, lan_code) {
+async function render_prompt_example_display(function_id, semantic_id, lan_code) {
     var data = await get_data(`get_prompt_dialog/${function_id}/${semantic_id}/${lan_code}`);
     $('#prompt-more-dialog').find('.modal-body').empty();
     $('#prompt-more-dialog').find('.modal-title').text(prompt_more_dialog_contents[lan_code]['title']);

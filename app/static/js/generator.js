@@ -47,9 +47,11 @@ function gen_prompt_card(item) {
     var author = item['author']
     var author_link = item['author_link']
     var icon = item['icon']
-    var icon_style = item['icon_style']
+    var icon_color = item['icon_style']
     var copied_count = item['copied_count']
     var dialog_count = item['dialog_count']
+    var function_id = item['functionID'];
+    var semantic_id = item['semanticID'];
     if (author === undefined || author.length === 0) {
         author = 'Anonymous'
     }
@@ -61,12 +63,12 @@ function gen_prompt_card(item) {
     }
 
     var card = $(`
-        <div class="card shadow-sm" style="background-color: #${icon_style}1a">
+        <div class="card shadow-sm" style="background-color: #${icon_color}1a">
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between mb-0">
                     <div class="prompt-tag-row d-flex flex-wrap">
                         <a class="btn badge rounded-pill function-desc-badge text-truncate mb-1 me-1" 
-                        style="background-color: #${icon_style}" 
+                        style="background-color: #${icon_color}" 
                         data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${function_name}">
                             <i class="bi bi-${icon}"></i>
                             <span class="function-desc-badge-text">${function_name}</span>
@@ -74,7 +76,7 @@ function gen_prompt_card(item) {
                         <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info mb-1">${author}</a>
                     </div>
                 </div>
-                <div class="card-text small">
+                <div class="card-text small prompt-card-content">
                     ${prompt_html}
                 </div>
                 <div class="row prompt-card-action-row g-1">
@@ -86,9 +88,9 @@ function gen_prompt_card(item) {
                         <i class="bi bi-bookmark"></i>
                         <span></span>
                     </button></div>
-                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-more-btn border-0" 
-                    ${dialog_count > 0 ? '' : 'disabled'}>
-                        <div class="spinner-border d-none prompt-more-btn-spinner"></div>
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-example-btn 
+                    ${dialog_count > 0 ? '' : 'border-0 disabled'}">
+                        <div class="spinner-border d-none prompt-example-btn-spinner"></div>
                         <i class="bi bi-chat-text"></i>
                         <span></span>
                     </button></div>
@@ -98,17 +100,14 @@ function gen_prompt_card(item) {
     `);
     const tooltip = new bootstrap.Tooltip(card.find('.function-desc-badge'));
 
-    var function_id = item['functionID'];
-    var semantic_id = item['semanticID'];
-
-    var more_btn = card.find('.prompt-more-btn');
+    var example_btn = card.find('.prompt-example-btn');
     card.find('.prompt-fav-btn').on('click', not_implemented_listener);
-    more_btn.on('click', () => {
-        more_btn.find('.spinner-border').removeClass('d-none');
-        more_btn.find('.bi').addClass('d-none');
-        render_prompt_more_display(function_id, semantic_id, cur_lan_code).then(() => {
-            more_btn.find('.spinner-border').addClass('d-none');
-            more_btn.find('.bi').removeClass('d-none');
+    example_btn.on('click', () => {
+        example_btn.find('.spinner-border').removeClass('d-none');
+        example_btn.find('.bi').addClass('d-none');
+        render_prompt_example_display(function_id, semantic_id, cur_lan_code).then(() => {
+            example_btn.find('.spinner-border').addClass('d-none');
+            example_btn.find('.bi').removeClass('d-none');
         });
     });
 
@@ -118,7 +117,7 @@ function gen_prompt_card(item) {
         copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
 
         item['copied_count'] += 1
-        add_search_prompt(cur_lan_code, item['function_id'], item['semantic_id']);
+        add_search_prompt(cur_lan_code, function_id, semantic_id);
         copy_btn.find('span').text(item['copied_count']);
 
         setTimeout(() => {
@@ -147,7 +146,7 @@ function gen_prompt_display(prompt_list) {
     });
 
     $('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
-    $('.prompt-more-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
+    $('.prompt-example-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
 
     if (prompt_list.length === 0) {
         $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['no_prompt']);
@@ -196,7 +195,7 @@ function gen_tool_card(name, desc, url, icon, tags) {
 
 function gen_dialog_list(dialog_contents) {
     var dialog_list = $(`<ul class="list-group list-group-flush rounded">`);
-    const icons = ['person', 'gear-wide'];
+    const icons = ['person-fill', 'gear-wide'];
     const colors = ['FFB300', '039BE5']
     const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
     dialog_contents.forEach((content, index) => {
@@ -205,8 +204,8 @@ function gen_dialog_list(dialog_contents) {
             <li class="list-group-item d-flex flex-column" 
             style="background-color: #${colors[i]}2a">
                 <div class="d-flex flex-row justify-content-between mb-1">
-                    <span class="badge" style="background-color: #${colors[i]} !important">
-                        <i class="bi bi-${icons[i]}"></i>
+                    <span class="badge d-flex align-items-center" style="background-color: #${colors[i]} !important">
+                        <i class="bi bi-${icons[i]} me-1"></i>
                         ${speakers[i]}
                     </span>
                     <button class="btn badge border-0 text-dark dialog-copy-btn">

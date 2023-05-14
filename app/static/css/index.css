@@ -109,15 +109,20 @@ input.text-bg-dark::placeholder {
     background-color: #B3E5FC !important;
 }
 
-.prompt-more-btn {
+.prompt-example-btn {
     background-color: #B2EBF2 !important;
 }
 
-.prompt-more-btn-spinner {
+.prompt-example-btn-spinner {
     width: 12px !important;
     height: 12px !important;
 }
 
 .btn.badge {
     height: 23px !important;
+}
+
+.prompt-card-content {
+    max-height: 400px;
+    overflow: auto;
 }
