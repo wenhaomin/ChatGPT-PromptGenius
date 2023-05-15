@@ -40,6 +40,9 @@ async function render_page_basic(selected_lan_code) {
         `)
     })
 
+    $('#search-input-group input').attr('placeholder', searchbar_contents[selected_lan_code]['placeholder']);
+    $('#nav-submit-btn span').text(actionbar_contents[cur_lan_code]["submit_btn_text"]);
+
     if ($('#submit-dialog').length) {
         // Render contents in submit dialog.
         $('#submit-dialog-title').text(submit_contents[selected_lan_code]['title']);
@@ -49,11 +52,6 @@ async function render_page_basic(selected_lan_code) {
         $('#submit-dialog-user-group input').attr('placeholder', submit_contents[selected_lan_code]['username_placeholder']);
         $('#submit-enter-btn-text').text(submit_contents[selected_lan_code]['ok_btn_text']);
         $('#submit-clear-btn').text(submit_contents[selected_lan_code]['clear_btn_text']);
-    }
-
-    if ($('#search-input-group').length) {
-        $('#search-input-group input').attr('placeholder', searchbar_contents[selected_lan_code]['placeholder']);
-        $('#search-input-group button').text(searchbar_contents[selected_lan_code]['btn_text']);
     }
 
     if ($('#top-banner').length) {
@@ -121,6 +119,7 @@ function render_prompt_display(prompt_list) {
         display.append(col.append(card));
     });
 
+    display.find('.prompt-copy-btn span').text(prompt_card_contents[cur_lan_code]['copy_text']);
     display.find('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
     display.find('.prompt-example-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
     display.find('.prompt-fav-btn').on('click', not_implemented_listener);

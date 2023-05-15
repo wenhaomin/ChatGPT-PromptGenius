@@ -22,7 +22,7 @@ p {
 }
 
 #search-input-group {
-    max-width: 280px;
+    max-width: 250px;
 }
 
 input.text-bg-dark::placeholder {
@@ -34,7 +34,7 @@ input.text-bg-dark::placeholder {
 }
 
 #action-sidebar {
-    width: 300px;
+    width: 270px;
 }
 
 .class-selection-divider {
@@ -90,7 +90,7 @@ input.text-bg-dark::placeholder {
 }
 
 .function-desc-badge {
-    max-width: 220px;
+    max-width: 200px;
 }
 
 .tool-card {

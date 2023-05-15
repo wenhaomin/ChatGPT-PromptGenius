@@ -59,7 +59,7 @@ submit_contents = {
     },
     "jpn": {
         "title": "プロンプトを送信する",
-        "message": "このページに記載されていない便利なプロンプトを知っている場合は、ここで送信できます。 あなたの親切な貢献に感謝します！",
+        "message": "このページに記載されていない便利なプロンプトを知っている場合は、ここで送信できます。 お客様の親切な貢献に感謝します！",
         "func_placeholder": "機能の簡単な説明",
         "prompt_placeholder": "プロンプトの内容",
         "username_placeholder": "お名前（任意）",
@@ -89,23 +89,36 @@ submit_contents = {
 searchbar_contents = {
     "eng": {
         "placeholder": "Search",
-        "btn_text": "Go"
     },
     "chn": {
         "placeholder": "搜索",
-        "btn_text": "Go"
     },
     "jpn": {
         "placeholder": "検索",
-        "btn_text": "Go"
     },
     "kor": {
         "placeholder": "찾다",
-        "btn_text": "Go"
     },
     "deu": {
         "placeholder": "Suchen",
-        "btn_text": "Go"
+    },
+}
+
+actionbar_contents = {
+    "eng": {
+        "submit_btn_text": "Contribute"
+    },
+    "chn": {
+        "submit_btn_text": "贡献提示词"
+    },
+    "jpn": {
+        "submit_btn_text": "貢献する"
+    },
+    "kor": {
+        "submit_btn_text": "기여하다"
+    },
+    "deu": {
+        "submit_btn_text": "Beitragen"
     },
 }
 
@@ -184,22 +197,27 @@ banner_contents = {
 
 prompt_card_contents = {
     "eng": {
+        "copy_text": "Copy",
         "fav_text": "Mark",
         "more_text": "Example"
     },
     "chn": {
+        "copy_text": "复制",
         "fav_text": "收藏",
         "more_text": "示例"
     },
     "jpn": {
+        "copy_text": "コピー",
         "fav_text": "マーク",
         "more_text": "例"
     },
     "kor": {
+        "copy_text": "복사",
         "fav_text": "표시",
         "more_text": "예"
     },
     "deu": {
+        "copy_text": "Kopieren",
         "fav_text": "Mark",
         "more_text": "Beispiel"
     },

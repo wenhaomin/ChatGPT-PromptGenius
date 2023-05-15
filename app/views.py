@@ -122,8 +122,8 @@ def fetch_classes(lan_code):
     return jsonify(classes)
 
 
-@bp.route('/increase_count', methods=['GET', 'POST'])
-def increase_count():
+@bp.route('/increase_popularity', methods=['GET', 'POST'])
+def increase_popularity():
     if request.method == 'POST':
         try:
             functionprompt = FunctionPrompts.query.filter_by(
@@ -131,7 +131,7 @@ def increase_count():
                 functionID=request.json['function_id'],
                 semanticID=request.json['semantic_id']).first()
             if functionprompt:
-                functionprompt.copied_count += 1
+                functionprompt.copied_count += request.json['increase']
                 db.session.commit()
             return jsonify({'message': 'success'})
         except Exception as e:

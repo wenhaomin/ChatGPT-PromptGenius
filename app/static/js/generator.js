@@ -65,14 +65,18 @@ function gen_prompt_card(item) {
                         </a>
                         <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info mb-1">${author}</a>
                     </div>
+                    <div class="badge text-dark popularity-badge">
+                        <span>${copied_count}</span>
+                        <i class="bi bi-fire"></i>
+                    </div>
                 </div>
                 <div class="card-text small prompt-card-content">
                     ${prompt_html}
                 </div>
                 <div class="row prompt-card-action-row g-1">
                     <div class="col-4"><button class="btn badge text-dark w-100 prompt-copy-btn">
-                        <span>${copied_count}</span>
                         <i class="bi bi-clipboard"></i>
+                        <span></span>
                     </button></div>
                     <div class="col-4"><button class="btn badge text-dark w-100 prompt-fav-btn">
                         <i class="bi bi-bookmark"></i>
@@ -93,14 +97,13 @@ function gen_prompt_card(item) {
     var example_btn = card.find('.prompt-example-btn');
     example_btn.on('click', () => {
         example_btn_click_listener(example_btn, function_id, semantic_id);
+        gain_popularity_listener(card, function_id, semantic_id, 1);
     });
 
     var copy_btn = card.find('.prompt-copy-btn');
     copy_btn.on('click', () => {
         copy_btn_click_listener(copy_btn, prompt_text);
-        item['copied_count'] += 1
-        send_post(`increase_count`, { 'lan_code': cur_lan_code, 'function_id': function_id, 'semantic_id': semantic_id });
-        copy_btn.find('span').text(item['copied_count']);
+        gain_popularity_listener(card, function_id, semantic_id, 1);
     })
 
     return card;

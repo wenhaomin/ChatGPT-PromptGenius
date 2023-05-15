@@ -72,6 +72,17 @@ function example_btn_click_listener(btn, function_id, semantic_id) {
     });
 }
 
+function gain_popularity_listener(card, function_id, semantic_id, increase) {
+    var pop_display = card.find('.popularity-badge span')
+    var cur_pop = parseInt(pop_display.text());
+    pop_display.text(cur_pop + increase);
+    send_post(`increase_popularity`,
+        {
+            'lan_code': cur_lan_code, 'function_id': function_id,
+            'semantic_id': semantic_id, 'increase': increase
+        });
+}
+
 function prompt_search_listener() {
     var search_text = validate_input($('#search-input-group'));
     if (search_text.length > 0) {
