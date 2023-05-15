@@ -75,15 +75,15 @@ function gen_prompt_card(item) {
                     ${prompt_html}
                 </div>
                 <div class="row prompt-card-action-row g-1">
-                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-copy-btn">
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-copy-btn px-0">
                         <i class="bi bi-clipboard"></i>
                         <span></span>
                     </button></div>
-                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-fav-btn">
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-fav-btn px-0">
                         <i class="bi bi-bookmark"></i>
                         <span></span>
                     </button></div>
-                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-example-btn 
+                    <div class="col-4"><button class="btn badge text-dark w-100 prompt-example-btn px-0
                     ${dialog_count > 0 ? '' : 'border-0 disabled'}">
                         <div class="spinner-border d-none prompt-example-btn-spinner"></div>
                         <i class="bi bi-chat-text"></i>

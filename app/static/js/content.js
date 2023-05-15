@@ -125,71 +125,71 @@ actionbar_contents = {
 banner_contents = {
     "eng": [
         {
-            "image": "static/banners/pg_eng.png",
+            "image": "static/asset/banners/pg_eng.png",
             "url": undefined
         },
         {
-            "image": "static/banners/device_eng.png",
+            "image": "static/asset/banners/device_eng.png",
             "url": undefined
         },
         {
-            "image": "static/banners/ExampleDialog-eng.png",
+            "image": "static/asset/banners/ExampleDialog-eng.png",
             "url": undefined
         }
     ],
     "chn": [
         {
-            "image": "static/banners/pg_chn.png",
+            "image": "static/asset/banners/pg_chn.png",
             "url": undefined
         },
         {
-            "image": "static/banners/device_chn.png",
+            "image": "static/asset/banners/device_chn.png",
             "url": undefined
         },
         {
-            "image": "static/banners/ExampleDialog-chn.png",
+            "image": "static/asset/banners/ExampleDialog-chn.png",
             "url": undefined
         }
     ],
     "jpn": [
         {
-            "image": "static/banners/pg_jpn.png",
+            "image": "static/asset/banners/pg_jpn.png",
             "url": undefined
         },
         {
-            "image": "static/banners/device_jpn.png",
+            "image": "static/asset/banners/device_jpn.png",
             "url": undefined
         },
         {
-            "image": "static/banners/ExampleDialog-jpn.png",
+            "image": "static/asset/banners/ExampleDialog-jpn.png",
             "url": undefined
         }
     ],
     "kor": [
         {
-            "image": "static/banners/pg_kor.png",
+            "image": "static/asset/banners/pg_kor.png",
             "url": undefined
         },
         {
-            "image": "static/banners/device_kor.png",
+            "image": "static/asset/banners/device_kor.png",
             "url": undefined
         },
         {
-            "image": "static/banners/ExampleDialog-kor.png",
+            "image": "static/asset/banners/ExampleDialog-kor.png",
             "url": undefined
         }
     ],
     "deu": [
         {
-            "image": "static/banners/pg_deu.png",
+            "image": "static/asset/banners/pg_deu.png",
             "url": undefined
         },
         {
-            "image": "static/banners/device_deu.png",
+            "image": "static/asset/banners/device_deu.png",
             "url": undefined
         },
         {
-            "image": "static/banners/ExampleDialog-deu.png",
+            "image": "static/asset/banners/ExampleDialog-deu.png",
             "url": undefined
         }
     ],
