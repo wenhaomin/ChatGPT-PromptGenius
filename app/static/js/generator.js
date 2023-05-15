@@ -52,6 +52,7 @@ function gen_prompt_card(item) {
         author_link = `href="${author_link}"`;
     }
 
+    var pop_color = value_to_hex(copied_count, 0, 50, ['303F9F', 'FF8F00', 'FF3D00']);
     var card = $(`
         <div class="card shadow-sm" style="background-color: #${icon_color}1a">
             <div class="card-body">
@@ -65,7 +66,7 @@ function gen_prompt_card(item) {
                         </a>
                         <a ${author_link} target="_blank" class="badge btn rounded-pill text-bg-info mb-1">${author}</a>
                     </div>
-                    <div class="badge text-dark popularity-badge">
+                    <div class="badge popularity-badge" style="color: ${pop_color}">
                         <span>${copied_count}</span>
                         <i class="bi bi-fire"></i>
                     </div>

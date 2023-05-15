@@ -23,6 +23,13 @@ function hex_to_rgb(hex) {
     return [r, g, b];
 }
 
+function value_to_hex(value, min, max, cmap) {
+    if (value < min) value = min;
+    if (value > max) value = max;
+    var color_scale = chroma.scale(cmap).domain([min, max]);
+    return color_scale(value).hex();
+}
+
 function set_cookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
