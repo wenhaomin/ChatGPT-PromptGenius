@@ -111,7 +111,7 @@
         await init_language_select();
         await render_page_basic(cur_lan_code);
         await render_class_tree(cur_lan_code);
-        await render_search_prompt_by_class(cur_selected_class, cur_lan_code);
+        await render_prompt_by_class(cur_selected_class, cur_lan_code);
     })().then(() => {
         $("#search-input-group button").on('click', prompt_search_listener);
         $('#submit-clear-btn').on('click', submit_clear_listener);
@@ -131,7 +131,7 @@
     function switch_language_listener(selected_lan_code) {
         render_page_basic(selected_lan_code);
         render_class_tree(selected_lan_code);
-        render_search_prompt_by_class(cur_selected_class, cur_lan_code);
+        render_prompt_by_class(cur_selected_class, cur_lan_code);
     }
 </script>
 {% endblock %}

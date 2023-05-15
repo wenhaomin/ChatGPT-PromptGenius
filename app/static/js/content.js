@@ -1,3 +1,7 @@
+/**
+ * Basic multi-language contents.
+ */
+
 navbar_contents = {
     'eng': ['Home', 'AI Tools'],
     'chn': ['主页', 'AI工具'],

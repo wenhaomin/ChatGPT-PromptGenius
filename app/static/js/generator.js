@@ -1,16 +1,6 @@
-function gen_class_card_html(class_id, class_name, example_desc) {
-    html = `
-    <div class="mdui-col class-card-col">
-        <div class="mdui-card class-card mdui-hoverable" id="class-card-${class_id}" classid="${class_id}">
-            <div class="mdui-card-primary class-card-primary">
-                <div class="mdui-card-primary-title">${class_name}</div>
-            </div>
-            <div class="mdui-card-content">${example_desc}</div>
-        </div>
-    </div>
-    `
-    return html
-}
+/**
+ * Generators. These functions are fed with raw contents, and they control the HTML arrangement of corresponding content display.
+ */
 
 function gen_class_selection(item) {
     var nav_item = $(`
@@ -98,64 +88,22 @@ function gen_prompt_card(item) {
             </div>
         </div>
     `);
-    const tooltip = new bootstrap.Tooltip(card.find('.function-desc-badge'));
+    new bootstrap.Tooltip(card.find('.function-desc-badge'));
 
     var example_btn = card.find('.prompt-example-btn');
-    card.find('.prompt-fav-btn').on('click', not_implemented_listener);
     example_btn.on('click', () => {
-        example_btn.find('.spinner-border').removeClass('d-none');
-        example_btn.find('.bi').addClass('d-none');
-        render_prompt_example_display(function_id, semantic_id, cur_lan_code).then(() => {
-            example_btn.find('.spinner-border').addClass('d-none');
-            example_btn.find('.bi').removeClass('d-none');
-        });
+        example_btn_click_listener(example_btn, function_id, semantic_id);
     });
 
     var copy_btn = card.find('.prompt-copy-btn');
     copy_btn.on('click', () => {
-        copy_to_clipboard(prompt_text.trim());
-        copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
-
+        copy_btn_click_listener(copy_btn, prompt_text);
         item['copied_count'] += 1
-        add_search_prompt(cur_lan_code, function_id, semantic_id);
+        send_post(`increase_count`, { 'lan_code': cur_lan_code, 'function_id': function_id, 'semantic_id': semantic_id });
         copy_btn.find('span').text(item['copied_count']);
-
-        setTimeout(() => {
-            copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
-        }, 2000);
     })
 
     return card;
-}
-
-function masonry_reload(parent_dom, item_selector) {
-    parent_dom.masonry({
-        itemSelector: item_selector,
-        columnWidth: item_selector,
-        percentPosition: true
-    }).masonry('reloadItems').masonry('layout');
-}
-
-function gen_prompt_display(prompt_list) {
-    var display = $("#prompt-display");
-    display.text('');
-    prompt_list.forEach((item, index) => {
-        var col = $(`<div class="prompt-col col">`);
-        var card = gen_prompt_card(item);
-        display.append(col.append(card));
-    });
-
-    $('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
-    $('.prompt-example-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
-
-    if (prompt_list.length === 0) {
-        $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['no_prompt']);
-        warning_toast.show();
-    } else {
-        warning_toast.hide();
-    }
-
-    masonry_reload(display, '.prompt-col');
 }
 
 function gen_top_banner_item(image, url) {
@@ -216,16 +164,9 @@ function gen_dialog_list(dialog_contents) {
             </li>
         `);
         var copy_btn = dialog_item.find('.dialog-copy-btn');
-        copy_btn.on('click', () => {
-            copy_to_clipboard(content.raw);
-            copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
-            setTimeout(() => {
-                copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
-            }, 2000);
-        });
+        copy_btn.on('click', () => { copy_btn_click_listener(copy_btn, content.raw); });
 
         dialog_item.find('.codehilite').addClass('p-2 rounded')
-
         dialog_list.append(dialog_item);
     });
     return dialog_list;
