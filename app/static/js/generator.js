@@ -147,14 +147,14 @@ function gen_dialog_list(dialog_contents) {
     const colors = ['FFB300', '039BE5']
     const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
     dialog_contents.forEach((content, index) => {
-        const i = content.role ? content.role : (index % 2);
+        var role = (content.role === null || content.role === undefined) ? (index % 2) : content.role;
         var dialog_item = $(`
             <li class="list-group-item d-flex flex-column" 
-            style="background-color: #${colors[i]}2a">
+            style="background-color: #${colors[role]}2a">
                 <div class="d-flex flex-row justify-content-between mb-1">
-                    <span class="badge d-flex align-items-center" style="background-color: #${colors[i]} !important">
-                        <i class="bi bi-${icons[i]} me-1"></i>
-                        ${speakers[i]}
+                    <span class="badge d-flex align-items-center" style="background-color: #${colors[role]} !important">
+                        <i class="bi bi-${icons[role]} me-1"></i>
+                        ${speakers[role]}
                     </span>
                     <button class="btn badge border-0 text-dark dialog-copy-btn">
                         <i class="bi bi-clipboard"></i>

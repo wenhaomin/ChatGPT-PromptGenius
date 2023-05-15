@@ -156,8 +156,9 @@ def fetch_prompt(class_id, lan_code):
 
     # find all prompts that has the function
     for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
-                                               PromptView.lanCode == lan_code),
-                                          PromptView.priority >= 0).all():
+                                               PromptView.lanCode == lan_code,
+                                               PromptView.priority >= 0)
+                                          ).all():
         if class_id == 'popular' and int(prompt.priority) != 2:
             continue
         result.append(gather_prompt_content_dict(prompt))
