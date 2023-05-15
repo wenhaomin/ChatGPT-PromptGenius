@@ -107,12 +107,23 @@ async function render_tools(selected_lan_code) {
         display.append(col);
     });
 
-    masonry_reload(display, '.tool-col');
+    masonry_reload(display, '.tool-col', 500);
+}
+
+function render_placeholder_prompt_display() {
+    var display = $("#prompt-display");
+    display.empty();
+    ['4350af', '613cb0', 'd0dc59', '97c15c', 'ec6337', 'f6c344'].forEach((color, index) => {
+        var col = $(`<div class="prompt-col col">`);
+        var card = gen_placeholder_card(color, index + 4);
+        display.append(col.append(card));
+    })
+    masonry_reload(display, '.prompt-col', 0);
 }
 
 function render_prompt_display(prompt_list) {
     var display = $("#prompt-display");
-    display.text('');
+    display.empty();
     prompt_list.forEach((item, index) => {
         var col = $(`<div class="prompt-col col">`);
         var card = gen_prompt_card(item);
@@ -131,11 +142,12 @@ function render_prompt_display(prompt_list) {
         warning_toast.hide();
     }
 
-    masonry_reload(display, '.prompt-col');
+    masonry_reload(display, '.prompt-col', 500);
 }
 
 // By Haomin Wen: display all prompts of a given class
 async function render_prompt_by_class(class_id, selected_lan_code) {
+    render_placeholder_prompt_display();
     var data = await get_data(`fetch_prompt/${class_id}/${selected_lan_code}`)
     // use a function to handle the response data
     // call another function to render the fetched prompt data
@@ -144,6 +156,7 @@ async function render_prompt_by_class(class_id, selected_lan_code) {
 
 // search prompt by give string
 async function render_prompt_by_string(search_text, selected_lan_code) {
+    render_placeholder_prompt_display();
     var data = await get_data(`search_prompt/${search_text}/${selected_lan_code}`)
     render_prompt_display(data['content']);
 }

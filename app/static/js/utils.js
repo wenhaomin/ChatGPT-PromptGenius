@@ -2,10 +2,11 @@
  * Utilities. These functions are general tools that are shared across the project.
  */
 
-function masonry_reload(parent_dom, item_selector) {
+function masonry_reload(parent_dom, item_selector, duration) {
     parent_dom.masonry({
         itemSelector: item_selector,
         columnWidth: item_selector,
+        transitionDuration: duration,
         percentPosition: true
     }).masonry('reloadItems').masonry('layout');
 }
@@ -28,6 +29,10 @@ function value_to_hex(value, min, max, cmap) {
     if (value > max) value = max;
     var color_scale = chroma.scale(cmap).domain([min, max]);
     return color_scale(value).hex();
+}
+
+function random_int(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function set_cookie(cname, cvalue, exdays) {
