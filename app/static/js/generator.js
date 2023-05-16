@@ -34,11 +34,11 @@ function gen_placeholder_card(color, num_lines) {
     var card = $(`
         <div class="card shadow-sm" style="background-color: #${color}1a">
             <div class="card-body">
-                <div class="card-title mb-0">
-                    <div class="badge rounded-pill mb-1 me-1 placeholder col-4" 
+                <div class="card-title mb-1">
+                    <div class="badge rounded-pill placeholder col-4" 
                     style="background-color: #${color}; height: 23px">
                     </div>
-                    <div class="badge rounded-pill text-bg-info mb-1 placeholder col-3" style="height: 23px">
+                    <div class="badge rounded-pill text-bg-info placeholder col-3" style="height: 23px">
                     </div>
                 </div>
                 <div class="card-text small placeholder-glow"></div>
