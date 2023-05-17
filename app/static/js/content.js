@@ -3,11 +3,11 @@
  */
 
 navbar_contents = {
-    'eng': ['Home', 'AI Tools'],
-    'chn': ['主页', 'AI工具'],
-    'jpn': ['ホーム', 'AI工具'],
-    'kor': ['홈페이지', 'AI도구'],
-    'deu': ['Startseite', 'KI-Tools']
+    'eng': ['Home', 'AI Tools', 'Logs'],
+    'chn': ['主页', 'AI工具', '日志'],
+    'jpn': ['ホーム', 'AI工具', 'ログ'],
+    'kor': ['홈페이지', 'AI도구', '로그'],
+    'deu': ['Startseite', 'KI-Tools', 'Log']
 }
 
 site_contents = {

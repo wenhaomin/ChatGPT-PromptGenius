@@ -109,15 +109,15 @@
         warning_toast = bootstrap.Toast.getOrCreateInstance($('#warning-toast'));
 
         await init_language_select();
-        await render_page_basic(cur_lan_code);
-        await render_class_tree(cur_lan_code);
+        await render_page_basic();
+        await render_class_tree();
         await render_prompt_by_class(cur_selected_class, cur_lan_code);
     })().then(() => {
         $("#search-input-group button").on('click', prompt_search_listener);
         $('#submit-clear-btn').on('click', submit_clear_listener);
         $('#submit-enter-btn').on('click', submit_enter_listener);
 
-        $(document).ready(function () {
+        $(document).ready(() => {
             $("#search-input-group input").keydown(function (e) {
                 var curKey = e.which;
                 if (curKey == 13) {
@@ -128,9 +128,9 @@
         });
     })
 
-    function switch_language_listener(selected_lan_code) {
-        render_page_basic(selected_lan_code);
-        render_class_tree(selected_lan_code);
+    function switch_language_listener() {
+        render_page_basic();
+        render_class_tree();
         render_prompt_by_class(cur_selected_class, cur_lan_code);
     }
 </script>

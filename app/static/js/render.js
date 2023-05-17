@@ -4,11 +4,6 @@
  */
 
 async function init_language_select() {
-    // Load saved language code from cookie.
-    var save_lan_code = get_cookie('lancode');
-    if (save_lan_code != "") {
-        cur_lan_code = save_lan_code;
-    }
     // Intialize the options in #language-select.
     var data = await get_data('fetch_lan');
     data.forEach(function (item) {
@@ -23,14 +18,14 @@ async function init_language_select() {
     });
 }
 
-async function render_page_basic(selected_lan_code) {
+async function render_page_basic() {
     // Render the basic elements on the page.
-    $('#page-browser-title, #page-header-title').text(site_contents[selected_lan_code]['title']);
-    $('#class-offcanvas-title').text(site_contents[selected_lan_code]['class_canvas_title']);
-    $('#action-offcanvas-title').text(site_contents[selected_lan_code]['action_canvas_title']);
+    $('#page-browser-title, #page-header-title').text(site_contents[cur_lan_code]['title']);
+    $('#class-offcanvas-title').text(site_contents[cur_lan_code]['class_canvas_title']);
+    $('#action-offcanvas-title').text(site_contents[cur_lan_code]['action_canvas_title']);
 
     $('#navbar-links').empty();
-    ['/', '/tools'].forEach((href, index) => {
+    ['/', '/tools', '/log'].forEach((href, index) => {
         $('#navbar-links').append(`
             <li class="nav-item me-3 me-lg-0">
                 <a class="nav-link navbar-link
@@ -40,24 +35,24 @@ async function render_page_basic(selected_lan_code) {
         `)
     })
 
-    $('#search-input-group input').attr('placeholder', searchbar_contents[selected_lan_code]['placeholder']);
+    $('#search-input-group input').attr('placeholder', searchbar_contents[cur_lan_code]['placeholder']);
     $('#nav-submit-btn span').text(actionbar_contents[cur_lan_code]["submit_btn_text"]);
 
     if ($('#submit-dialog').length) {
         // Render contents in submit dialog.
-        $('#submit-dialog-title').text(submit_contents[selected_lan_code]['title']);
-        $('#submit-dialog-message').text(submit_contents[selected_lan_code]['message']);
-        $('#submit-dialog-funcdesc-group input').attr('placeholder', submit_contents[selected_lan_code]['func_placeholder']);
-        $('#submit-dialog-prompt-group textarea').attr('placeholder', submit_contents[selected_lan_code]['prompt_placeholder']);
-        $('#submit-dialog-user-group input').attr('placeholder', submit_contents[selected_lan_code]['username_placeholder']);
-        $('#submit-enter-btn-text').text(submit_contents[selected_lan_code]['ok_btn_text']);
-        $('#submit-clear-btn').text(submit_contents[selected_lan_code]['clear_btn_text']);
+        $('#submit-dialog-title').text(submit_contents[cur_lan_code]['title']);
+        $('#submit-dialog-message').text(submit_contents[cur_lan_code]['message']);
+        $('#submit-dialog-funcdesc-group input').attr('placeholder', submit_contents[cur_lan_code]['func_placeholder']);
+        $('#submit-dialog-prompt-group textarea').attr('placeholder', submit_contents[cur_lan_code]['prompt_placeholder']);
+        $('#submit-dialog-user-group input').attr('placeholder', submit_contents[cur_lan_code]['username_placeholder']);
+        $('#submit-enter-btn-text').text(submit_contents[cur_lan_code]['ok_btn_text']);
+        $('#submit-clear-btn').text(submit_contents[cur_lan_code]['clear_btn_text']);
     }
 
     if ($('#top-banner').length) {
         $('#top-banner-inner').empty();
         $('#top-banner-indicator').empty();
-        banner_contents[selected_lan_code].forEach(({ image, url }, index) => {
+        banner_contents[cur_lan_code].forEach(({ image, url }, index) => {
             var banner_item = gen_top_banner_item(image, url);
             var indicator_item = $(`<button type="button" data-bs-target="#top-banner" data-bs-slide-to="${index}"></button>`);
             if (index === 0) {
@@ -70,14 +65,14 @@ async function render_page_basic(selected_lan_code) {
     }
 }
 
-async function render_class_tree(selected_lan_code) {
+async function render_class_tree() {
     var saved_selected_class = get_cookie('selected_class');
     if (saved_selected_class !== "") {
         cur_selected_class = saved_selected_class;
     }
 
     // Intialize the options in #language-select.
-    var data = await get_data(`fetch_classes/${selected_lan_code}`);
+    var data = await get_data(`fetch_classes/${cur_lan_code}`);
     $('#class-selection-list').empty();
     data.forEach((item, index) => {
         var class_selection = gen_class_selection(item);
@@ -97,8 +92,8 @@ async function render_class_tree(selected_lan_code) {
     switch_active_class(cur_selected_class, true);
 }
 
-async function render_tools(selected_lan_code) {
-    var data = await get_data(`fetch_tools/${selected_lan_code}`);
+async function render_tools() {
+    var data = await get_data(`fetch_tools/${cur_lan_code}`);
     var display = $('#tools-display')
     display.empty();
     data.forEach(({ name, desc, url, icon_src, tags }) => {
@@ -170,4 +165,7 @@ async function render_prompt_example_display(function_id, semantic_id, lan_code)
         $('#prompt-more-dialog').find('.modal-body').append(nav).append(nav_tabs);
         prompt_more_dialog_bs.show();
     }
+}
+
+async function render_logs_display() {
 }

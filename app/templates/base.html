@@ -86,7 +86,7 @@
                             <i class="bi bi-github"></i>
                         </a>
                         <!-- Language selector. -->
-                        <div class="btn-group" role="group">
+                        <div class="btn-group" id="nav-language-select-group">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="bi bi-globe"></i>
@@ -125,6 +125,11 @@
     <!-- Shared global variables. -->
     <script>
         cur_lan_code = 'eng';
+        // Load saved language code from cookie.
+        var save_lan_code = get_cookie('lancode');
+        if (save_lan_code !== "" && save_lan_code !== undefined) {
+            cur_lan_code = save_lan_code;
+        }
         action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
     </script>
 

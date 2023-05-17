@@ -8,7 +8,7 @@ function language_select_listener(selected_lan_code) {
         cur_lan_code = selected_lan_code;
         switch_active_language(selected_lan_code);
         set_cookie('lancode', cur_lan_code, 30);
-        switch_language_listener(selected_lan_code);
+        switch_language_listener();
         action_sidebar_bs.hide();
     }
 }

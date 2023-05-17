@@ -1,3 +1,4 @@
+import os
 import copy
 from datetime import datetime
 
@@ -74,6 +75,11 @@ def login():
 @bp.route('/tools')
 def tools():
     return render_template('tools.html')
+
+
+@bp.route('/log')
+def log():
+    return render_template('log.html')
 
 
 @bp.route('/fetch_lan')
@@ -189,3 +195,9 @@ def get_prompt_dialog(function_id, semantic_id, lan_code):
         result.setdefault(dialog.model, []).append({'html': content_html, 'raw': dialog.content,
                                                     'role': dialog.role_index})
     return jsonify({'content': result, 'count': len(result), 'message': 'success'})
+
+
+@bp.route('/fetch_logs')
+def fetch_logs():
+    for root, dirs, files in os.walk('logs'):
+        print(root)
