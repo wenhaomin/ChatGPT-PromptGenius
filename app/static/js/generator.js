@@ -66,6 +66,7 @@ function gen_prompt_card(item) {
     var dialog_count = item['dialog_count']
     var function_id = item['functionID'];
     var semantic_id = item['semanticID'];
+    var lan_code = item['lanCode'];
     if (author === undefined || author.length === 0) {
         author = 'Anonymous'
     }
@@ -121,14 +122,14 @@ function gen_prompt_card(item) {
 
     var example_btn = card.find('.prompt-example-btn');
     example_btn.on('click', () => {
-        example_btn_click_listener(example_btn, function_id, semantic_id);
-        gain_popularity_listener(card, function_id, semantic_id, 1);
+        example_btn_click_listener(example_btn, function_id, semantic_id, lan_code);
+        gain_popularity_listener(card, function_id, semantic_id, lan_code, 1);
     });
 
     var copy_btn = card.find('.prompt-copy-btn');
     copy_btn.on('click', () => {
         copy_btn_click_listener(copy_btn, prompt_text);
-        gain_popularity_listener(card, function_id, semantic_id, 1);
+        gain_popularity_listener(card, function_id, semantic_id, lan_code, 1);
     })
 
     return card;

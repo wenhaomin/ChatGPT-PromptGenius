@@ -26,14 +26,17 @@ async function render_page_basic() {
 
     $('#navbar-links').empty();
     ['/', '/tools', '/log'].forEach((href, index) => {
-        $('#navbar-links').append(`
+        var nav_item = $(`
             <li class="nav-item me-3 me-lg-0">
                 <a class="nav-link navbar-link
                     ${(href === window.location.pathname) ? 'active-navbar-link' : ''}" 
                     href="${href}">${navbar_contents[cur_lan_code][index]}</a>
             </li>
-        `)
+        `);
+        $('#navbar-links').append(nav_item);
     })
+
+    document.title += '-' + $('#navbar-links').find('.active-navbar-link').text();
 
     $('#search-input-group input').attr('placeholder', searchbar_contents[cur_lan_code]['placeholder']);
     $('#nav-submit-btn span').text(actionbar_contents[cur_lan_code]["submit_btn_text"]);
@@ -159,7 +162,7 @@ async function render_prompt_by_string(search_text, selected_lan_code) {
 async function render_prompt_example_display(function_id, semantic_id, lan_code) {
     var data = await get_data(`get_prompt_dialog/${function_id}/${semantic_id}/${lan_code}`);
     $('#prompt-more-dialog').find('.modal-body').empty();
-    $('#prompt-more-dialog').find('.modal-title').text(prompt_more_dialog_contents[lan_code]['title']);
+    $('#prompt-more-dialog').find('.modal-title').text(prompt_more_dialog_contents[cur_lan_code]['title']);
     if (data['count'] > 0) {
         var [nav, nav_tabs] = gen_multimodel_dialog_display(data['content']);
         $('#prompt-more-dialog').find('.modal-body').append(nav).append(nav_tabs);
@@ -186,6 +189,8 @@ async function render_logs_display() {
     displays.find('h2').addClass('h4');
     displays.find('h3').addClass('h5');
     displays.find('h4').addClass('h6');
+    displays.find('a').addClass('link-dark link-underline-opacity-50 link-underline-opacity-100-hover');
+    displays.find('a').attr('target', '_blank');
 
     masonry_reload(display, '.log-col', 500);
 }

@@ -3,11 +3,11 @@
  */
 
 navbar_contents = {
-    'eng': ['Home', 'AI Tools', 'Logs'],
-    'chn': ['主页', 'AI工具', '日志'],
-    'jpn': ['ホーム', 'AI工具', 'ログ'],
-    'kor': ['홈페이지', 'AI도구', '로그'],
-    'deu': ['Startseite', 'KI-Tools', 'Log']
+    'eng': ['Home', 'AI Tools', 'About'],
+    'chn': ['主页', 'AI工具', '关于'],
+    'jpn': ['ホーム', 'AI工具', 'について'],
+    'kor': ['홈', 'AI도구', '소개'],
+    'deu': ['Startseite', 'KI-Tools', 'Über']
 }
 
 site_contents = {
@@ -24,12 +24,12 @@ site_contents = {
     "jpn": {
         "title": "ヒントウィザード",
         "class_canvas_title": "カテゴリ",
-        "action_canvas_title": "アクション"
+        "action_canvas_title": "もっと"
     },
     "kor": {
         "title": "팁마법사",
         "class_canvas_title": "수업 찾아보기",
-        "action_canvas_title": "행위"
+        "action_canvas_title": "더 보기"
     },
     "deu": {
         "title": "PromptGenie",

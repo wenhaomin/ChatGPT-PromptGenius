@@ -63,22 +63,22 @@ function copy_btn_click_listener(btn, text) {
     }, 2000);
 }
 
-function example_btn_click_listener(btn, function_id, semantic_id) {
+function example_btn_click_listener(btn, function_id, semantic_id, lan_code) {
     btn.find('.spinner-border').removeClass('d-none');
     btn.find('.bi').addClass('d-none');
-    render_prompt_example_display(function_id, semantic_id, cur_lan_code).then(() => {
+    render_prompt_example_display(function_id, semantic_id, lan_code).then(() => {
         btn.find('.spinner-border').addClass('d-none');
         btn.find('.bi').removeClass('d-none');
     });
 }
 
-function gain_popularity_listener(card, function_id, semantic_id, increase) {
+function gain_popularity_listener(card, function_id, semantic_id, lan_code, increase) {
     var pop_display = card.find('.popularity-badge span')
     var cur_pop = parseInt(pop_display.text());
     pop_display.text(cur_pop + increase);
     send_post(`increase_popularity`,
         {
-            'lan_code': cur_lan_code, 'function_id': function_id,
+            'lan_code': lan_code, 'function_id': function_id,
             'semantic_id': semantic_id, 'increase': increase
         });
 }

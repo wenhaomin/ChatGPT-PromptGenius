@@ -149,6 +149,10 @@ def increase_popularity():
 
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
 def fetch_prompt(class_id, lan_code):
+    lan_codes = [lan_code]
+    if lan_code not in ['chn', 'eng']:
+        lan_codes.append('eng')
+
     result = []
     function_ids = [item.functionID
                     for item in FunctionPrompts.query.with_entities(FunctionPrompts.functionID).all()]
@@ -164,7 +168,7 @@ def fetch_prompt(class_id, lan_code):
 
     # find all prompts that has the function
     for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
-                                               PromptView.lanCode == lan_code,
+                                               PromptView.lanCode.in_(lan_codes),
                                                PromptView.priority >= 0)
                                           ).all():
         if class_id == 'popular' and int(prompt.priority) != 2:
@@ -176,10 +180,14 @@ def fetch_prompt(class_id, lan_code):
 
 @bp.route('/search_prompt/<search_text>/<lan_code>')
 def search_prompt(search_text, lan_code):
+    lan_codes = [lan_code]
+    if lan_code not in ['chn', 'eng']:
+        lan_codes.append('eng')
+
     result = []
 
     for prompt in PromptView.query.filter(and_(PromptView.content.contains(search_text),
-                                               PromptView.lanCode == lan_code,
+                                               PromptView.lanCode.in_(lan_codes),
                                                PromptView.priority >= 0)).all():
         result.append(gather_prompt_content_dict(prompt))
 
