@@ -226,7 +226,7 @@ function gen_multimodel_dialog_display(model_dialogs) {
 function gen_log_card(content, bg_color) {
     var card = $(`
         <div class="card shadow-sm" style="background-color: ${bg_color}1a">
-            <div class="card-body">
+            <div class="card-body small pt-1 pb-2">
                 ${content}
             </div>
         </div>

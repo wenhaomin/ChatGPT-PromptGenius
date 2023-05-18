@@ -199,16 +199,20 @@ def get_prompt_dialog(function_id, semantic_id, lan_code):
     return jsonify({'content': result, 'count': len(result), 'message': 'success'})
 
 
-@bp.route('/fetch_logs')
-def fetch_logs():
+@bp.route('/fetch_logs/<lan_code>')
+def fetch_logs(lan_code):
+    if lan_code != 'chn':
+        lan_code = 'eng'
+
+    log_dir = os.path.join('app', 'logs', lan_code)
     file_list = []
-    for root, dirs, files in os.walk(os.path.join('app', 'logs')):
+    for root, dirs, files in os.walk(log_dir):
         for file in files:
             if file.endswith('.md'):
                 file_list.append(file)
     contents = []
     for file in sorted(file_list):
-        with open(os.path.join('app', 'logs', file), 'r', encoding='utf-8') as fp:
+        with open(os.path.join(log_dir, file), 'r', encoding='utf-8') as fp:
             md_text = fp.read()
         contents.append(md_to_html(md_text))
 

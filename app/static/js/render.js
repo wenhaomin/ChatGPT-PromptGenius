@@ -168,7 +168,11 @@ async function render_prompt_example_display(function_id, semantic_id, lan_code)
 }
 
 async function render_logs_display() {
-    var contents = await get_data('fetch_logs');
+    var contents = await get_data(`fetch_logs/${cur_lan_code}`);
+
+    var displays = $('#top-log-display, #logs-display');
+    displays.empty();
+
     $('#top-log-display').append($(`<div class="col log-col">`).append(
         gen_log_card(contents.content[0], '#FDD835')));
 
@@ -179,5 +183,9 @@ async function render_logs_display() {
             value_to_hex(index, logindex_minmax[0], logindex_minmax[1], logindex_cmap))));
     });
 
-    masonry_reload(display, '.log-col');
+    displays.find('h2').addClass('h4');
+    displays.find('h3').addClass('h5');
+    displays.find('h4').addClass('h6');
+
+    masonry_reload(display, '.log-col', 500);
 }

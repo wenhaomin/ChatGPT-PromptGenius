@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
+{% block style %}
+<style>
+    ul {
+        margin-bottom: 6px;
+    }
+
+    .h4, .h5, .h6 {
+        margin-top: 12px;
+        margin-bottom: 4px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <main class="container-xxl overflow-y-scroll">
     <div class="row pt-2 pt-md-3 row-cols-1" id="top-log-display"></div>
@@ -27,6 +40,7 @@
 
     function switch_language_listener() {
         render_page_basic();
+        render_logs_display();
     }
 </script>
 {% endblock %}
