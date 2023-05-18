@@ -55,6 +55,15 @@ function switch_active_class(selected_class_id, scroll) {
     });
 }
 
+function load_cookie_class() {
+    var saved_selected_class = get_cookie('selected_class');
+    if (saved_selected_class !== "" && saved_selected_class !== undefined) {
+        cur_selected_class = saved_selected_class;
+    } else {
+        cur_selected_class = "popular";
+    }
+}
+
 function copy_btn_click_listener(btn, text) {
     copy_to_clipboard(text.trim());
     btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');

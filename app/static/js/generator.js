@@ -79,7 +79,8 @@ function gen_prompt_card(item) {
 
     var pop_color = value_to_hex(copied_count, pop_minmax[0], pop_minmax[1], pop_cmap);
     var card = $(`
-        <div class="card shadow-sm" style="background-color: #${icon_color}1a">
+        <div class="card shadow-sm" style="background-color: #${icon_color}1a"
+        function-id="${function_id}" semantic-id="${semantic_id}" lan-code="${lan_code}">
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between mb-0">
                     <div class="prompt-tag-row d-flex flex-wrap">
@@ -172,18 +173,14 @@ function gen_tool_card(name, desc, url, icon, tags) {
 
 function gen_dialog_list(dialog_contents) {
     var dialog_list = $(`<ul class="list-group list-group-flush rounded">`);
-    const icons = ['person-fill', 'gear-wide'];
-    const colors = ['FFB300', '039BE5']
-    const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
     dialog_contents.forEach((content, index) => {
         var role = (content.role === null || content.role === undefined) ? (index % 2) : content.role;
         var dialog_item = $(`
-            <li class="list-group-item d-flex flex-column" 
-            style="background-color: #${colors[role]}2a">
+            <li class="list-group-item d-flex flex-column dialog-list-item" role="${role}">
                 <div class="d-flex flex-row justify-content-between mb-1">
-                    <span class="badge d-flex align-items-center" style="background-color: #${colors[role]} !important">
-                        <i class="bi bi-${icons[role]} me-1"></i>
-                        ${speakers[role]}
+                    <span class="badge d-flex align-items-center dialog-role-badge">
+                        <i class="bi me-1"></i>
+                        <span></span>
                     </span>
                     <button class="btn badge border-0 text-dark dialog-copy-btn">
                         <i class="bi bi-clipboard"></i>

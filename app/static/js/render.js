@@ -66,6 +66,10 @@ async function render_page_basic() {
             $('#top-banner-indicator').append(indicator_item);
         })
     }
+
+    if ($('#prompt-more-dialog').length) {
+        $('#prompt-more-dialog').find('.modal-title').text(prompt_more_dialog_contents[cur_lan_code]['title']);
+    }
 }
 
 async function render_class_tree() {
@@ -100,7 +104,7 @@ async function render_tools() {
         display.append(col);
     });
 
-    masonry_reload(display, '.tool-col', 500);
+    masonry_reload(display, '.tool-col');
 }
 
 function render_placeholder_prompt_display() {
@@ -111,7 +115,7 @@ function render_placeholder_prompt_display() {
         var card = gen_placeholder_card(color, index + 4);
         display.append(col.append(card));
     })
-    masonry_reload(display, '.prompt-col', 0);
+    masonry_reload(display, '.prompt-col');
 }
 
 function render_prompt_display(prompt_list) {
@@ -135,34 +139,47 @@ function render_prompt_display(prompt_list) {
         warning_toast.hide();
     }
 
-    masonry_reload(display, '.prompt-col', 500);
+    masonry_reload(display, '.prompt-col');
 }
 
 // By Haomin Wen: display all prompts of a given class
-async function render_prompt_by_class(class_id, selected_lan_code) {
+async function render_prompt_by_class(class_id) {
     render_placeholder_prompt_display();
-    var data = await get_data(`fetch_prompt/${class_id}/${selected_lan_code}`)
+    var data = await get_data(`fetch_prompt/${class_id}/${cur_lan_code}`);
     // use a function to handle the response data
     // call another function to render the fetched prompt data
     render_prompt_display(data['content']);
 }
 
 // search prompt by give string
-async function render_prompt_by_string(search_text, selected_lan_code) {
+async function render_prompt_by_string(search_text) {
     render_placeholder_prompt_display();
-    var data = await get_data(`search_prompt/${search_text}/${selected_lan_code}`)
+    var data = await get_data(`search_prompt/${search_text}/${cur_lan_code}`);
     render_prompt_display(data['content']);
 }
 
 async function render_prompt_example_display(function_id, semantic_id, lan_code) {
+    const icons = ['person-fill', 'gear-wide'];
+    const colors = ['FFB300', '039BE5']
+    const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
+
     var data = await get_data(`get_prompt_dialog/${function_id}/${semantic_id}/${lan_code}`);
-    $('#prompt-more-dialog').find('.modal-body').empty();
-    $('#prompt-more-dialog').find('.modal-title').text(prompt_more_dialog_contents[cur_lan_code]['title']);
-    if (data['count'] > 0) {
+
+    var prompt_more_dialog = $('#prompt-more-dialog');
+    prompt_more_dialog.find('.modal-body').empty();
         var [nav, nav_tabs] = gen_multimodel_dialog_display(data['content']);
-        $('#prompt-more-dialog').find('.modal-body').append(nav).append(nav_tabs);
-        prompt_more_dialog_bs.show();
+        prompt_more_dialog.find('.modal-body').append(nav).append(nav_tabs);
+
+    for (var role = 0; role < 2; role++) {
+        var dialog_role_lists = prompt_more_dialog.find(`.dialog-list-item[role='${role}']`);
+        dialog_role_lists.css('background-color', `#${colors[role]}2a`);
+        var dialog_role_badges = dialog_role_lists.find('.dialog-role-badge');
+        dialog_role_badges.css('background-color', `#${colors[role]}`);
+        dialog_role_badges.find('.bi').addClass(`bi-${icons[role]}`);
+        dialog_role_badges.find('span').text(speakers[role]);
     }
+
+    prompt_more_dialog_bs.show();
 }
 
 async function render_logs_display() {
@@ -187,5 +204,5 @@ async function render_logs_display() {
     displays.find('a').addClass('link-dark link-underline-opacity-50 link-underline-opacity-100-hover');
     displays.find('a').attr('target', '_blank');
 
-    masonry_reload(display, '.log-col', 500);
+    masonry_reload(display, '.log-col');
 }

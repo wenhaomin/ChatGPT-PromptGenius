@@ -2,13 +2,20 @@
  * Utilities. These functions are general tools that are shared across the project.
  */
 
-function masonry_reload(parent_dom, item_selector, duration) {
+function masonry_reload(parent_dom, item_selector) {
     parent_dom.masonry({
         itemSelector: item_selector,
         columnWidth: item_selector,
-        transitionDuration: duration,
+        transitionDuration: 0,
         percentPosition: true
     }).masonry('reloadItems').masonry('layout');
+
+    parent_dom.masonry({
+        itemSelector: item_selector,
+        columnWidth: item_selector,
+        transitionDuration: 500,
+        percentPosition: true
+    });
 }
 
 function hex_to_rgb(hex) {

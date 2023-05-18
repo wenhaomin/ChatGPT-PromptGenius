@@ -104,11 +104,7 @@
 {% block script %}
 <script>
     window.onload = () => {
-        cur_selected_class = 'popular';
-        var saved_selected_class = get_cookie('selected_class');
-        if (saved_selected_class !== "") {
-            cur_selected_class = saved_selected_class;
-        }
+        load_cookie_class();
 
         action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
         class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
@@ -145,6 +141,8 @@
     function switch_language_listener() {
         render_page_basic();
         render_class_tree();
+
+        load_cookie_class();
         render_prompt_by_class(cur_selected_class, cur_lan_code);
     }
 </script>
