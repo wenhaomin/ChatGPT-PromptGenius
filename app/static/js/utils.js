@@ -27,8 +27,7 @@ function hex_to_rgb(hex) {
 function value_to_hex(value, min, max, cmap) {
     if (value < min) value = min;
     if (value > max) value = max;
-    var color_scale = chroma.scale(cmap).domain([min, max]);
-    return color_scale(value).hex();
+    return cmap(value).hex();
 }
 
 function random_int(min, max) {

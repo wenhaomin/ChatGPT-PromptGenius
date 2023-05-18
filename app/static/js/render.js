@@ -168,4 +168,16 @@ async function render_prompt_example_display(function_id, semantic_id, lan_code)
 }
 
 async function render_logs_display() {
+    var contents = await get_data('fetch_logs');
+    $('#top-log-display').append($(`<div class="col log-col">`).append(
+        gen_log_card(contents.content[0], '#FDD835')));
+
+    var display = $('#logs-display');
+    contents.content.slice(1).reverse().forEach((item, index) => {
+        var col = $(`<div class="col log-col">`);
+        display.append(col.append(gen_log_card(item,
+            value_to_hex(index, logindex_minmax[0], logindex_minmax[1], logindex_cmap))));
+    });
+
+    masonry_reload(display, '.log-col');
 }

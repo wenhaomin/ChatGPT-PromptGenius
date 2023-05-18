@@ -76,7 +76,7 @@ function gen_prompt_card(item) {
         author_link = `href="${author_link}"`;
     }
 
-    var pop_color = value_to_hex(copied_count, 0, 50, ['303F9F', 'FF8F00', 'FF3D00']);
+    var pop_color = value_to_hex(copied_count, pop_minmax[0], pop_minmax[1], pop_cmap);
     var card = $(`
         <div class="card shadow-sm" style="background-color: #${icon_color}1a">
             <div class="card-body">
@@ -221,4 +221,15 @@ function gen_multimodel_dialog_display(model_dialogs) {
         nav_tabs.append(tab_content);
     })
     return [model_nav, nav_tabs]
+}
+
+function gen_log_card(content, bg_color) {
+    var card = $(`
+        <div class="card shadow-sm" style="background-color: ${bg_color}1a">
+            <div class="card-body">
+                ${content}
+            </div>
+        </div>
+    `);
+    return card;
 }

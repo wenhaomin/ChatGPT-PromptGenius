@@ -2,13 +2,18 @@
 
 {% block content %}
 <main class="container-xxl overflow-y-scroll">
-    <div class="row py-2 py-md-3 row-cols-1 g-2" id="logs-display"></div>
+    <div class="row pt-2 pt-md-3 row-cols-1" id="top-log-display"></div>
+    <hr>
+    <div class="row pb-2 pb-md-3 row-cols-sm-1 row-cols-lg-2 g-2" id="logs-display"></div>
 </main>
 {% endblock%}
 
 {% block script %}
 <script>
     (async () => {
+        logindex_minmax = [0, 3];
+        logindex_cmap = chroma.scale(['FF6D00', 'F5F5F5']).domain(logindex_minmax);
+
         await init_language_select();
         await render_page_basic();
         await render_logs_display();

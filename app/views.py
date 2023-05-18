@@ -90,6 +90,8 @@ def fetch_lan():
 
 @bp.route('/fetch_tools/<lan_code>')
 def fetch_tools(lan_code):
+    if lan_code != 'chn':
+        lan_code = 'eng'
     tools = [{'name': item.name, 'desc': item.desc, 'url': item.url,
               'icon_src': item.icon_src, 'tags': item.tags.split(',')}
              for item in Tools.query.filter(Tools.lanCode == lan_code).all()]
@@ -199,5 +201,15 @@ def get_prompt_dialog(function_id, semantic_id, lan_code):
 
 @bp.route('/fetch_logs')
 def fetch_logs():
-    for root, dirs, files in os.walk('logs'):
-        print(root)
+    file_list = []
+    for root, dirs, files in os.walk(os.path.join('app', 'logs')):
+        for file in files:
+            if file.endswith('.md'):
+                file_list.append(file)
+    contents = []
+    for file in sorted(file_list):
+        with open(os.path.join('app', 'logs', file), 'r', encoding='utf-8') as fp:
+            md_text = fp.read()
+        contents.append(md_to_html(md_text))
+
+    return jsonify({'message': 'success', 'content': contents})

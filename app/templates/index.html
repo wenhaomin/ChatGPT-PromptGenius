@@ -107,6 +107,9 @@
         submit_dialog_bs = new bootstrap.Modal($('#submit-dialog'));
         prompt_more_dialog_bs = new bootstrap.Modal($('#prompt-more-dialog'));
         warning_toast = bootstrap.Toast.getOrCreateInstance($('#warning-toast'));
+        
+        pop_minmax = [0, 100];
+        pop_cmap = chroma.scale(['303F9F', 'FF8F00', 'FF3D00']).domain(pop_minmax);
 
         await init_language_select();
         await render_page_basic();
