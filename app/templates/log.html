@@ -6,7 +6,9 @@
         margin-bottom: 6px;
     }
 
-    .h4, .h5, .h6 {
+    .h4,
+    .h5,
+    .h6 {
         margin-top: 12px;
         margin-bottom: 4px;
     }
@@ -19,24 +21,29 @@
     <hr class="my-2">
     <div class="row pb-2 pb-md-3 row-cols-sm-1 row-cols-lg-2 g-2" id="logs-display"></div>
 </main>
-{% endblock%}
+{% endblock %}
 
 {% block script %}
 <script>
-    (async () => {
-        logindex_minmax = [0, 3];
+    window.onload = () => {
+        action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
+
+        logindex_minmax = [0, 3]
         logindex_cmap = chroma.scale(['FF6D00', 'F5F5F5']).domain(logindex_minmax);
 
-        await init_language_select();
-        await render_page_basic();
-        await render_logs_display();
-    })().then(() => {
-        $('#class-sidebar-toggler').addClass('disabled');
-        $('#class-sidebar-toggler i').addClass('text-secondary');
-        $('#search-input-group input').attr('disabled', 'disabled');
-        $('#search-input-group button').attr('disabled', 'disabled');
-        $('#nav-submit-btn').attr('disabled', 'disabled');
-    });
+        Promise.all([
+            init_language_select(),
+            render_page_basic(),
+            render_logs_display()
+        ]).then(() => {
+            $('#class-sidebar-toggler').addClass('disabled');
+            $('#class-sidebar-toggler i').addClass('text-secondary');
+            $('#search-input-group input').attr('disabled', 'disabled');
+            $('#search-input-group button').attr('disabled', 'disabled');
+            $('#nav-submit-btn').attr('disabled', 'disabled');
+        });
+
+    }
 
     function switch_language_listener() {
         render_page_basic();

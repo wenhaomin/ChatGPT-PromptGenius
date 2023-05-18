@@ -76,7 +76,8 @@
     </div>
 </div>
 
-<div class="modal fade modal-lg" id="prompt-more-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<div class="modal fade modal-lg" id="prompt-more-dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -88,7 +89,8 @@
     </div>
 </div>
 
-<div class="toast align-items-center position-fixed bottom-0 end-0 m-3 text-bg-warning" id="warning-toast" data-bs-delay="8000">
+<div class="toast align-items-center position-fixed bottom-0 end-0 m-3 text-bg-warning" id="warning-toast"
+    data-bs-delay="8000">
     <div class="d-flex">
         <div class="toast-body">
             <span></span>
@@ -101,35 +103,44 @@
 
 {% block script %}
 <script>
-    (async () => {
+    window.onload = () => {
         cur_selected_class = 'popular';
+        var saved_selected_class = get_cookie('selected_class');
+        if (saved_selected_class !== "") {
+            cur_selected_class = saved_selected_class;
+        }
+
+        action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
         class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
         submit_dialog_bs = new bootstrap.Modal($('#submit-dialog'));
         prompt_more_dialog_bs = new bootstrap.Modal($('#prompt-more-dialog'));
         warning_toast = bootstrap.Toast.getOrCreateInstance($('#warning-toast'));
-        
+
         pop_minmax = [0, 100];
         pop_cmap = chroma.scale(['303F9F', 'FF8F00', 'FF3D00']).domain(pop_minmax);
 
-        await init_language_select();
-        await render_page_basic();
-        await render_class_tree();
-        await render_prompt_by_class(cur_selected_class, cur_lan_code);
-    })().then(() => {
-        $("#search-input-group button").on('click', prompt_search_listener);
-        $('#submit-clear-btn').on('click', submit_clear_listener);
-        $('#submit-enter-btn').on('click', submit_enter_listener);
+        Promise.all([
+            init_language_select(),
+            render_page_basic(),
+            render_class_tree(),
+            render_prompt_by_class(cur_selected_class, cur_lan_code)
+        ]).then(() => {
+            $("#search-input-group button").on('click', prompt_search_listener);
+            $('#submit-clear-btn').on('click', submit_clear_listener);
+            $('#submit-enter-btn').on('click', submit_enter_listener);
 
-        $(document).ready(() => {
-            $("#search-input-group input").keydown(function (e) {
-                var curKey = e.which;
-                if (curKey == 13) {
-                    prompt_search_listener()
-                    return false;
-                }
+            $(document).ready(() => {
+                $("#search-input-group input").keydown(function (e) {
+                    var curKey = e.which;
+                    if (curKey == 13) {
+                        prompt_search_listener()
+                        return false;
+                    }
+                });
             });
-        });
-    })
+        })
+
+    }
 
     function switch_language_listener() {
         render_page_basic();

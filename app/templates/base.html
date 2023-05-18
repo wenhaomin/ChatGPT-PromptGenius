@@ -21,6 +21,24 @@
     <link rel="Shortcut Icon" href="/static/asset/icons/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="/static/asset/icons/favicon.ico" type="image/x-icon">
 
+    <!-- External modules. -->
+    <script src="/static/module/jquery.min.js"></script>
+    <script src="/static/module/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/static/module/chroma.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+        async></script>
+
+    <!-- Local modules. -->
+    <script src="/static/js/content.js"></script>
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/generator.js"></script>
+    <script src="/static/js/control.js"></script>
+    <script src="/static/js/render.js"></script>
+
     {% block style %}
     {% endblock %}
 </head>
@@ -106,36 +124,40 @@
     <!-- Main container -->
     {% block content %}
     {% endblock %}
-
-    <!-- External modules. -->
-    <script src="/static/module/jquery.min.js"></script>
-    <script src="/static/module/jquery-ui/jquery-ui.min.js"></script>
-    <script src="/static/module/chroma.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
-        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
-        async></script>
-
-    <!-- Local modules. -->
-    <script src="/static/js/content.js"></script>
-    <script src="/static/js/utils.js"></script>
-    <script src="/static/js/generator.js"></script>
-    <script src="/static/js/control.js"></script>
-    <script src="/static/js/render.js"></script>
-
-    <!-- Shared global variables. -->
-    <script>
-        cur_lan_code = "{{ lan_code }}";
-        // Load saved language code from cookie.
-        var save_lan_code = get_cookie('lancode');
-        if (save_lan_code !== "" && save_lan_code !== undefined) {
-            cur_lan_code = save_lan_code;
-        }
-        action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
-    </script>
-
-    <!-- Additional scripts specific to each page. -->
-    {% block script %}{% endblock %}
 </body>
+
+<!-- Shared global variables. -->
+<script>
+    function set_cookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function get_cookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    cur_lan_code = "{{ lan_code }}";
+    // Load saved language code from cookie.
+    var save_lan_code = get_cookie('lancode');
+    if (save_lan_code !== "" && save_lan_code !== undefined) {
+        cur_lan_code = save_lan_code;
+    }
+</script>
+
+<!-- Additional scripts specific to each page. -->
+{% block script %}{% endblock %}

@@ -69,11 +69,6 @@ async function render_page_basic() {
 }
 
 async function render_class_tree() {
-    var saved_selected_class = get_cookie('selected_class');
-    if (saved_selected_class !== "") {
-        cur_selected_class = saved_selected_class;
-    }
-
     // Intialize the options in #language-select.
     var data = await get_data(`fetch_classes/${cur_lan_code}`);
     $('#class-selection-list').empty();
