@@ -3,7 +3,6 @@ import copy
 from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
-from flask_login import LoginManager
 from sqlalchemy import text
 
 from app.utils import *
@@ -12,74 +11,27 @@ from app.utils import *
 bp = Blueprint('views', __name__)
 
 
+def get_preferred_lancode():
+    user_languages = request.accept_languages
+    lan_codes = {'zh': 'chn', 'en': 'eng', 'ja': 'jpn', 'ko': 'kor', 'de': 'deu'}
+    preferred_language = user_languages.best_match(lan_codes.keys())
+    preferred_lan_code = lan_codes.get(preferred_language, 'eng')
+    return preferred_lan_code
+
+
 @bp.route('/')
-@bp.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', lan_code=get_preferred_lancode())
 
 
-login_manager = LoginManager()
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
-@login_manager.unauthorized_handler
-def unauthorized():
-    # 用户未登录，重定向到登录页面
-    return render_template('login.html')
-
-
-@bp.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return render_template('index.html')
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        if not username or not password or not confirm_password:
-            flash('Please fill in all fields.')
-        elif password != confirm_password:
-            flash('Passwords do not match.')
-        elif User.query.filter_by(username=username).first() is not None:
-            flash('Username already exists.')
-        else:
-            user = User(username=username, password=generate_password_hash(password))
-            db.session.add(user)
-            db.session.commit()
-            flash('Registration succeeded.')
-            return redirect(url_for('auth.login'))
-    return render_template('register.html')
-
-
-@bp.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return render_template('index.html')
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user is not None and user.check_password(password):
-            login_user(user)
-            return render_template('index.html')
-        flash('Invalid username or password')
-    return render_template('login.html')
-
-
-# 登出路由
-@bp.route('/logout')
 @bp.route('/tools')
 def tools():
-    return render_template('tools.html')
+    return render_template('tools.html', lan_code=get_preferred_lancode())
 
 
 @bp.route('/log')
 def log():
-    return render_template('log.html')
+    return render_template('log.html', lan_code=get_preferred_lancode())
 
 
 @bp.route('/fetch_lan')

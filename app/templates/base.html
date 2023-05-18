@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title id="page-browser-title"></title>
+    <title id="page-browser-title">PromptGenius</title>
 
     <!-- External CSS. -->
     <link rel="stylesheet" href="/static/css/index.css">
@@ -127,7 +127,7 @@
 
     <!-- Shared global variables. -->
     <script>
-        cur_lan_code = 'eng';
+        cur_lan_code = "{{ lan_code }}";
         // Load saved language code from cookie.
         var save_lan_code = get_cookie('lancode');
         if (save_lan_code !== "" && save_lan_code !== undefined) {
