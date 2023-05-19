@@ -1,11 +1,5 @@
-import re
-from difflib import SequenceMatcher
-import unicodedata
-import os
-import json
-
-from sqlalchemy import and_, or_
 from markdown2 import markdown
+from flask import request
 
 from app.models import *
 
@@ -21,3 +15,11 @@ def gather_prompt_content_dict(prompt):
 
 def md_to_html(md):
     return markdown(md, extras=["fenced-code-blocks", "tables"])
+
+
+def get_preferred_lancode():
+    user_languages = request.accept_languages
+    lan_codes = {'zh': 'chn', 'en': 'eng', 'ja': 'jpn', 'ko': 'kor', 'de': 'deu'}
+    preferred_language = user_languages.best_match(lan_codes.keys())
+    preferred_lan_code = lan_codes.get(preferred_language, 'eng')
+    return preferred_lan_code

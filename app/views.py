@@ -3,20 +3,12 @@ import copy
 from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
-from sqlalchemy import text
+from sqlalchemy import and_
 
 from app.utils import *
 
 
 bp = Blueprint('views', __name__)
-
-
-def get_preferred_lancode():
-    user_languages = request.accept_languages
-    lan_codes = {'zh': 'chn', 'en': 'eng', 'ja': 'jpn', 'ko': 'kor', 'de': 'deu'}
-    preferred_language = user_languages.best_match(lan_codes.keys())
-    preferred_lan_code = lan_codes.get(preferred_language, 'eng')
-    return preferred_lan_code
 
 
 @bp.route('/')
