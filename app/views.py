@@ -4,11 +4,14 @@ from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
 from sqlalchemy import and_
+from flask_login import LoginManager
 
 from app.utils import *
+from app.models import *
 
 
 bp = Blueprint('views', __name__)
+login_manager = LoginManager()
 
 
 @bp.route('/')
@@ -24,6 +27,11 @@ def tools():
 @bp.route('/log')
 def log():
     return render_template('log.html', lan_code=get_preferred_lancode())
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 
 @bp.route('/fetch_lan')

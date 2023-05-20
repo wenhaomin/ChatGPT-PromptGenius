@@ -85,6 +85,7 @@
                 <div class="offcanvas-body">
                     <!-- Navbar links directing to pages. -->
                     <ul class="navbar-nav d-flex flex-row mb-2 mb-lg-0" id="navbar-links"></ul>
+
                     <!-- Search bar. -->
                     <div class="input-group ms-lg-auto mb-3 mb-lg-0" id="search-input-group">
                         <input type="text" class="form-control text-bg-dark border-secondary">
@@ -93,8 +94,9 @@
                         </button>
                     </div>
                     <div class="vr d-none d-lg-block mx-2"></div>
+
                     <!-- Action button group. -->
-                    <div class="btn-group flex-row" role="group" id="nav-button-group">
+                    <div class="btn-group flex-row mb-3 mb-lg-0" role="group" id="nav-button-group">
                         <!-- Submit button. -->
                         <button type="button" class="btn btn-secondary" id="nav-submit-btn" data-bs-toggle="modal"
                             data-bs-target="#submit-dialog">
@@ -108,12 +110,43 @@
                         </a>
                         <!-- Language selector. -->
                         <div class="btn-group" id="nav-language-select-group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="bi bi-globe"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" id="nav-language-select"></ul>
                         </div>
+                    </div>
+                    <div class="vr d-none d-lg-block mx-2"></div>
+
+                    <!-- User group. -->
+                    <div class="btn-group" id="user-group">
+                        <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end">
+                            <li>
+                                <span class="dropdown-item-text">
+                                    <span class="welcome-text"></span>,
+                                    <span class="user-name"></span>
+                                </span>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item login-btn" data-bs-toggle="modal"
+                                    data-bs-target="#user-login-dialog">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item user-setting-btn d-none">
+                                    <i class="bi bi-gear-fill me-2"></i>
+                                    <span></span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
                 </div>

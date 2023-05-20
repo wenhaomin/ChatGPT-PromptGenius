@@ -41,6 +41,27 @@ async function render_page_basic() {
     $('#search-input-group input').attr('placeholder', searchbar_contents[cur_lan_code]['placeholder']);
     $('#nav-submit-btn span').text(actionbar_contents[cur_lan_code]["submit_btn_text"]);
 
+    var user_group = $('#user-group');
+    var _user_contents = user_contents[cur_lan_code];
+    var login_or_register_text = `${_user_contents["login_text"]} / ${_user_contents["register_text"]}`;
+    user_group.find('.welcome-text').text(_user_contents["welcome_text"]);
+    user_group.find('.user-name').text(_user_contents["guest_name"]);
+    user_group.find('.login-btn span').text(login_or_register_text);
+    user_group.find('.user-setting-btn span').text(_user_contents["user_setting_text"]);
+
+    var user_login_dialog = $('#user-login-dialog');
+    if (user_login_dialog.length) {
+        user_login_dialog.find('.modal-title').text(login_or_register_text);
+        user_login_dialog.find('.login-error-message').text(_user_contents["login_error_message"]);
+        user_login_dialog.find('.register-error-message').text(_user_contents["register_error_message"]);
+        $('#login-dialog-message').text(_user_contents["login_message"]);
+        $('#login-username-group input').attr('placeholder', _user_contents["username_ph"]);
+        $('#login-password-group input').attr('placeholder', _user_contents["password_ph"]);
+        $('#login-password-repeat-group input').attr('placeholder', _user_contents["password_re_ph"]);
+        $('#register-btn span').text(_user_contents["register_text"]);
+        $('#login-btn span').text(_user_contents["login_text"]);
+    }
+
     if ($('#submit-dialog').length) {
         // Render contents in submit dialog.
         $('#submit-dialog-title').text(submit_contents[cur_lan_code]['title']);

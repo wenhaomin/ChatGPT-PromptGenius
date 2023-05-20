@@ -8,11 +8,9 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 db = SQLAlchemy()
 
 
-# 创建用户模型
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(64), unique=True, index=True)
+    username = Column(String(64), primary_key=True, unique=True, index=True)
     password_hash = Column(String(128))
 
     def set_password(self, password):

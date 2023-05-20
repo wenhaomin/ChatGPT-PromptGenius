@@ -99,6 +99,46 @@
         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
     </div>
 </div>
+
+<div class="modal fade" id="user-login-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span id="login-dialog-message"></span>
+                <form class="mt-3">
+                    <label class="form-label login-error-message text-danger d-none"></label>
+                    <label class="form-label register-error-message text-danger d-none"></label>
+                    <div class="input-group mb-2" id="login-username-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="input-group mb-2" id="login-password-group">
+                        <span class="input-group-text"><i class="bi bi-key"></i></span>
+                        <input class="form-control" type="password"/>
+                    </div>
+                    <div class="input-group mb-2 d-none" id="login-password-repeat-group">
+                        <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+                        <input class="form-control" type="password"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="register-btn">
+                    <div class="spinner-border spinner-border-sm d-none"></div>
+                    <span></span>
+                </button>
+                <button type="button" class="btn btn-primary" id="login-btn">
+                    <div class="spinner-border spinner-border-sm d-none"></div>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block script %}
@@ -110,6 +150,7 @@
         class_sidebar_bs = new bootstrap.Offcanvas($('#class-sidebar'));
         submit_dialog_bs = new bootstrap.Modal($('#submit-dialog'));
         prompt_more_dialog_bs = new bootstrap.Modal($('#prompt-more-dialog'));
+        user_login_dialog_bs = new bootstrap.Modal($('#user-login-dialog'));
         warning_toast = bootstrap.Toast.getOrCreateInstance($('#warning-toast'));
 
         pop_minmax = [0, 100];
@@ -124,6 +165,8 @@
             $("#search-input-group button").on('click', prompt_search_listener);
             $('#submit-clear-btn').on('click', submit_clear_listener);
             $('#submit-enter-btn').on('click', submit_enter_listener);
+            $('#register-btn').on('click', register_click_listener);
+            $('#login-btn').on('click', login_click_listener);
 
             $(document).ready(() => {
                 $("#search-input-group input").keydown(function (e) {

@@ -1,8 +1,6 @@
 from markdown2 import markdown
 from flask import request
 
-from app.models import *
-
 
 def gather_prompt_content_dict(prompt):
     return {'functionID': prompt.functionID, 'semanticID': prompt.semanticID, 'lanCode': prompt.lanCode,

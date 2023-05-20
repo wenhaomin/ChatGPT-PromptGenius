@@ -80,3 +80,26 @@ function copy_to_clipboard(text) {
     }
     copyContent();
 }
+
+function validate_input(input_group, repeat_group) {
+    var input_element = input_group.find('textarea, input');
+    var input_val = input_element.val();
+
+    if (input_val.length > 0) {
+        input_element.removeClass('border-danger');
+
+        if (repeat_group !== undefined) {
+            if (input_val !== repeat_group.find('textarea, input').val()) {
+                input_element.addClass('border-danger');
+                repeat_group.find('textarea, input').addClass('border-danger');
+                return "";
+            } else {
+                repeat_group.find('textarea, input').removeClass('border-danger');
+            }
+        }
+        return input_val;
+    } else {
+        input_element.addClass('border-danger');
+        return "";
+    }
+}

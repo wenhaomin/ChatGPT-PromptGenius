@@ -122,6 +122,74 @@ actionbar_contents = {
     },
 }
 
+user_contents = {
+    "eng": {
+        "welcome_text": "Welcome",
+        "guest_name": "Guest",
+        "login_text": "Login",
+        "register_text": "Register",
+        "user_setting_text": "User settings",
+        "login_message": "After login, you can mark prompts as your favorites, and build your personalized prompt libraries.",
+        "username_ph": "Username",
+        "password_ph": "Password",
+        "password_re_ph": "Password (repeat)",
+        "login_error_message": "Login failed, please check your username and password.",
+        "register_error_message": "Register failed, please try another username."
+    },
+    "chn": {
+        "welcome_text": "欢迎",
+        "guest_name": "游客",
+        "login_text": "登录",
+        "register_text": "注册",
+        "user_setting_text": "用户设置",
+        "login_message": "登录后，您可以将提示词添加到收藏夹中，构建您的个性化提示词库。",
+        "username_ph": "用户名",
+        "password_ph": "密码",
+        "password_re_ph": "密码（重复）",
+        "login_error_message": "登录失败，请检查您的用户名和密码。",
+        "register_error_message": "注册失败，请尝试换一个用户名。"
+    },
+    "jpn": {
+        "welcome_text": "ようこそ",
+        "guest_name": "ゲスト",
+        "login_text": "ログイン",
+        "register_text": "登録",
+        "user_setting_text": "ユーザー設定",
+        "login_message": "ログイン後、プロンプトをお気に入りに追加し、パーソナライズされたプロンプト ライブラリを構築できます。",
+        "username_ph": "ユーザー名",
+        "password_ph": "パスワード",
+        "password_re_ph": "パスワード（繰り返し）",
+        "login_error_message": "ログインに失敗しました。ユーザー名とパスワードを確認してください。",
+        "register_error_message": "登録に失敗しました。別のユーザー名を試してください。"
+    },
+    "kor": {
+        "welcome_text": "환영",
+        "guest_name": "손님",
+        "login_text": "로그인",
+        "register_text": "등록",
+        "user_setting_text": "사용자 설정",
+        "login_message": "로그인 후 즐겨찾기에 프롬프트를 추가하고 개인화된 프롬프트 라이브러리를 구축할 수 있습니다.",
+        "username_ph": "사용자 이름",
+        "password_ph": "비밀번호",
+        "password_re_ph": "비밀번호(반복)",
+        "login_error_message": "로그인에 실패했습니다. 사용자 이름과 비밀번호를 확인하세요.",
+        "register_error_message": "등록하지 못했습니다. 다른 사용자 이름을 입력하세요."
+    },
+    "deu": {
+        "welcome_text": "Willkommen",
+        "guest_name": "Gast",
+        "login_text": "Anmelden",
+        "register_text": "Registrieren",
+        "user_setting_text": "Benutzereinstellungen",
+        "login_message": "Nach der Anmeldung können Sie Eingabeaufforderungen zu Ihren Favoriten hinzufügen und Ihre personalisierten Eingabeaufforderungsbibliotheken erstellen.",
+        "username_ph": "Nutzername",
+        "password_ph": "Passwort",
+        "password_re_ph": "Passwort (wiederholen)",
+        "login_error_message": "Die Anmeldung ist fehlgeschlagen. Bitte überprüfen Sie Ihren Benutzernamen und Ihr Passwort.",
+        "register_error_message": "Die Registrierung ist fehlgeschlagen. Bitte versuchen Sie es mit einem anderen Benutzernamen."
+    }
+}
+
 banner_contents = {
     "eng": [
         {

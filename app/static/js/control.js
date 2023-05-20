@@ -85,6 +85,7 @@ function gain_popularity_listener(card, function_id, semantic_id, lan_code, incr
     var pop_display = card.find('.popularity-badge span')
     var cur_pop = parseInt(pop_display.text());
     pop_display.text(cur_pop + increase);
+    masonry_reload(card.parents('#prompt-display'), '.prompt-col');
     send_post(`increase_popularity`,
         {
             'lan_code': lan_code, 'function_id': function_id,
@@ -105,18 +106,6 @@ function prompt_search_listener() {
 function submit_clear_listener() {
     $('#submit-dialog input').val('');
     $('#submit-dialog textarea').val('');
-}
-
-function validate_input(input_group) {
-    var input_element = input_group.find('textarea, input');
-    var input_val = input_element.val();
-
-    if (input_val.length > 0) {
-        input_element.removeClass('border-danger');
-    } else {
-        input_element.addClass('border-danger');
-    }
-    return input_val;
 }
 
 function submit_enter_listener() {
@@ -144,4 +133,30 @@ function submit_enter_listener() {
 function not_implemented_listener() {
     $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['not_implemented']);
     warning_toast.show();
+}
+
+function register_click_listener() {
+    var username_group = $('#login-username-group');
+    var password_group = $('#login-password-group');
+    var password_re_group = $('#login-password-repeat-group');
+
+    if (password_re_group.hasClass('d-none')) {
+        password_re_group.removeClass('d-none');
+    } else {
+        var username = validate_input(username_group);
+        var password = validate_input(password_group, password_re_group);
+    }
+}
+
+function login_click_listener() {
+    var username_group = $('#login-username-group');
+    var password_group = $('#login-password-group');
+    var password_re_group = $('#login-password-repeat-group');
+
+    if (!password_re_group.hasClass('d-none')) {
+        $('#login-password-repeat-group').addClass('d-none');
+    } else {
+        var username = validate_input(username_group);
+        var password = validate_input(password_group);
+    }
 }
