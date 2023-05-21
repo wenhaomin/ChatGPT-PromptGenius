@@ -78,6 +78,17 @@ Huge shout-out to those excellent works. This project would be impossible withou
 
 ### Start the server
 
+First, please add a `app_config.json` file under `/app` directory. Here is an example of the file:
+
+```json
+{
+    "SQLALCHEMY_DATABASE_URI": "sqlite:///PromptGenius.db",
+    "SECRET_KEY": "your-secret-key"
+}
+```
+
+Then, install requirements and start the server using the following lines:
+
 ```shell
 # Install packages
 pip install -r requirements.txt

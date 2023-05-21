@@ -92,6 +92,17 @@ Prompt Genius将所有提示词，按照使用场景进行层次化的分类，�
 
 ### 启动服务
 
+首先，请在`/app`文件夹下自行添加`app_config.json`文件。文件格式示例如下：
+
+```json
+{
+    "SQLALCHEMY_DATABASE_URI": "sqlite:///PromptGenius.db",
+    "SECRET_KEY": "your-secret-key"
+}
+```
+
+随后，使用以下指令安装依赖，启动服务器：
+
 ```shell
 # Install packages
 pip install -r requirements.txt
