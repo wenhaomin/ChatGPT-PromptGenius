@@ -352,6 +352,9 @@ def edit_prompt_meta():
     semantic_id = request.json['semantic_id']
     lan_code = request.json['lan_code']
 
+    function_id_new = request.json['function_id_new']
+    semantic_id_new = request.json['semantic_id_new']
+    lan_code_new = request.json['lan_code_new']
     priority = request.json['priority']
     model = request.json['model']
     author = request.json['author']
@@ -361,6 +364,9 @@ def edit_prompt_meta():
     prompt = FunctionPrompts.query.filter(and_(FunctionPrompts.functionID == function_id,
                                                FunctionPrompts.semanticID == semantic_id,
                                                FunctionPrompts.lanCode == lan_code)).first()
+    prompt.functionID = function_id_new
+    prompt.semanticID = semantic_id_new
+    prompt.lanCode = lan_code_new
     prompt.priority = priority
     prompt.model = model
     prompt.author = author

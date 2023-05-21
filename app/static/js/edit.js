@@ -53,6 +53,9 @@ prompt_edit_ok_btn.on('click', () => {
         'function_id': edit_dialog.attr('function-id'),
         'semantic_id': edit_dialog.attr('semantic-id'),
         'lan_code': edit_dialog.attr('lan-code'),
+        'function_id_new': edit_dialog.find('input[content="function-id"]').val(),
+        'semantic_id_new': edit_dialog.find('input[content="semantic-id"]').val(),
+        'lan_code_new': edit_dialog.find('input[content="lan-code"]').val(),
         'priority': edit_dialog.find('input[content="priority"]').val(),
         'model': edit_dialog.find('input[content="model"]').val(),
         'author': edit_dialog.find('input[content="author"]').val(),
@@ -96,7 +99,7 @@ function gen_one_example_edit_list(dialog_contents) {
 
     var add_item_btn = $(`
         <li class="list-group-item">
-            <button class="btn w-100 btn-secondary">Add item</button>
+            <button class="btn w-100 btn-secondary">Add line</button>
         </li>
     `);
     dialog_list.append(add_item_btn);
@@ -121,22 +124,21 @@ function gen_one_example_edit_list(dialog_contents) {
 
 function gen_one_example_edit_tab(model_name, dialog_contents, index) {
     var nav = $(`
-            <li class="nav-item">
-                <a class="nav-link example-nav-link d-flex flex-nowrap align-items-center 
-                ${(index === 0) ? 'active' : ''}"
-                data-bs-toggle="tab" data-bs-target="#dialog-model-${index}">
-                    <button class="btn badge text-danger dialog-tab-remove-btn">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                    <input class="form-control form-control-sm model-name-input" 
-                    value="${model_name}" type="text" style="width: 100px"/>
-                </a>
-            </li>
-        `);
+        <li class="nav-item">
+            <a class="nav-link example-nav-link d-flex flex-nowrap align-items-center ${(index === 0) ? 'active' : ''}"
+            data-bs-toggle="tab" data-bs-target="#example-edit-model-${index}">
+                <button class="btn badge text-danger dialog-tab-remove-btn">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+                <input class="form-control form-control-sm model-name-input" 
+                value="${model_name}" type="text" placeholder="model name" style="width: 100px"/>
+            </a>
+        </li>
+    `);
 
     var tab_content = $(`
-        <div class="tab-pane fade ${(index === 0) ? 'active show' : ''}" 
-            tabindex="0" id="dialog-model-${index}">
+        <div class="tab-pane fade ${(index === 0) ? 'active show' : ''}" tabindex="1" 
+        id="example-edit-model-${index}">
     `);
     tab_content.append(gen_one_example_edit_list(dialog_contents));
 
@@ -159,6 +161,7 @@ $('#example-edit-open-btn').on('click', () => {
         'semantic_id': prompt_edit_dialog.attr('semantic-id'),
         'lan_code': prompt_edit_dialog.attr('lan-code')
     }).then((data) => {
+        // Add existing examples to the edit dialog.
         Object.entries(data.content).forEach(([model_name, dialog_contents], index) => {
             var [nav, tab_content] = gen_one_example_edit_tab(model_name, dialog_contents, index);
             edit_dialog.find('#example-model-edit-nav').append(nav);
@@ -169,8 +172,10 @@ $('#example-edit-open-btn').on('click', () => {
 })
 
 $('#example-add-dialog-btn').on('click', () => {
+    // Add new example item to the edit dialog.
     var edit_dialog = $('#example-edit-dialog');
-    var [nav, tab_content] = gen_one_example_edit_tab('', [], edit_dialog.find('ul').length);
+    var [nav, tab_content] = gen_one_example_edit_tab('', [],
+        edit_dialog.find('.example-nav-link').length);
     edit_dialog.find('#example-model-edit-nav').append(nav);
     edit_dialog.find('#example-model-edit-tab-content').append(tab_content);
     edit_dialog.find('#example-model-edit-nav').sortable();
@@ -180,9 +185,9 @@ $('#example-edit-ok-btn').on('click', () => {
     var edit_dialog = $('#example-edit-dialog');
     var prompt_edit_dialog = $('#prompt-edit-dialog');
     var examples = {};
-    edit_dialog.find('#example-model-edit-nav').each((i, nav_item) => {
+    edit_dialog.find('#example-model-edit-nav .example-nav-link').each((i, nav_item) => {
         var model_name = $(nav_item).find('.model-name-input').val();
-        var tab_id = $(nav_item).find('.example-nav-link').attr('data-bs-target');
+        var tab_id = $(nav_item).attr('data-bs-target');
         var example_contents = [];
         edit_dialog.find(tab_id).find('.example-list-item').each((j, list_item) => {
             var role_index = $(list_item).find('.role-icon .bi').hasClass('bi-person-fill') ? 0 : 1;
@@ -190,7 +195,7 @@ $('#example-edit-ok-btn').on('click', () => {
             example_contents.push([j, content, role_index]);
         });
         examples[model_name] = example_contents;
-    })
+    });
     $('#example-edit-ok-btn .spinner-border').removeClass('d-none');
     send_post('edit_prompt_dialog', {
         'function_id': prompt_edit_dialog.attr('function-id'),
