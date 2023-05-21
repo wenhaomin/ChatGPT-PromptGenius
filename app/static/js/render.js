@@ -181,6 +181,10 @@ function render_prompt_display(prompt_list) {
         warning_toast.hide();
     }
 
+    if (typeof prompt_card_hover_listener !== 'undefined') {
+        display.find('.prompt-card').hover(prompt_card_hover_listener);
+    }
+
     masonry_reload(display, '.prompt-col');
 }
 
@@ -207,7 +211,11 @@ async function render_prompt_example_display(function_id, semantic_id, lan_code)
     const colors = ['FFB300', '039BE5']
     const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
 
-    var data = await get_data(`get_prompt_dialog/${function_id}/${semantic_id}/${lan_code}`);
+    var data = await send_post(`get_prompt_dialog`, {
+        'function_id': function_id,
+        'semantic_id': semantic_id,
+        'lan_code': lan_code
+    });
 
     var prompt_more_dialog = $('#prompt-more-dialog');
     prompt_more_dialog.find('.modal-body').empty();
@@ -275,6 +283,8 @@ async function render_user_specific() {
         setting_item.addClass('d-none');
         logout_item.addClass('d-none');
     }
+
+    $('#submit-dialog-user-group input').val(cur_username);
 }
 
 async function render_userfav_class_item() {

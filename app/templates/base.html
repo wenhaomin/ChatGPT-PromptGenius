@@ -164,6 +164,11 @@
     <!-- Main container -->
     {% block content %}
     {% endblock %}
+
+    <!-- Contents for admin edit. -->
+    {% if show_edit_content %}
+        {% include 'edit.html' %}
+    {% endif %}
 </body>
 
 <!-- Shared global variables. -->

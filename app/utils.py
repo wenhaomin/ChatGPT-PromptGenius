@@ -1,5 +1,8 @@
+from functools import wraps
+
 from markdown2 import markdown
 from flask import request
+from flask_login import current_user
 
 
 def gather_prompt_content_dict(prompt):
@@ -21,3 +24,26 @@ def get_preferred_lancode():
     preferred_language = user_languages.best_match(lan_codes.keys())
     preferred_lan_code = lan_codes.get(preferred_language, 'eng')
     return preferred_lan_code
+
+
+def get_cur_username():
+    if current_user.is_authenticated:
+        return current_user.username
+    else:
+        return ""
+
+
+def is_admin():
+    return current_user.is_authenticated and current_user.username == 'admin'
+
+
+def admin_required(view_func):
+    @wraps(view_func)
+    def wrapper(*args, **kwargs):
+        if is_admin():
+            return view_func(*args, **kwargs)
+        else:
+            # Handle unauthorized access
+            return "Unauthorized", 403
+
+    return wrapper

@@ -2,9 +2,9 @@ import os
 import copy
 from datetime import datetime
 
-from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
+from flask import Blueprint, jsonify, render_template
 from sqlalchemy import and_, func
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user, login_required, logout_user
 
 from app.utils import *
 from app.models import *
@@ -14,25 +14,33 @@ bp = Blueprint('views', __name__)
 login_manager = LoginManager()
 
 
+"""
+Routers for different pages.
+"""
+
+
 @bp.route('/')
 def index():
     return render_template('index.html',
                            lan_code=get_preferred_lancode(),
-                           username=get_cur_username())
+                           username=get_cur_username(),
+                           show_edit_content=is_admin())
 
 
 @bp.route('/tools')
 def tools():
     return render_template('tools.html',
                            lan_code=get_preferred_lancode(),
-                           username=get_cur_username())
+                           username=get_cur_username(),
+                           show_edit_content=is_admin())
 
 
 @bp.route('/log')
 def log():
     return render_template('log.html',
                            lan_code=get_preferred_lancode(),
-                           username=get_cur_username())
+                           username=get_cur_username(),
+                           show_edit_content=is_admin())
 
 
 @login_manager.user_loader
@@ -40,11 +48,9 @@ def load_user(user_id):
     return User.query.filter(User.id == user_id).first()
 
 
-def get_cur_username():
-    if current_user.is_authenticated:
-        return current_user.username
-    else:
-        return ""
+"""
+Routers for user managements: login, register and logout.
+"""
 
 
 @bp.route('/login', methods=['POST'])
@@ -70,7 +76,8 @@ def register():
     if existing_user:
         return jsonify({'message': 'fail'})
 
-    new_user = User(id=len(User.query.all()), username=username)
+    cur_max_id = db.session.query(func.max(User.id)).scalar()
+    new_user = User(id=(cur_max_id + 1) if cur_max_id is not None else 0, username=username)
     new_user.set_password(password)
 
     db.session.add(new_user)
@@ -85,6 +92,11 @@ def register():
 def logout():
     logout_user()
     return jsonify({'message': 'success'})
+
+
+"""
+User-specific routers: change user settings, add or remove favorites.
+"""
 
 
 @bp.route('/change_password', methods=['POST'])
@@ -113,7 +125,7 @@ def add_fav_prompt():
     cur_max_id = db.session.query(func.max(UserFavPrompt.favID)).filter(
         UserFavPrompt.userID == cur_user_id).scalar()
     new_fav = UserFavPrompt(userID=cur_user_id,
-                            favID=cur_max_id + 1 if cur_max_id is not None else 0,
+                            favID=(cur_max_id + 1) if cur_max_id is not None else 0,
                             functionID=function_id, semanticID=semantic_id, lanCode=lan_code)
     db.session.add(new_fav)
     db.session.commit()
@@ -149,6 +161,11 @@ def fetch_fav_prompt():
     return jsonify({'message': 'success', 'content': prompt_indicators})
 
 
+"""
+Routers for fetching various contents.
+"""
+
+
 @bp.route('/fetch_lan')
 def fetch_lan():
     languages = [{"code": item.code, "name": item.name} for item in Languages.query.all()]
@@ -165,26 +182,6 @@ def fetch_tools(lan_code):
     return jsonify(tools)
 
 
-@bp.route('/submit_function', methods=['GET', 'POST'])
-def submit_function():
-    if request.method == 'POST':
-        try:
-            func_desc = request.json['func_desc']
-            prompt_content = request.json['prompt_content']
-            user_name = request.json['user_name']
-            cur_time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-
-            new_function = SubmitFunction(funcDesc=func_desc, createTime=cur_time,
-                                          promptContent=prompt_content, userName=user_name)
-            db.session.add(new_function)
-            db.session.commit()
-
-            return jsonify({'message': 'success'})
-        except Exception as e:
-            print(e)
-            return jsonify({'message': 'error', 'error': str(e)})
-
-
 @bp.route('/fetch_classes/<lan_code>')
 def fetch_classes(lan_code):
     class_names = {item.ID: item.name
@@ -195,23 +192,6 @@ def fetch_classes(lan_code):
                 'icon': item.icon, 'icon_style': item.icon_style}
                for item in Classes.query.all()]
     return jsonify(classes)
-
-
-@bp.route('/increase_popularity', methods=['GET', 'POST'])
-def increase_popularity():
-    if request.method == 'POST':
-        try:
-            functionprompt = FunctionPrompts.query.filter_by(
-                lanCode=request.json['lan_code'],
-                functionID=request.json['function_id'],
-                semanticID=request.json['semantic_id']).first()
-            if functionprompt:
-                functionprompt.copied_count += request.json['increase']
-                db.session.commit()
-            return jsonify({'message': 'success'})
-        except Exception as e:
-            print(e)
-            return jsonify({'message': 'error', 'error': str(e)})
 
 
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
@@ -243,7 +223,7 @@ def fetch_prompt(class_id, lan_code):
         # find all prompts that has the function
         for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
                                                    PromptView.lanCode.in_(lan_codes),
-                                                   PromptView.priority >= 0)
+                                                   PromptView.priority >= (-999 if is_admin() else 0))
                                               ).all():
             if class_id == 'popular' and int(prompt.priority) != 2:
                 continue
@@ -262,15 +242,18 @@ def search_prompt(search_text, lan_code):
 
     for prompt in PromptView.query.filter(and_(PromptView.content.contains(search_text),
                                                PromptView.lanCode.in_(lan_codes),
-                                               PromptView.priority >= 0)).all():
+                                               PromptView.priority >= (-999 if is_admin() else 0))).all():
         result.append(gather_prompt_content_dict(prompt))
 
     return jsonify({"content": result, "message": "success"})
 
 
-@bp.route('/get_prompt_dialog/<function_id>/<semantic_id>/<lan_code>')
-def get_prompt_dialog(function_id, semantic_id, lan_code):
+@bp.route('/get_prompt_dialog', methods=['POST'])
+def get_prompt_dialog():
     result = {}
+    function_id = request.json['function_id']
+    semantic_id = request.json['semantic_id']
+    lan_code = request.json['lan_code']
     for dialog in PromptDialogs.query.filter(and_(PromptDialogs.functionID == function_id,
                                                   PromptDialogs.semanticID == semantic_id,
                                                   PromptDialogs.lanCode == lan_code)).\
@@ -299,3 +282,115 @@ def fetch_logs(lan_code):
         contents.append(md_to_html(md_text))
 
     return jsonify({'message': 'success', 'content': contents})
+
+
+"""
+Routers for users' interactions with the website.
+"""
+
+
+@bp.route('/increase_popularity', methods=['GET', 'POST'])
+def increase_popularity():
+    if request.method == 'POST':
+        try:
+            functionprompt = FunctionPrompts.query.filter_by(
+                lanCode=request.json['lan_code'],
+                functionID=request.json['function_id'],
+                semanticID=request.json['semantic_id']).first()
+            if functionprompt:
+                functionprompt.copied_count += request.json['increase']
+                db.session.commit()
+            return jsonify({'message': 'success'})
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'error', 'error': str(e)})
+
+
+@bp.route('/submit_function', methods=['POST'])
+def submit_function():
+    try:
+        func_desc = request.json['func_desc']
+        prompt_content = request.json['prompt_content']
+        user_name = request.json['user_name']
+        cur_time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+
+        new_function = SubmitFunction(funcDesc=func_desc, createTime=cur_time,
+                                      promptContent=prompt_content, userName=user_name)
+        db.session.add(new_function)
+        db.session.commit()
+
+        return jsonify({'message': 'success'})
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'error', 'error': str(e)})
+
+
+"""
+Admin-specific routers: these routers are accessable only under Admin account.
+"""
+
+
+@bp.route('/fetch_prompt_meta', methods=['POST'])
+@admin_required
+def fetch_prompt_meta():
+    function_id = request.json['function_id']
+    semantic_id = request.json['semantic_id']
+    lan_code = request.json['lan_code']
+
+    prompt = PromptView.query.filter(and_(PromptView.functionID == function_id,
+                                          PromptView.semanticID == semantic_id,
+                                          PromptView.lanCode == lan_code)).first()
+    prompt_meta = gather_prompt_content_dict(prompt)
+
+    return jsonify({'message': 'success', 'meta': prompt_meta})
+
+
+@bp.route('/edit_prompt_meta', methods=['POST'])
+@admin_required
+def edit_prompt_meta():
+    function_id = request.json['function_id']
+    semantic_id = request.json['semantic_id']
+    lan_code = request.json['lan_code']
+
+    priority = request.json['priority']
+    model = request.json['model']
+    author = request.json['author']
+    author_link = request.json['author_link']
+    content = request.json['content']
+
+    prompt = FunctionPrompts.query.filter(and_(FunctionPrompts.functionID == function_id,
+                                               FunctionPrompts.semanticID == semantic_id,
+                                               FunctionPrompts.lanCode == lan_code)).first()
+    prompt.priority = priority
+    prompt.model = model
+    prompt.author = author
+    prompt.author_link = author_link
+    prompt.content = content
+
+    db.session.commit()
+
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/edit_prompt_dialog', methods=['POST'])
+@admin_required
+def edit_prompt_dialog():
+    function_id = request.json['function_id']
+    semantic_id = request.json['semantic_id']
+    lan_code = request.json['lan_code']
+
+    for dialog in PromptDialogs.query.filter_by(functionID=function_id,
+                                                semanticID=semantic_id,
+                                                lanCode=lan_code).all():
+        db.session.delete(dialog)
+
+    examples = request.json['examples']
+    for model_name, example_contents in examples.items():
+        for index, content, role in example_contents:
+            new_item = PromptDialogs(functionID=function_id, semanticID=semantic_id, 
+                                     lanCode=lan_code, model=model_name, 
+                                     dialog_index=index, role_index=role, content=content)
+            db.session.add(new_item)
+    db.session.commit()
+
+    return jsonify({'message': 'success'})

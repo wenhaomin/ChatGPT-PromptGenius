@@ -189,6 +189,7 @@ function register_click_listener() {
                     cur_username = data.username;
                     render_user_specific();
                     render_userfav_class_item();
+                    action_sidebar_bs.hide();
                 } else {
                     error_message.removeClass('d-none');
                     setTimeout(() => {
@@ -228,6 +229,11 @@ function login_click_listener() {
                     render_user_specific();
                     render_userfav_class_item();
                     update_prompt_display_fav();
+                    action_sidebar_bs.hide();
+
+                    if (cur_username === 'admin') {
+                        window.location.href = '/';
+                    }
                 } else {
                     error_message.removeClass('d-none');
                     setTimeout(() => {
@@ -241,10 +247,15 @@ function login_click_listener() {
 
 function logout_click_listener() {
     get_data('logout').then(() => {
+        if (cur_username === 'admin') {
+            window.location.href = '/';
+        }
+
         cur_username = '';
         render_user_specific();
         render_userfav_class_item();
         update_prompt_display_fav();
+        action_sidebar_bs.hide();
     })
 }
 

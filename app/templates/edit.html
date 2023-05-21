@@ -1,0 +1,105 @@
+<div class="modal fade" id="prompt-edit-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Edit Prompt</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span>Edit the parameters and contents of this prompt.</span>
+                <form class="mt-3">
+                    <label class="form-label text-danger d-none" content="error-message"></label>
+                    <div class="row row-cols-2">
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-wrench"></i></span>
+                                <input class="form-control" type="text" placeholder="function ID" content="function-id"
+                                    disabled />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                <input class="form-control" type="text" placeholder="semantic ID" content="semantic-id"
+                                    disabled />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+                                <input class="form-control" type="text" placeholder="language code" content="lan-code"
+                                    disabled />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-1-circle"></i></span>
+                                <input class="form-control" type="number" placeholder="priority" content="priority" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-gear"></i></span>
+                                <input class="form-control" type="text" placeholder="model" content="model" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input class="form-control" type="text" placeholder="author" content="author" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-link"></i></span>
+                        <input class="form-control" type="text" placeholder="author link" content="author-link" />
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-body-text"></i></span>
+                        <textarea class="form-control form-control-sm" type="text" placeholder="prompt content" rows="5"
+                            content="content"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="example-edit-open-btn" data-bs-toggle="modal"
+                    data-bs-target="#example-edit-dialog">
+                    <span>Edit dialogs</span>
+                </button>
+                <button type="button" class="btn btn-primary" id="prompt-edit-ok-btn">
+                    <div class="spinner-border spinner-border-sm d-none"></div>
+                    <span class="d-none finished-indicator"><i class="bi bi-check-lg"></i></span>
+                    <span>OK</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-lg" id="example-edit-dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Edit prompt dialogs</h1>
+                <button type="button" class="btn-close" data-bs-toggle="modal"
+                    data-bs-target="#prompt-edit-dialog"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-underline mb-2 d-flex flex-nowrap overflow-x-scroll" id="example-model-edit-nav">
+                </ul>
+                <div class="tab-content" id="example-model-edit-tab-content"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="example-add-dialog-btn">Add dialog</button>
+                <button type="button" class="btn btn-primary" id="example-edit-ok-btn">
+                    <div class="spinner-border spinner-border-sm d-none"></div>
+                    <span class="d-none finished-indicator"><i class="bi bi-check-lg"></i></span>
+                    <span>OK</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/edit.js"></script>
