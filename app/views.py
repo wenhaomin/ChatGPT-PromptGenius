@@ -110,9 +110,10 @@ def add_fav_prompt():
     lan_code = request.json['lan_code']
 
     cur_user_id = current_user.id
+    cur_max_id = db.session.query(func.max(UserFavPrompt.favID)).filter(
+        UserFavPrompt.userID == cur_user_id).scalar()
     new_fav = UserFavPrompt(userID=cur_user_id,
-                            favID=db.session.query(func.max(UserFavPrompt.favID)).filter(
-                                UserFavPrompt.userID == cur_user_id).scalar() + 1,
+                            favID=cur_max_id + 1 if cur_max_id is not None else 0,
                             functionID=function_id, semanticID=semantic_id, lanCode=lan_code)
     db.session.add(new_fav)
     db.session.commit()

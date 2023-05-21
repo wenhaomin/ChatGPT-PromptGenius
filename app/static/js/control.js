@@ -62,6 +62,10 @@ function load_cookie_class() {
     } else {
         cur_selected_class = "popular";
     }
+
+    if (cur_username === "" && cur_selected_class === "user_fav") {
+        cur_selected_class = "popular"
+    }
 }
 
 function copy_btn_click_listener(btn, text) {
@@ -182,9 +186,9 @@ function register_click_listener() {
                 spinner.addClass('d-none');
                 if (data.message === 'success') {
                     user_login_dialog_bs.hide();
-                    username = data.username;
-                    set_cookie('username', username, 30);
+                    cur_username = data.username;
                     render_user_specific();
+                    render_userfav_class_item();
                 } else {
                     error_message.removeClass('d-none');
                     setTimeout(() => {
