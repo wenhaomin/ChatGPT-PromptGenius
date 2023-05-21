@@ -3,7 +3,7 @@ import copy
 from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 from flask_login import LoginManager
 
 from app.utils import *
@@ -16,22 +16,22 @@ login_manager = LoginManager()
 
 @bp.route('/')
 def index():
-    return render_template('index.html', 
+    return render_template('index.html',
                            lan_code=get_preferred_lancode(),
                            username=get_cur_username())
 
 
 @bp.route('/tools')
 def tools():
-    return render_template('tools.html', 
+    return render_template('tools.html',
                            lan_code=get_preferred_lancode(),
                            username=get_cur_username())
 
 
 @bp.route('/log')
 def log():
-    return render_template('log.html', 
-                           lan_code=get_preferred_lancode(), 
+    return render_template('log.html',
+                           lan_code=get_preferred_lancode(),
                            username=get_cur_username())
 
 
@@ -60,7 +60,7 @@ def login():
     else:
         return jsonify({'message': 'fail'})
 
-    
+
 @bp.route('/register', methods=['POST'])
 def register():
     username = request.json['username']
@@ -100,6 +100,52 @@ def change_password():
         return jsonify({'message': 'success'})
     else:
         return jsonify({'message': 'fail'})
+
+
+@bp.route('/add_fav_prompt', methods=['POST'])
+@login_required
+def add_fav_prompt():
+    function_id = request.json['function_id']
+    semantic_id = request.json['semantic_id']
+    lan_code = request.json['lan_code']
+
+    cur_user_id = current_user.id
+    new_fav = UserFavPrompt(userID=cur_user_id,
+                            favID=db.session.query(func.max(UserFavPrompt.favID)).filter(
+                                UserFavPrompt.userID == cur_user_id).scalar() + 1,
+                            functionID=function_id, semanticID=semantic_id, lanCode=lan_code)
+    db.session.add(new_fav)
+    db.session.commit()
+
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/remove_fav_prompt', methods=['POST'])
+@login_required
+def remove_fav_prompt():
+    function_id = request.json['function_id']
+    semantic_id = request.json['semantic_id']
+    lan_code = request.json['lan_code']
+
+    cur_user_id = current_user.id
+    fav_item = UserFavPrompt.query.filter(and_(UserFavPrompt.userID == cur_user_id,
+                                               UserFavPrompt.functionID == function_id,
+                                               UserFavPrompt.semanticID == semantic_id,
+                                               UserFavPrompt.lanCode == lan_code)).all()
+    for item in fav_item:
+        db.session.delete(item)
+    db.session.commit()
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/fetch_fav_prompt')
+@login_required
+def fetch_fav_prompt():
+    cur_user_id = current_user.id
+    fav_prompts = UserFavPrompt.query.filter(UserFavPrompt.userID == cur_user_id).all()
+    prompt_indicators = [{'function_id': item.functionID, 'semantic_id': item.semanticID, 'lan_code': item.lanCode}
+                         for item in fav_prompts]
+    return jsonify({'message': 'success', 'content': prompt_indicators})
 
 
 @bp.route('/fetch_lan')
@@ -186,14 +232,21 @@ def fetch_prompt(class_id, lan_code):
                         for item in Functions.query.with_entities(Functions.ID).
                         filter(Functions.classes.contains(class_id)).all()]
 
-    # find all prompts that has the function
-    for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
-                                               PromptView.lanCode.in_(lan_codes),
-                                               PromptView.priority >= 0)
-                                          ).all():
-        if class_id == 'popular' and int(prompt.priority) != 2:
-            continue
-        result.append(gather_prompt_content_dict(prompt))
+    if class_id == 'user_fav' and current_user.is_authenticated:
+        fav_prompts = UserFavPrompt.query.filter(UserFavPrompt.userID == current_user.id).all()
+        for prompt in [PromptView.query.filter(and_(PromptView.functionID == item.functionID,
+                                                    PromptView.semanticID == item.semanticID,
+                                                    PromptView.lanCode == item.lanCode)).first() for item in fav_prompts]:
+            result.append(gather_prompt_content_dict(prompt))
+    else:
+        # find all prompts that has the function
+        for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
+                                                   PromptView.lanCode.in_(lan_codes),
+                                                   PromptView.priority >= 0)
+                                              ).all():
+            if class_id == 'popular' and int(prompt.priority) != 2:
+                continue
+            result.append(gather_prompt_content_dict(prompt))
 
     return jsonify({"content": result, "message": "success"})
 

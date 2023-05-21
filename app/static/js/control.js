@@ -130,10 +130,26 @@ function submit_enter_listener() {
     }
 }
 
-function prompt_fav_listener() {
+function prompt_fav_listener(btn, function_id, semantic_id, lan_code) {
     if (cur_username === "") {
         user_login_dialog_bs.show();
     } else {
+        var prompt_card = btn.parents('.prompt-card');
+        var fav_icon = btn.find('.bi');
+        var prompt_indicator = {
+            'function_id': function_id,
+            'semantic_id': semantic_id,
+            'lan_code': lan_code
+        };
+        if (fav_icon.hasClass('bi-bookmark')) {
+            fav_icon.switchClass('bi-bookmark', 'bi-bookmark-check-fill');
+            send_post('add_fav_prompt', prompt_indicator);
+            gain_popularity_listener(prompt_card, function_id, semantic_id, lan_code, 2);
+        } else {
+            fav_icon.switchClass('bi-bookmark-check-fill', 'bi-bookmark');
+            send_post('remove_fav_prompt', prompt_indicator);
+            gain_popularity_listener(prompt_card, function_id, semantic_id, lan_code, -2);
+        }
     }
 }
 
@@ -206,6 +222,8 @@ function login_click_listener() {
                     user_login_dialog_bs.hide();
                     cur_username = data.username;
                     render_user_specific();
+                    render_userfav_class_item();
+                    update_prompt_display_fav();
                 } else {
                     error_message.removeClass('d-none');
                     setTimeout(() => {
@@ -221,6 +239,8 @@ function logout_click_listener() {
     get_data('logout').then(() => {
         cur_username = '';
         render_user_specific();
+        render_userfav_class_item();
+        update_prompt_display_fav();
     })
 }
 

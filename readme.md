@@ -123,8 +123,7 @@ waitress-serve --port=8080 --call app:create_app
 数据模型定义基于SqlAlchemy, 参考文件 [the model file](./app/models.py).
 从技术上来说，抽象的数据模型设计使得可以自由选择各种不同的数据库解决方案。
 
-
-数据库配置参考文件 [the configuration file](./app/app_config.json). 我们提供了一个使用 SQLite 作为数据库的示例。SQLite完全基于文件，非常适合像这样的轻量级应用程序。如果运行时没有数据库，SqlAlchemy 将在`./instance` 文件夹下，创建一个新的数据库文件。之后可以根据需要添加自己的数据。
+我们提供了一个使用 SQLite 作为数据库的示例。SQLite完全基于文件，非常适合像这样的轻量级应用程序。如果运行时没有数据库，SqlAlchemy 将在`./instance` 文件夹下，创建一个新的数据库文件。之后可以根据需要添加自己的数据。
 
 ## 感谢以下用户的贡献！
 ```

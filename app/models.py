@@ -27,6 +27,15 @@ class User(UserMixin, db.Model):
         return '<User %r>' % self.username
 
 
+class UserFavPrompt(db.Model):
+    __tablename__ = 'user_fav_prompt'
+    userID = Column(Integer, db.ForeignKey('users.id'), primary_key=True)
+    favID = Column(Integer, primary_key=True)
+    functionID = Column(String, db.ForeignKey('function_prompts.functionID'))
+    semanticID = Column(String, db.ForeignKey('function_prompts.semanticID'))
+    lanCode = Column(String, db.ForeignKey('function_prompts.lanCode'))
+
+
 class SubmitFunction(db.Model):
     __tablename__ = 'user_submit_function'
     __table_args__ = {'extend_existing': True}

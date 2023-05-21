@@ -120,6 +120,16 @@ async function render_class_tree() {
         }
     });
 
+    var fav_class_item = {
+        'ID': 'user_fav',
+        'name': user_contents[cur_lan_code]["fav_class_name"],
+        'icon': 'heart-fill',
+        'icon_style': 'C62828'
+    };
+    $('#class-selection-list').prepend(gen_class_selection(fav_class_item));
+
+    await render_userfav_class_item();
+
     $('.class-nav-link, .child-class-nav-link').on('click', (event) => {
         class_select_listener($(event.target).attr('class-id'));
     })
@@ -181,6 +191,7 @@ async function render_prompt_by_class(class_id) {
     // use a function to handle the response data
     // call another function to render the fetched prompt data
     render_prompt_display(data['content']);
+    update_prompt_display_fav();
 }
 
 // search prompt by give string
@@ -188,6 +199,7 @@ async function render_prompt_by_string(search_text) {
     render_placeholder_prompt_display();
     var data = await get_data(`search_prompt/${search_text}/${cur_lan_code}`);
     render_prompt_display(data['content']);
+    update_prompt_display_fav();
 }
 
 async function render_prompt_example_display(function_id, semantic_id, lan_code) {
@@ -199,8 +211,8 @@ async function render_prompt_example_display(function_id, semantic_id, lan_code)
 
     var prompt_more_dialog = $('#prompt-more-dialog');
     prompt_more_dialog.find('.modal-body').empty();
-        var [nav, nav_tabs] = gen_multimodel_dialog_display(data['content']);
-        prompt_more_dialog.find('.modal-body').append(nav).append(nav_tabs);
+    var [nav, nav_tabs] = gen_multimodel_dialog_display(data['content']);
+    prompt_more_dialog.find('.modal-body').append(nav).append(nav_tabs);
 
     for (var role = 0; role < 2; role++) {
         var dialog_role_lists = prompt_more_dialog.find(`.dialog-list-item[role='${role}']`);
@@ -262,5 +274,34 @@ async function render_user_specific() {
         login_item.removeClass('d-none');
         setting_item.addClass('d-none');
         logout_item.addClass('d-none');
+    }
+}
+
+async function render_userfav_class_item() {
+    var fav_class_item = $('#class-selection-list').find(`.class-nav-link[class-id="user_fav"]`).parent();
+    if (cur_username.length > 0) {
+        fav_class_item.removeClass('d-none');
+    } else {
+        fav_class_item.addClass('d-none');
+        if (cur_selected_class == 'user_fav') {
+            cur_selected_class = 'popular';
+            set_cookie('selected_class', cur_selected_class, 30);
+            switch_active_class(cur_selected_class);
+            render_prompt_by_class(cur_selected_class);
+        }
+    }
+}
+
+async function update_prompt_display_fav() {
+    if (cur_username.length > 0) {
+        var fav_prompts = (await get_data('fetch_fav_prompt'))['content'];
+        fav_prompts.forEach((item) => {
+            var prompt_card = $(`.prompt-card[function-id="${item.function_id}"][semantic-id="${item.semantic_id}"][lan-code="${item.lan_code}"]`);
+            if (prompt_card.length) {
+                prompt_card.find('.prompt-fav-btn .bi').switchClass('bi-bookmark', 'bi-bookmark-check-fill');
+            }
+        })
+    } else {
+        $('.prompt-card').find('.prompt-fav-btn .bi').switchClass('bi-bookmark-check-fill', 'bi-bookmark');
     }
 }

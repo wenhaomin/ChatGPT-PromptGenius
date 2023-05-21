@@ -144,7 +144,8 @@ user_contents = {
         "oldpass_ph": "Old password",
         "newpass_ph": "New password",
         "newpass_re_ph": "New password (repeat)",
-        "setting_error_message": "Change setting failed, please check your password."
+        "setting_error_message": "Change setting failed, please check your password.",
+        "fav_class_name": "My Favorites"
     },
     "chn": {
         "welcome_text": "欢迎",
@@ -162,7 +163,8 @@ user_contents = {
         "oldpass_ph": "老密码",
         "newpass_ph": "新密码",
         "newpass_re_ph": "新密码（重复）",
-        "setting_error_message": "设置失败，请检查您的密码。"
+        "setting_error_message": "设置失败，请检查您的密码。",
+        "fav_class_name": "我的最爱"
     },
     "jpn": {
         "welcome_text": "ようこそ",
@@ -180,7 +182,8 @@ user_contents = {
         "oldpass_ph": "古いパスワード",
         "newpass_ph": "新しいパスワード",
         "newpass_re_ph": "新しいパスワード (繰り返し)",
-        "setting_error_message": "設定の変更に失敗しました。パスワードを確認してください。"
+        "setting_error_message": "設定の変更に失敗しました。パスワードを確認してください。",
+        "fav_class_name": "私のお気に入り"
     },
     "kor": {
         "welcome_text": "환영",
@@ -198,7 +201,8 @@ user_contents = {
         "oldpass_ph": "이전 비밀번호",
         "newpass_ph": "새 비밀번호",
         "newpass_re_ph": "새 비밀번호(반복)",
-        "setting_error_message": "설정 변경에 실패했습니다. 비밀번호를 확인하세요."
+        "setting_error_message": "설정 변경에 실패했습니다. 비밀번호를 확인하세요.",
+        "fav_class_name": "내가 좋아하는 것들"
     },
     "deu": {
         "welcome_text": "Willkommen",
@@ -216,7 +220,8 @@ user_contents = {
         "oldpass_ph": "Altes Passwort",
         "newpass_ph": "Neues Passwort",
         "newpass_re_ph": "Neues Passwort (wiederholen)",
-        "setting_error_message": "Die Einstellung konnte nicht geändert werden. Bitte überprüfen Sie Ihr Passwort."
+        "setting_error_message": "Die Einstellung konnte nicht geändert werden. Bitte überprüfen Sie Ihr Passwort.",
+        "fav_class_name": "Meine Favoriten"
     }
 }
 

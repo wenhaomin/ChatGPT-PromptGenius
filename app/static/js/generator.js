@@ -79,7 +79,7 @@ function gen_prompt_card(item) {
 
     var pop_color = value_to_hex(copied_count, pop_minmax[0], pop_minmax[1], pop_cmap);
     var card = $(`
-        <div class="card shadow-sm" style="background-color: #${icon_color}1a"
+        <div class="card shadow-sm prompt-card" style="background-color: #${icon_color}1a"
         function-id="${function_id}" semantic-id="${semantic_id}" lan-code="${lan_code}">
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between mb-0">
