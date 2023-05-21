@@ -16,22 +16,90 @@ login_manager = LoginManager()
 
 @bp.route('/')
 def index():
-    return render_template('index.html', lan_code=get_preferred_lancode())
+    return render_template('index.html', 
+                           lan_code=get_preferred_lancode(),
+                           username=get_cur_username())
 
 
 @bp.route('/tools')
 def tools():
-    return render_template('tools.html', lan_code=get_preferred_lancode())
+    return render_template('tools.html', 
+                           lan_code=get_preferred_lancode(),
+                           username=get_cur_username())
 
 
 @bp.route('/log')
 def log():
-    return render_template('log.html', lan_code=get_preferred_lancode())
+    return render_template('log.html', 
+                           lan_code=get_preferred_lancode(), 
+                           username=get_cur_username())
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.filter(User.id == user_id).first()
+
+
+def get_cur_username():
+    if current_user.is_authenticated:
+        return current_user.username
+    else:
+        return ""
+
+
+@bp.route('/login', methods=['POST'])
+def login():
+    username = request.json['username']
+    password = request.json['password']
+
+    user = User.query.filter(User.username == username).first()
+
+    if user and user.check_password(password):
+        login_user(user)
+        return jsonify({'message': 'success', 'username': user.username})
+    else:
+        return jsonify({'message': 'fail'})
+
+    
+@bp.route('/register', methods=['POST'])
+def register():
+    username = request.json['username']
+    password = request.json['password']
+
+    existing_user = User.query.filter(User.username == username).first()
+    if existing_user:
+        return jsonify({'message': 'fail'})
+
+    new_user = User(id=len(User.query.all()), username=username)
+    new_user.set_password(password)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    login_user(new_user)
+    return jsonify({'message': 'success', 'username': new_user.username})
+
+
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/change_password', methods=['POST'])
+@login_required
+def change_password():
+    user = current_user
+    old_password = request.json['old_password']
+    new_password = request.json['new_password']
+
+    if user.check_password(old_password):
+        user.set_password(new_password)
+        db.session.commit()
+        return jsonify({'message': 'success'})
+    else:
+        return jsonify({'message': 'fail'})
 
 
 @bp.route('/fetch_lan')

@@ -110,8 +110,6 @@
             <div class="modal-body">
                 <span id="login-dialog-message"></span>
                 <form class="mt-3">
-                    <label class="form-label login-error-message text-danger d-none"></label>
-                    <label class="form-label register-error-message text-danger d-none"></label>
                     <div class="input-group mb-2" id="login-username-group">
                         <span class="input-group-text"><i class="bi bi-person"></i></span>
                         <input type="text" class="form-control">
@@ -124,6 +122,8 @@
                         <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
                         <input class="form-control" type="password"/>
                     </div>
+                    <label class="form-label text-danger d-none" id="login-error-message"></label>
+                    <label class="form-label text-danger d-none" id="register-error-message"></label>
                 </form>
             </div>
             <div class="modal-footer">
@@ -132,6 +132,40 @@
                     <span></span>
                 </button>
                 <button type="button" class="btn btn-primary" id="login-btn">
+                    <div class="spinner-border spinner-border-sm d-none"></div>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="user-setting-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form class="mt-3">
+                    <div class="input-group mb-2" id="setting-oldpass-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input class="form-control" type="password">
+                    </div>
+                    <div class="input-group mb-2" id="setting-newpass-group">
+                        <span class="input-group-text"><i class="bi bi-key"></i></span>
+                        <input class="form-control" type="password"/>
+                    </div>
+                    <div class="input-group mb-2" id="setting-newpass-repeat-group">
+                        <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+                        <input class="form-control" type="password"/>
+                    </div>
+                    <label class="form-label text-danger d-none" id="setting-error-message"></label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="user-setting-ok-btn">
                     <div class="spinner-border spinner-border-sm d-none"></div>
                     <span></span>
                 </button>
@@ -151,6 +185,7 @@
         submit_dialog_bs = new bootstrap.Modal($('#submit-dialog'));
         prompt_more_dialog_bs = new bootstrap.Modal($('#prompt-more-dialog'));
         user_login_dialog_bs = new bootstrap.Modal($('#user-login-dialog'));
+        user_setting_dialog_bs = new bootstrap.Modal($('#user-setting-dialog'));
         warning_toast = bootstrap.Toast.getOrCreateInstance($('#warning-toast'));
 
         pop_minmax = [0, 100];
@@ -160,13 +195,16 @@
             init_language_select(),
             render_page_basic(),
             render_class_tree(),
-            render_prompt_by_class(cur_selected_class, cur_lan_code)
+            render_prompt_by_class(cur_selected_class, cur_lan_code),
+            render_user_specific()
         ]).then(() => {
             $("#search-input-group button").on('click', prompt_search_listener);
             $('#submit-clear-btn').on('click', submit_clear_listener);
             $('#submit-enter-btn').on('click', submit_enter_listener);
             $('#register-btn').on('click', register_click_listener);
             $('#login-btn').on('click', login_click_listener);
+            $('#user-group').find('#logout-item').on('click', logout_click_listener);
+            $('#user-setting-ok-btn').on('click', user_setting_ok_click_listener);
 
             $(document).ready(() => {
                 $("#search-input-group input").keydown(function (e) {

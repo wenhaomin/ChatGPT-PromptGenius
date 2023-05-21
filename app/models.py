@@ -10,7 +10,8 @@ db = SQLAlchemy()
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    username = Column(String(64), primary_key=True, unique=True, index=True)
+    id = Column(Integer, primary_key=True)
+    username = Column(String(64), unique=True, index=True)
     password_hash = Column(String(128))
 
     def set_password(self, password):
@@ -18,6 +19,9 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def get_id(self):
+        return str(self.id)
 
     def __repr__(self):
         return '<User %r>' % self.username

@@ -20,9 +20,10 @@ async function init_language_select() {
 
 async function render_page_basic() {
     // Render the basic elements on the page.
-    $('#page-browser-title, #page-header-title').text(site_contents[cur_lan_code]['title']);
-    $('#class-offcanvas-title').text(site_contents[cur_lan_code]['class_canvas_title']);
-    $('#action-offcanvas-title').text(site_contents[cur_lan_code]['action_canvas_title']);
+    var _site_contents = site_contents[cur_lan_code];
+    $('#page-browser-title, #page-header-title').text(_site_contents['title']);
+    $('#class-offcanvas-title').text(_site_contents['class_canvas_title']);
+    $('#action-offcanvas-title').text(_site_contents['action_canvas_title']);
 
     $('#navbar-links').empty();
     ['/', '/tools', '/log'].forEach((href, index) => {
@@ -45,15 +46,15 @@ async function render_page_basic() {
     var _user_contents = user_contents[cur_lan_code];
     var login_or_register_text = `${_user_contents["login_text"]} / ${_user_contents["register_text"]}`;
     user_group.find('.welcome-text').text(_user_contents["welcome_text"]);
-    user_group.find('.user-name').text(_user_contents["guest_name"]);
-    user_group.find('.login-btn span').text(login_or_register_text);
-    user_group.find('.user-setting-btn span').text(_user_contents["user_setting_text"]);
+    user_group.find('#login-item span').text(login_or_register_text);
+    user_group.find('#logout-item span').text(_user_contents["logout_text"]);
+    user_group.find('#user-setting-item span').text(_user_contents["user_setting_text"]);
 
     var user_login_dialog = $('#user-login-dialog');
     if (user_login_dialog.length) {
         user_login_dialog.find('.modal-title').text(login_or_register_text);
-        user_login_dialog.find('.login-error-message').text(_user_contents["login_error_message"]);
-        user_login_dialog.find('.register-error-message').text(_user_contents["register_error_message"]);
+        user_login_dialog.find('#login-error-message').text(_user_contents["login_error_message"]);
+        user_login_dialog.find('#register-error-message').text(_user_contents["register_error_message"]);
         $('#login-dialog-message').text(_user_contents["login_message"]);
         $('#login-username-group input').attr('placeholder', _user_contents["username_ph"]);
         $('#login-password-group input').attr('placeholder', _user_contents["password_ph"]);
@@ -62,15 +63,26 @@ async function render_page_basic() {
         $('#login-btn span').text(_user_contents["login_text"]);
     }
 
+    var user_setting_dialog = $('#user-setting-dialog');
+    if (user_setting_dialog.length) {
+        user_setting_dialog.find('.modal-title').text(_user_contents["user_setting_text"]);
+        $('#setting-oldpass-group input').attr('placeholder', _user_contents["oldpass_ph"]);
+        $('#setting-newpass-group input').attr('placeholder', _user_contents["newpass_ph"]);
+        $('#setting-newpass-repeat-group input').attr('placeholder', _user_contents["newpass_re_ph"]);
+        $('#user-setting-ok-btn span').text(_site_contents["ok_text"]);
+        $('#setting-error-message').text(_user_contents["setting_error_message"]);
+    }
+
     if ($('#submit-dialog').length) {
         // Render contents in submit dialog.
-        $('#submit-dialog-title').text(submit_contents[cur_lan_code]['title']);
-        $('#submit-dialog-message').text(submit_contents[cur_lan_code]['message']);
-        $('#submit-dialog-funcdesc-group input').attr('placeholder', submit_contents[cur_lan_code]['func_placeholder']);
-        $('#submit-dialog-prompt-group textarea').attr('placeholder', submit_contents[cur_lan_code]['prompt_placeholder']);
-        $('#submit-dialog-user-group input').attr('placeholder', submit_contents[cur_lan_code]['username_placeholder']);
-        $('#submit-enter-btn-text').text(submit_contents[cur_lan_code]['ok_btn_text']);
-        $('#submit-clear-btn').text(submit_contents[cur_lan_code]['clear_btn_text']);
+        var _submit_contents = submit_contents[cur_lan_code];
+        $('#submit-dialog-title').text(_submit_contents['title']);
+        $('#submit-dialog-message').text(_submit_contents['message']);
+        $('#submit-dialog-funcdesc-group input').attr('placeholder', _submit_contents['func_placeholder']);
+        $('#submit-dialog-prompt-group textarea').attr('placeholder', _submit_contents['prompt_placeholder']);
+        $('#submit-dialog-user-group input').attr('placeholder', _submit_contents['username_placeholder']);
+        $('#submit-enter-btn-text').text(_submit_contents['ok_btn_text']);
+        $('#submit-clear-btn').text(_submit_contents['clear_btn_text']);
     }
 
     if ($('#top-banner').length) {
@@ -151,7 +163,6 @@ function render_prompt_display(prompt_list) {
     display.find('.prompt-copy-btn span').text(prompt_card_contents[cur_lan_code]['copy_text']);
     display.find('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
     display.find('.prompt-example-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
-    display.find('.prompt-fav-btn').on('click', not_implemented_listener);
 
     if (prompt_list.length === 0) {
         $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['no_prompt']);
@@ -226,4 +237,30 @@ async function render_logs_display() {
     displays.find('a').attr('target', '_blank');
 
     masonry_reload(display, '.log-col');
+}
+
+async function render_user_specific() {
+    var userbar_icon = $('#user-group .dropdown-toggle .bi');
+    var username_span = $('#user-group').find('.user-name');
+    var login_item = $('#user-group').find('#login-item');
+    var setting_item = $('#user-group').find('#user-setting-item');
+    var logout_item = $('#user-group').find('#logout-item');
+
+    if (cur_username.length > 0) {
+        userbar_icon.removeClass('bi-person-circle');
+        userbar_icon.text(cur_username);
+        username_span.text(cur_username);
+
+        login_item.addClass('d-none');
+        setting_item.removeClass('d-none');
+        logout_item.removeClass('d-none');
+    } else {
+        userbar_icon.addClass('bi-person-circle');
+        userbar_icon.empty();
+        username_span.text(user_contents[cur_lan_code]['guest_name']);
+
+        login_item.removeClass('d-none');
+        setting_item.addClass('d-none');
+        logout_item.addClass('d-none');
+    }
 }

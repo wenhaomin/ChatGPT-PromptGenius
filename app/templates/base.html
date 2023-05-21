@@ -134,15 +134,22 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item login-btn" data-bs-toggle="modal"
+                                <a class="dropdown-item" id="login-item" data-bs-toggle="modal"
                                     data-bs-target="#user-login-dialog">
                                     <i class="bi bi-box-arrow-in-right me-2"></i>
                                     <span></span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item user-setting-btn d-none">
+                                <a class="dropdown-item d-none" id="user-setting-item" data-bs-toggle="modal"
+                                    data-bs-target="#user-setting-dialog">
                                     <i class="bi bi-gear-fill me-2"></i>
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-none" id="logout-item">
+                                    <i class="bi bi-box-arrow-left me-2"></i>
                                     <span></span>
                                 </a>
                             </li>
@@ -185,6 +192,7 @@
     }
 
     cur_lan_code = "{{ lan_code }}";
+    cur_username = "{{ username }}"
     // Load saved language code from cookie.
     var save_lan_code = get_cookie('lancode');
     if (save_lan_code !== "" && save_lan_code !== undefined) {

@@ -127,6 +127,11 @@ function gen_prompt_card(item) {
         gain_popularity_listener(card, function_id, semantic_id, lan_code, 1);
     });
 
+    var fav_btn = card.find('.prompt-fav-btn');
+    fav_btn.on('click', () => {
+        prompt_fav_listener(fav_btn, function_id, semantic_id, lan_code);
+    })
+
     var copy_btn = card.find('.prompt-copy-btn');
     copy_btn.on('click', () => {
         copy_btn_click_listener(copy_btn, prompt_text);

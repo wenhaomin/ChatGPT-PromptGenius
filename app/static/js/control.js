@@ -130,6 +130,13 @@ function submit_enter_listener() {
     }
 }
 
+function prompt_fav_listener() {
+    if (cur_username === "") {
+        user_login_dialog_bs.show();
+    } else {
+    }
+}
+
 function not_implemented_listener() {
     $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['not_implemented']);
     warning_toast.show();
@@ -139,12 +146,37 @@ function register_click_listener() {
     var username_group = $('#login-username-group');
     var password_group = $('#login-password-group');
     var password_re_group = $('#login-password-repeat-group');
+    var error_message = $('#register-error-message');
+    error_message.addClass('d-none');
+    $('#login-error-message').addClass('d-none');
+    var spinner = $('#register-btn .spinner-border');
 
     if (password_re_group.hasClass('d-none')) {
         password_re_group.removeClass('d-none');
     } else {
         var username = validate_input(username_group);
         var password = validate_input(password_group, password_re_group);
+
+        if (username.length > 0 && password.length > 0) {
+            spinner.removeClass('d-none');
+            send_post('register', {
+                'username': username,
+                'password': password
+            }).then((data) => {
+                spinner.addClass('d-none');
+                if (data.message === 'success') {
+                    user_login_dialog_bs.hide();
+                    username = data.username;
+                    set_cookie('username', username, 30);
+                    render_user_specific();
+                } else {
+                    error_message.removeClass('d-none');
+                    setTimeout(() => {
+                        error_message.addClass('d-none');
+                    }, 5000);
+                }
+            })
+        }
     }
 }
 
@@ -152,11 +184,73 @@ function login_click_listener() {
     var username_group = $('#login-username-group');
     var password_group = $('#login-password-group');
     var password_re_group = $('#login-password-repeat-group');
+    var error_message = $('#login-error-message');
+    error_message.addClass('d-none');
+    $('#register-error-message').addClass('d-none');
+    var spinner = $('#login-btn .spinner-border');
 
     if (!password_re_group.hasClass('d-none')) {
         $('#login-password-repeat-group').addClass('d-none');
     } else {
         var username = validate_input(username_group);
         var password = validate_input(password_group);
+
+        if (username.length > 0 && password.length > 0) {
+            spinner.removeClass('d-none');
+            send_post('login', {
+                'username': username,
+                'password': password
+            }).then((data) => {
+                spinner.addClass('d-none');
+                if (data.message === 'success') {
+                    user_login_dialog_bs.hide();
+                    cur_username = data.username;
+                    render_user_specific();
+                } else {
+                    error_message.removeClass('d-none');
+                    setTimeout(() => {
+                        error_message.addClass('d-none');
+                    }, 5000);
+                }
+            })
+        }
+    }
+}
+
+function logout_click_listener() {
+    get_data('logout').then(() => {
+        cur_username = '';
+        render_user_specific();
+    })
+}
+
+function user_setting_ok_click_listener() {
+    var oldpass_group = $('#setting-oldpass-group');
+    var newpass_group = $('#setting-newpass-group');
+    var newpass_re_group = $('#setting-newpass-repeat-group');
+    var error_message = $('#setting-error-message');
+    error_message.addClass('d-none');
+    var spinner = $('#user-setting-ok-btn .spinner-border');
+
+    var oldpass = validate_input(oldpass_group);
+    var newpass = validate_input(newpass_group, newpass_re_group);
+
+    if (oldpass.length > 0 && newpass.length > 0) {
+        spinner.removeClass('d-none');
+        send_post('change_password', {
+            'old_password': oldpass,
+            'new_password': newpass
+        }).then((data) => {
+            spinner.addClass('d-none');
+            if (data.message === 'success') {
+                user_setting_dialog_bs.hide();
+                $('#user-setting-dialog').find('input').val('');
+            } else {
+                error_message.removeClass('d-none');
+                setTimeout(() => {
+                    error_message.addClass('d-none');
+                }, 5000);
+            }
+        })
     }
 }
