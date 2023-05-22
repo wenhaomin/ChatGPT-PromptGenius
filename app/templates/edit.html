@@ -3,13 +3,13 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Edit Prompt</h1>
+                <h1 class="modal-title fs-5">Add / Edit Prompt</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <span>Edit the parameters and contents of this prompt.</span>
                 <form class="mt-3">
-                    <label class="form-label text-danger d-none" content="error-message"></label>
+                    <label class="form-label text-danger d-none small" content="error-message"></label>
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                         <div class="col">
                             <div class="input-group mb-2">
@@ -22,7 +22,7 @@
                         <div class="col">
                             <div class="input-group mb-2">
                                 <span class="input-group-text"><i class="bi bi-code"></i></span>
-                                <input class="form-control" type="text" placeholder="semantic ID"
+                                <input class="form-control" type="text" placeholder="YYmmdd_1234567890"
                                     content="semantic-id" />
                             </div>
                         </div>
@@ -42,23 +42,23 @@
                         <div class="col">
                             <div class="input-group mb-2">
                                 <span class="input-group-text"><i class="bi bi-gear"></i></span>
-                                <input class="form-control" type="text" placeholder="model" content="model" />
+                                <input class="form-control" type="text" placeholder="ChatGPT" content="model" />
                             </div>
                         </div>
                         <div class="col">
                             <div class="input-group mb-2">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input class="form-control" type="text" placeholder="author" content="author" />
+                                <input class="form-control" type="text" placeholder="Anonymous" content="author" />
                             </div>
                         </div>
                     </div>
                     <div class="input-group mb-2">
                         <span class="input-group-text"><i class="bi bi-link"></i></span>
-                        <input class="form-control" type="text" placeholder="author link" content="author-link" />
+                        <input class="form-control" type="text" placeholder="Author Link" content="author-link" />
                     </div>
                     <div class="input-group mb-2">
                         <span class="input-group-text"><i class="bi bi-body-text"></i></span>
-                        <textarea class="form-control form-control-sm" type="text" placeholder="prompt content" rows="5"
+                        <textarea class="form-control form-control-sm" type="text" placeholder="Prompt Content" rows="5"
                             content="content"></textarea>
                     </div>
                 </form>

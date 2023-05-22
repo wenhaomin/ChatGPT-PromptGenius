@@ -393,7 +393,7 @@ def edit_prompt_meta():
         prompt.content = content
 
         db.session.commit()
-    except sqlalchemy.exc.IntegrityError as e:
+    except Exception as e:
         return jsonify({'message': 'fail', 'error': str(e)})
 
     return jsonify({'message': 'success'})

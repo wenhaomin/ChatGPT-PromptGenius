@@ -48,42 +48,8 @@ function gen_add_prompt_card() {
             prompt_edit_dialog_bs.show();
         })
 
-
-        var edit_ok_btn = $('#prompt-edit-ok-btn');
-        edit_ok_btn.on('click', () => {
-            var semantic_id = validate_input(edit_dialog.find('input[content="semantic-id"]').parent());
-            var content = validate_input(edit_dialog.find('textarea[content="content"]').parent());
-
-            if (semantic_id.length > 0 && content.length > 0) {
-                edit_ok_btn.find('.spinner-border').removeClass('d-none');
-                send_post('add_prompt', {
-                    'function_id': get_selected_value(edit_dialog.find('select[content="function-id"]')),
-                    'semantic_id': semantic_id,
-                    'lan_code': edit_dialog.find('input[content="lan-code"]').val(),
-                    'priority': edit_dialog.find('input[content="priority"]').val(),
-                    'model': edit_dialog.find('input[content="model"]').val(),
-                    'author': edit_dialog.find('input[content="author"]').val(),
-                    'author_link': edit_dialog.find('input[content="author-link"]').val(),
-                    'content': content
-                }).then((data) => {
-                    edit_ok_btn.find('.spinner-border').addClass('d-none');
-                    if (data.message === 'fail') {
-                        edit_dialog.find('label[content="error-message"]').text(data.error);
-                        edit_dialog.find('label[content="error-message"]').removeClass('d-none');
-                        setTimeout(() => {
-                            edit_dialog.find('label[content="error-message"]').addClass('d-none');
-                            edit_dialog.find('label[content="error-message"]').empty();
-                        }, 10000);
-                    } else {
-                        edit_ok_btn.find('.finished-indicator').removeClass('d-none');
-                        setTimeout(() => {
-                            edit_ok_btn.find('.finished-indicator').addClass('d-none');
-                            prompt_edit_dialog_bs.hide();
-                        }, 1000);
-                    }
-                })
-            }
-        })
+        $('#prompt-edit-ok-btn').off('click', prompt_edit_ok_listener);
+        $('#prompt-edit-ok-btn').on('click', prompt_add_ok_listener);
     })
 
     return card;
@@ -145,40 +111,74 @@ function prompt_card_hover_listener(event) {
             prompt_edit_dialog_bs.show();
         });
 
-        var edit_ok_btn = $('#prompt-edit-ok-btn');
-        edit_ok_btn.on('click', () => {
-            edit_ok_btn.find('.spinner-border').removeClass('d-none');
-            send_post('edit_prompt_meta', {
-                'function_id': edit_dialog.attr('function-id'),
-                'semantic_id': edit_dialog.attr('semantic-id'),
-                'lan_code': edit_dialog.attr('lan-code'),
-                'function_id_new': edit_dialog.find('input[content="function-id"]').val(),
-                'semantic_id_new': edit_dialog.find('input[content="semantic-id"]').val(),
-                'lan_code_new': edit_dialog.find('input[content="lan-code"]').val(),
-                'priority': edit_dialog.find('input[content="priority"]').val(),
-                'model': edit_dialog.find('input[content="model"]').val(),
-                'author': edit_dialog.find('input[content="author"]').val(),
-                'author_link': edit_dialog.find('input[content="author-link"]').val(),
-                'content': edit_dialog.find('textarea[content="content"]').val()
-            }).then((data) => {
-                edit_ok_btn.find('.spinner-border').addClass('d-none');
-                if (data.message === 'fail') {
-                    edit_dialog.find('label[content="error-message"]').text(data.error);
-                    edit_dialog.find('label[content="error-message"]').removeClass('d-none');
-                    setTimeout(() => {
-                        edit_dialog.find('label[content="error-message"]').addClass('d-none');
-                        edit_dialog.find('label[content="error-message"]').empty();
-                    }, 10000);
-                } else {
-                    edit_ok_btn.find('.finished-indicator').removeClass('d-none');
-                    setTimeout(() => {
-                        edit_ok_btn.find('.finished-indicator').addClass('d-none');
-                        prompt_edit_dialog_bs.hide();
-                    }, 1000);
-                }
-            })
-        })
+        $('#prompt-edit-ok-btn').off('click', prompt_add_ok_listener);
+        $('#prompt-edit-ok-btn').on('click', prompt_edit_ok_listener);
     })
+}
+
+function prompt_edit_dialog_resp_listener(data) {
+    var edit_ok_btn = $('#prompt-edit-ok-btn');
+    var edit_dialog = $('#prompt-edit-dialog');
+    edit_ok_btn.find('.spinner-border').addClass('d-none');
+    if (data.message === 'fail') {
+        edit_dialog.find('label[content="error-message"]').text(data.error);
+        edit_dialog.find('label[content="error-message"]').removeClass('d-none');
+        setTimeout(() => {
+            edit_dialog.find('label[content="error-message"]').addClass('d-none');
+            edit_dialog.find('label[content="error-message"]').empty();
+        }, 10000);
+    } else {
+        edit_ok_btn.find('.finished-indicator').removeClass('d-none');
+        setTimeout(() => {
+            edit_ok_btn.find('.finished-indicator').addClass('d-none');
+            prompt_edit_dialog_bs.hide();
+        }, 1000);
+    }
+}
+
+function prompt_edit_ok_listener() {
+    var edit_ok_btn = $('#prompt-edit-ok-btn');
+    var edit_dialog = $('#prompt-edit-dialog');
+    edit_ok_btn.find('.spinner-border').removeClass('d-none');
+    send_post('edit_prompt_meta', {
+        'function_id': edit_dialog.attr('function-id'),
+        'semantic_id': edit_dialog.attr('semantic-id'),
+        'lan_code': edit_dialog.attr('lan-code'),
+        'function_id_new': edit_dialog.find('input[content="function-id"]').val(),
+        'semantic_id_new': edit_dialog.find('input[content="semantic-id"]').val(),
+        'lan_code_new': edit_dialog.find('input[content="lan-code"]').val(),
+        'priority': edit_dialog.find('input[content="priority"]').val(),
+        'model': edit_dialog.find('input[content="model"]').val(),
+        'author': edit_dialog.find('input[content="author"]').val(),
+        'author_link': edit_dialog.find('input[content="author-link"]').val(),
+        'content': edit_dialog.find('textarea[content="content"]').val()
+    }).then((data) => {
+        prompt_edit_dialog_resp_listener(data);
+    })
+}
+
+function prompt_add_ok_listener() {
+    var edit_ok_btn = $('#prompt-edit-ok-btn');
+    var edit_dialog = $('#prompt-edit-dialog');
+    var semantic_id = validate_input(edit_dialog.find('input[content="semantic-id"]').parent());
+    var content = validate_input(edit_dialog.find('textarea[content="content"]').parent());
+    var priority = validate_input(edit_dialog.find('input[content="priority"]').parent());
+
+    if (semantic_id.length > 0 && content.length > 0 && priority.length > 0) {
+        edit_ok_btn.find('.spinner-border').removeClass('d-none');
+        send_post('add_prompt', {
+            'function_id': get_selected_value(edit_dialog.find('select[content="function-id"]')),
+            'semantic_id': semantic_id,
+            'lan_code': edit_dialog.find('input[content="lan-code"]').val(),
+            'priority': priority,
+            'model': edit_dialog.find('input[content="model"]').val(),
+            'author': edit_dialog.find('input[content="author"]').val(),
+            'author_link': edit_dialog.find('input[content="author-link"]').val(),
+            'content': content
+        }).then((data) => {
+            prompt_edit_dialog_resp_listener(data);
+        })
+    }
 }
 
 function gen_one_example_edit_list(dialog_contents) {
@@ -218,7 +218,7 @@ function gen_one_example_edit_list(dialog_contents) {
     `);
     dialog_list.append(add_item_btn);
     add_item_btn.on('click', () => {
-        dialog_list.append(_get_list_item('', 0));
+        dialog_list.append(_get_list_item('', dialog_list.find('.example-list-item').length % 2));
         dialog_list.sortable();
     })
 
@@ -287,7 +287,8 @@ $('#example-edit-open-btn').on('click', () => {
 $('#example-add-dialog-btn').on('click', () => {
     // Add new example item to the edit dialog.
     var edit_dialog = $('#example-edit-dialog');
-    var [nav, tab_content] = gen_one_example_edit_tab('', [],
+    var [nav, tab_content] = gen_one_example_edit_tab('',
+        [{raw: $('#prompt-edit-dialog').find('textarea[content="content"]').val()}],
         edit_dialog.find('.example-nav-link').length);
     edit_dialog.find('#example-model-edit-nav').append(nav);
     edit_dialog.find('#example-model-edit-tab-content').append(tab_content);
