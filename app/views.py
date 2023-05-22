@@ -3,6 +3,7 @@ import copy
 from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template
+import sqlalchemy
 from sqlalchemy import and_, func
 from flask_login import LoginManager, login_user, login_required, logout_user
 
@@ -43,14 +44,14 @@ def log():
                            show_edit_content=is_admin())
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter(User.id == user_id).first()
-
-
 """
 Routers for user managements: login, register and logout.
 """
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter(User.id == user_id).first()
 
 
 @bp.route('/login', methods=['POST'])
@@ -345,6 +346,23 @@ def fetch_prompt_meta():
     return jsonify({'message': 'success', 'meta': prompt_meta})
 
 
+@bp.route('/fetch_functions_with_class', methods=['POST'])
+@admin_required
+def fetch_functions_with_class():
+    class_id = request.json['class_id']
+    lan_code = request.json['lan_code']
+
+    function_ids = [item.ID for item in Functions.query.with_entities(Functions.ID).filter(
+        Functions.classes.contains(class_id)).all()]
+    function_names = []
+    for function_id in function_ids:
+        name_entries = FunctionNames.query.with_entities(FunctionNames.name).filter_by(ID=function_id, lanCode=lan_code).all()
+        if len(name_entries) > 0:
+            function_names.append([function_id, name_entries[0].name])
+    
+    return jsonify({'message': 'success', 'content': function_names})
+
+
 @bp.route('/edit_prompt_meta', methods=['POST'])
 @admin_required
 def edit_prompt_meta():
@@ -361,20 +379,46 @@ def edit_prompt_meta():
     author_link = request.json['author_link']
     content = request.json['content']
 
-    prompt = FunctionPrompts.query.filter(and_(FunctionPrompts.functionID == function_id,
-                                               FunctionPrompts.semanticID == semantic_id,
-                                               FunctionPrompts.lanCode == lan_code)).first()
-    prompt.functionID = function_id_new
-    prompt.semanticID = semantic_id_new
-    prompt.lanCode = lan_code_new
-    prompt.priority = priority
-    prompt.model = model
-    prompt.author = author
-    prompt.author_link = author_link
-    prompt.content = content
+    try:
+        prompt = FunctionPrompts.query.filter(and_(FunctionPrompts.functionID == function_id,
+                                                   FunctionPrompts.semanticID == semantic_id,
+                                                   FunctionPrompts.lanCode == lan_code)).first()
+        prompt.functionID = function_id_new
+        prompt.semanticID = semantic_id_new
+        prompt.lanCode = lan_code_new
+        prompt.priority = priority
+        prompt.model = model
+        prompt.author = author
+        prompt.author_link = author_link
+        prompt.content = content
 
-    db.session.commit()
+        db.session.commit()
+    except sqlalchemy.exc.IntegrityError as e:
+        return jsonify({'message': 'fail', 'error': str(e)})
 
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/add_prompt', methods=['POST'])
+@admin_required
+def add_prompt():
+    function_id = request.json['function_id']
+    semantic_id = request.json['semantic_id']
+    lan_code = request.json['lan_code']
+    priority = request.json['priority']
+    model = request.json['model']
+    author = request.json['author']
+    author_link = request.json['author_link']
+    content = request.json['content']
+    
+    try:
+        new_prompt = FunctionPrompts(functionID=function_id, semanticID=semantic_id, lanCode=lan_code, 
+                                 priority=priority, model=model, author=author, author_link=author_link,
+                                 content=content, copied_count=0)
+        db.session.add(new_prompt)
+        db.session.commit()
+    except sqlalchemy.exc.IntegrityError as e:
+        return jsonify({'message': 'fail', 'error': str(e)})
     return jsonify({'message': 'success'})
 
 
@@ -393,8 +437,8 @@ def edit_prompt_dialog():
     examples = request.json['examples']
     for model_name, example_contents in examples.items():
         for index, content, role in example_contents:
-            new_item = PromptDialogs(functionID=function_id, semanticID=semantic_id, 
-                                     lanCode=lan_code, model=model_name, 
+            new_item = PromptDialogs(functionID=function_id, semanticID=semantic_id,
+                                     lanCode=lan_code, model=model_name,
                                      dialog_index=index, role_index=role, content=content)
             db.session.add(new_item)
     db.session.commit()

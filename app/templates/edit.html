@@ -1,5 +1,6 @@
-<div class="modal fade" id="prompt-edit-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog">
+<div class="modal fade modal-lg" id="prompt-edit-dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">Edit Prompt</h1>
@@ -9,26 +10,27 @@
                 <span>Edit the parameters and contents of this prompt.</span>
                 <form class="mt-3">
                     <label class="form-label text-danger d-none" content="error-message"></label>
-                    <div class="row row-cols-1 row-cols-md-2">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                         <div class="col">
                             <div class="input-group mb-2">
                                 <span class="input-group-text"><i class="bi bi-wrench"></i></span>
-                                <input class="form-control" type="text" placeholder="function ID" content="function-id"
-                                    disabled />
+                                <select class="form-select" content="function-id"></select>
+                                <input class="form-control" type="text" placeholder="function ID"
+                                    content="function-id" />
                             </div>
                         </div>
                         <div class="col">
                             <div class="input-group mb-2">
                                 <span class="input-group-text"><i class="bi bi-code"></i></span>
-                                <input class="form-control" type="text" placeholder="semantic ID" content="semantic-id"
-                                    disabled />
+                                <input class="form-control" type="text" placeholder="semantic ID"
+                                    content="semantic-id" />
                             </div>
                         </div>
                         <div class="col">
                             <div class="input-group mb-2">
                                 <span class="input-group-text"><i class="bi bi-globe"></i></span>
-                                <input class="form-control" type="text" placeholder="language code" content="lan-code"
-                                    disabled />
+                                <input class="form-control" type="text" placeholder="language code"
+                                    content="lan-code" />
                             </div>
                         </div>
                         <div class="col">

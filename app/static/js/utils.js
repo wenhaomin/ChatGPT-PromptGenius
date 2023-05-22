@@ -103,3 +103,7 @@ function validate_input(input_group, repeat_group) {
         return "";
     }
 }
+
+function get_selected_value(select) {
+    return select.find(":selected").val();
+}

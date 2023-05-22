@@ -67,6 +67,7 @@ function gen_prompt_card(item) {
     var function_id = item['functionID'];
     var semantic_id = item['semanticID'];
     var lan_code = item['lanCode'];
+    var priority = item['priority'];
     if (author === undefined || author.length === 0) {
         author = 'Anonymous'
     }
@@ -75,6 +76,10 @@ function gen_prompt_card(item) {
         author_link = '';
     } else {
         author_link = `href="${author_link}"`;
+    }
+
+    if (priority < 0) {
+        icon_color = '424242';
     }
 
     var pop_color = value_to_hex(copied_count, pop_minmax[0], pop_minmax[1], pop_cmap);

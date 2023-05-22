@@ -182,6 +182,7 @@ function render_prompt_display(prompt_list) {
     }
 
     if (typeof prompt_card_hover_listener !== 'undefined') {
+        display.prepend(gen_add_prompt_card());
         display.find('.prompt-card').hover(prompt_card_hover_listener);
     }
 
