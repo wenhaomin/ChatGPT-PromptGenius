@@ -4,7 +4,7 @@ from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template
 import sqlalchemy
-from sqlalchemy import and_, func
+from sqlalchemy import and_, func, desc
 from flask_login import LoginManager, login_user, login_required, logout_user
 
 from app.utils import *
@@ -225,7 +225,7 @@ def fetch_prompt(class_id, lan_code):
         for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
                                                    PromptView.lanCode.in_(lan_codes),
                                                    PromptView.priority >= (-999 if is_admin() else 0))
-                                              ).all():
+                                              ).order_by(desc(PromptView.copied_count)).all():
             if class_id == 'popular' and int(prompt.priority) != 2:
                 continue
             result.append(gather_prompt_content_dict(prompt))
@@ -391,6 +391,19 @@ def edit_prompt_meta():
         prompt.author = author
         prompt.author_link = author_link
         prompt.content = content
+
+        if function_id != function_id_new or semantic_id != semantic_id_new or lan_code != lan_code_new:
+            user_fav_prompts = UserFavPrompt.query.filter_by(functionID=function_id, semanticID=semantic_id, lanCode=lan_code).all()
+            for p in user_fav_prompts:
+                p.functionID = function_id_new
+                p.semanticID = semantic_id_new
+                p.lanCode = lan_code_new
+            
+            prompt_dialogs = PromptDialogs.query.filter_by(functionID=function_id, semanticID=semantic_id, lanCode=lan_code).all()
+            for p in prompt_dialogs:
+                p.functionID = function_id_new
+                p.semanticID = semantic_id_new
+                p.lanCode = lan_code_new
 
         db.session.commit()
     except Exception as e:

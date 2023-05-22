@@ -181,9 +181,9 @@ function render_prompt_display(prompt_list) {
         warning_toast.hide();
     }
 
-    if (typeof prompt_card_hover_listener !== 'undefined') {
+    if (typeof gen_prompt_card_edit_btn !== 'undefined') {
         display.prepend(gen_add_prompt_card());
-        display.find('.prompt-card').hover(prompt_card_hover_listener);
+        display.find('.prompt-card').append(gen_prompt_card_edit_btn());
     }
 
     masonry_reload(display, '.prompt-col');
