@@ -107,3 +107,25 @@ function validate_input(input_group, repeat_group) {
 function get_selected_value(select) {
     return select.find(":selected").val();
 }
+
+function finished_state_btn(btn) {
+    btn.find('.spinner-border').addClass('d-none');
+    btn.find('.finished-indicator').removeClass('d-none');
+    setTimeout(() => {
+        btn.find('.finished-indicator').addClass('d-none');
+    }, 1000);
+}
+
+function loading_state_btn(btn) {
+    btn.find('.spinner-border').removeClass('d-none');
+    btn.find('.finished-indicator').addClass('d-none');
+}
+
+function show_error_message(container, error) {
+    container.find('label[content="error-message"]').text(error);
+    container.find('label[content="error-message"]').removeClass('d-none');
+    setTimeout(() => {
+        container.find('label[content="error-message"]').addClass('d-none');
+        container.find('label[content="error-message"]').empty();
+    }, 10000);
+}

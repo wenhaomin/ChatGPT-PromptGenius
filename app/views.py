@@ -356,10 +356,11 @@ def fetch_functions_with_class():
         Functions.classes.contains(class_id)).all()]
     function_names = []
     for function_id in function_ids:
-        name_entries = FunctionNames.query.with_entities(FunctionNames.name).filter_by(ID=function_id, lanCode=lan_code).all()
+        name_entries = FunctionNames.query.with_entities(
+            FunctionNames.name).filter_by(ID=function_id, lanCode=lan_code).all()
         if len(name_entries) > 0:
             function_names.append([function_id, name_entries[0].name])
-    
+
     return jsonify({'message': 'success', 'content': function_names})
 
 
@@ -393,13 +394,15 @@ def edit_prompt_meta():
         prompt.content = content
 
         if function_id != function_id_new or semantic_id != semantic_id_new or lan_code != lan_code_new:
-            user_fav_prompts = UserFavPrompt.query.filter_by(functionID=function_id, semanticID=semantic_id, lanCode=lan_code).all()
+            user_fav_prompts = UserFavPrompt.query.filter_by(
+                functionID=function_id, semanticID=semantic_id, lanCode=lan_code).all()
             for p in user_fav_prompts:
                 p.functionID = function_id_new
                 p.semanticID = semantic_id_new
                 p.lanCode = lan_code_new
-            
-            prompt_dialogs = PromptDialogs.query.filter_by(functionID=function_id, semanticID=semantic_id, lanCode=lan_code).all()
+
+            prompt_dialogs = PromptDialogs.query.filter_by(
+                functionID=function_id, semanticID=semantic_id, lanCode=lan_code).all()
             for p in prompt_dialogs:
                 p.functionID = function_id_new
                 p.semanticID = semantic_id_new
@@ -423,11 +426,11 @@ def add_prompt():
     author = request.json['author']
     author_link = request.json['author_link']
     content = request.json['content']
-    
+
     try:
-        new_prompt = FunctionPrompts(functionID=function_id, semanticID=semantic_id, lanCode=lan_code, 
-                                 priority=priority, model=model, author=author, author_link=author_link,
-                                 content=content, copied_count=0)
+        new_prompt = FunctionPrompts(functionID=function_id, semanticID=semantic_id, lanCode=lan_code,
+                                     priority=priority, model=model, author=author, author_link=author_link,
+                                     content=content, copied_count=0)
         db.session.add(new_prompt)
         db.session.commit()
     except sqlalchemy.exc.IntegrityError as e:
@@ -435,25 +438,54 @@ def add_prompt():
     return jsonify({'message': 'success'})
 
 
-@bp.route('/edit_prompt_dialog', methods=['POST'])
+@bp.route('/remove_prompt', methods=['POST'])
 @admin_required
-def edit_prompt_dialog():
+def remove_prompt():
     function_id = request.json['function_id']
     semantic_id = request.json['semantic_id']
     lan_code = request.json['lan_code']
 
-    for dialog in PromptDialogs.query.filter_by(functionID=function_id,
-                                                semanticID=semantic_id,
-                                                lanCode=lan_code).all():
-        db.session.delete(dialog)
+    try:
+        for p in FunctionPrompts.query.filter_by(functionID=function_id,
+                                                 semanticID=semantic_id,
+                                                 lanCode=lan_code).all():
+            db.session.delete(p)
+        for p in UserFavPrompt.query.filter_by(functionID=function_id,
+                                               semanticID=semantic_id,
+                                               lanCode=lan_code).all():
+            db.session.delete(p)
+        for p in PromptDialogs.query.filter_by(functionID=function_id,
+                                               semanticID=semantic_id,
+                                               lanCode=lan_code).all():
+            db.session.delete(p)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({'message': 'fail', 'error': str(e)})
+    return jsonify({'message': 'success'})
 
-    examples = request.json['examples']
-    for model_name, example_contents in examples.items():
-        for index, content, role in example_contents:
-            new_item = PromptDialogs(functionID=function_id, semanticID=semantic_id,
-                                     lanCode=lan_code, model=model_name,
-                                     dialog_index=index, role_index=role, content=content)
-            db.session.add(new_item)
-    db.session.commit()
+
+@bp.route('/edit_prompt_examples', methods=['POST'])
+@admin_required
+def edit_prompt_examples():
+    function_id = request.json['function_id']
+    semantic_id = request.json['semantic_id']
+    lan_code = request.json['lan_code']
+
+    try:
+        for dialog in PromptDialogs.query.filter_by(functionID=function_id,
+                                                    semanticID=semantic_id,
+                                                    lanCode=lan_code).all():
+            db.session.delete(dialog)
+
+        examples = request.json['examples']
+        for model_name, example_contents in examples.items():
+            for index, content, role in example_contents:
+                new_item = PromptDialogs(functionID=function_id, semanticID=semantic_id,
+                                         lanCode=lan_code, model=model_name,
+                                         dialog_index=index, role_index=role, content=content)
+                db.session.add(new_item)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({'message': 'fail', 'error': str(e)})
 
     return jsonify({'message': 'success'})

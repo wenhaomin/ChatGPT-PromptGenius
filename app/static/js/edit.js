@@ -1,6 +1,16 @@
-prompt_edit_dialog_bs = new bootstrap.Modal($('#prompt-edit-dialog'));
-prompt_edit_role = 'edit';
+const prompt_edit_dialog_bs = new bootstrap.Modal($('#prompt-edit-dialog'));
+var prompt_edit_role = 'edit';
+const example_edit_dialog = $('#example-edit-dialog');
+const prompt_edit_dialog = $('#prompt-edit-dialog');
+const prompt_edit_ok_btn = $('#prompt-edit-ok-btn');
+const example_edit_ok_btn = $('#example-edit-ok-btn');
+const prompt_delete_btn = $('#prompt-delete-btn');
+new bootstrap.Tooltip($('#prompt-delete-btn'));
 
+var prompt_delete_click_timer;
+var prompt_delete_click_count = 0;
+
+// Generate a "Add prompt" card for adding new prompts.
 function gen_add_prompt_card() {
     if (cur_selected_class === 'popular' || cur_selected_class === 'user_fav' || cur_selected_class === '') {
         return '';
@@ -8,7 +18,7 @@ function gen_add_prompt_card() {
     var card = $(`
         <div class="prompt-col col">
             <div class="card shadow-sm text-bg-warning btn">
-                <div class="card-body p-2">
+                <div class="card-body p-1">
                     <div class="card-text h6">
                         <i class="bi bi-file-earmark-plus"></i>
                         <span class="ms-1">Add prompt</span>
@@ -21,10 +31,13 @@ function gen_add_prompt_card() {
     card.on('click', () => {
         prompt_edit_role = 'add';
         var edit_dialog = $('#prompt-edit-dialog');
+        edit_dialog.removeAttr('function-id');
+        edit_dialog.removeAttr('semantic-id');
+        edit_dialog.removeAttr('lan-code');
         edit_dialog.find('input, textarea').val('');
         edit_dialog.find('select').empty();
         edit_dialog.find('input[content="lan-code"]').val(cur_lan_code);
-        edit_dialog.find('input[content="semantic-id"]').removeAttr('disabled', 'disabled');
+        edit_dialog.find('input[content="semantic-id"]').removeAttr('disabled');
         edit_dialog.find('input[content="lan-code"]').attr('disabled', 'disabled');
         edit_dialog.find('#example-edit-open-btn').addClass('disabled');
         edit_dialog.find('input[content="priority"]').val(0);
@@ -40,13 +53,14 @@ function gen_add_prompt_card() {
                     <option ${index ? '' : 'selected'} value="${item[0]}">${item[1]}</option>
                 `);
             });
-            edit_dialog.find('#prompt-edit-ok-btn, #example-edit-open-btn').removeClass('disabled');
+            edit_dialog.find('#prompt-edit-ok-btn').removeClass('disabled');
         })
     })
 
     return card;
 }
 
+// Generate a top-right button for edit prompts.
 function gen_prompt_card_edit_btn() {
     var edit_btn = $(`
         <button class="btn badge position-absolute top-0 end-0 m-1 prompt-edit-btn text-bg-warning">
@@ -81,7 +95,7 @@ function gen_prompt_card_edit_btn() {
             }),
             send_post('fetch_functions_with_class', {
                 'class_id': cur_selected_class,
-                'lan_code': cur_lan_code
+                'lan_code': lan_code
             })
         ]).then(([prompt_meta, functions]) => {
             var meta = prompt_meta.meta;
@@ -112,7 +126,8 @@ function gen_prompt_card_edit_btn() {
     return edit_btn
 }
 
-$('#prompt-edit-ok-btn').on('click', () => {
+// Click listener for the OK button in prompt edit dialog.
+prompt_edit_ok_btn.on('click', () => {
     if (prompt_edit_role === 'edit') {
         prompt_edit_submit_listener();
     } else if (prompt_edit_role === 'add') {
@@ -120,17 +135,16 @@ $('#prompt-edit-ok-btn').on('click', () => {
     }
 });
 
+// Submit listener for edit prompt.
 function prompt_edit_submit_listener() {
-    var edit_ok_btn = $('#prompt-edit-ok-btn');
-    var edit_dialog = $('#prompt-edit-dialog');
-    edit_ok_btn.find('.spinner-border').removeClass('d-none');
+    loading_state_btn(prompt_edit_ok_btn);
 
-    var function_id = edit_dialog.attr('function-id');
-    var semantic_id = edit_dialog.attr('semantic-id');
-    var lan_code = edit_dialog.attr('lan-code');
-    var function_id_new = get_selected_value(edit_dialog.find('select[content="function-id"]'));
-    var semantic_id_new = edit_dialog.find('input[content="semantic-id"]').val();
-    var lan_code_new = edit_dialog.find('input[content="lan-code"]').val();
+    var function_id = prompt_edit_dialog.attr('function-id');
+    var semantic_id = prompt_edit_dialog.attr('semantic-id');
+    var lan_code = prompt_edit_dialog.attr('lan-code');
+    var function_id_new = get_selected_value(prompt_edit_dialog.find('select[content="function-id"]'));
+    var semantic_id_new = prompt_edit_dialog.find('input[content="semantic-id"]').val();
+    var lan_code_new = prompt_edit_dialog.find('input[content="lan-code"]').val();
     send_post('edit_prompt_meta', {
         'function_id': function_id,
         'semantic_id': semantic_id,
@@ -138,35 +152,34 @@ function prompt_edit_submit_listener() {
         'function_id_new': function_id_new,
         'semantic_id_new': semantic_id_new,
         'lan_code_new': lan_code_new,
-        'priority': edit_dialog.find('input[content="priority"]').val(),
-        'model': edit_dialog.find('input[content="model"]').val(),
-        'author': edit_dialog.find('input[content="author"]').val(),
-        'author_link': edit_dialog.find('input[content="author-link"]').val(),
-        'content': edit_dialog.find('textarea[content="content"]').val()
+        'priority': prompt_edit_dialog.find('input[content="priority"]').val(),
+        'model': prompt_edit_dialog.find('input[content="model"]').val(),
+        'author': prompt_edit_dialog.find('input[content="author"]').val(),
+        'author_link': prompt_edit_dialog.find('input[content="author-link"]').val(),
+        'content': prompt_edit_dialog.find('textarea[content="content"]').val()
     }).then((data) => {
         prompt_edit_dialog_resp_listener(data, function_id_new, semantic_id_new, lan_code_new);
     })
 }
 
+// Submit listener for add prompt.
 function prompt_add_submit_listener() {
-    var edit_ok_btn = $('#prompt-edit-ok-btn');
-    var edit_dialog = $('#prompt-edit-dialog');
-    var function_id = get_selected_value(edit_dialog.find('select[content="function-id"]'));
-    var semantic_id = validate_input(edit_dialog.find('input[content="semantic-id"]').parent());
-    var lan_code = edit_dialog.find('input[content="lan-code"]').val();
-    var content = validate_input(edit_dialog.find('textarea[content="content"]').parent());
-    var priority = validate_input(edit_dialog.find('input[content="priority"]').parent());
+    var function_id = get_selected_value(prompt_edit_dialog.find('select[content="function-id"]'));
+    var semantic_id = validate_input(prompt_edit_dialog.find('input[content="semantic-id"]').parent());
+    var lan_code = prompt_edit_dialog.find('input[content="lan-code"]').val();
+    var content = validate_input(prompt_edit_dialog.find('textarea[content="content"]').parent());
+    var priority = validate_input(prompt_edit_dialog.find('input[content="priority"]').parent());
 
     if (semantic_id.length > 0 && content.length > 0 && priority.length > 0) {
-        edit_ok_btn.find('.spinner-border').removeClass('d-none');
+        loading_state_btn(prompt_edit_ok_btn);
         send_post('add_prompt', {
             'function_id': function_id,
             'semantic_id': semantic_id,
             'lan_code': lan_code,
             'priority': priority,
-            'model': edit_dialog.find('input[content="model"]').val(),
-            'author': edit_dialog.find('input[content="author"]').val(),
-            'author_link': edit_dialog.find('input[content="author-link"]').val(),
+            'model': prompt_edit_dialog.find('input[content="model"]').val(),
+            'author': prompt_edit_dialog.find('input[content="author"]').val(),
+            'author_link': prompt_edit_dialog.find('input[content="author-link"]').val(),
             'content': content
         }).then((data) => {
             prompt_edit_dialog_resp_listener(data, function_id, semantic_id, lan_code);
@@ -174,28 +187,47 @@ function prompt_add_submit_listener() {
     }
 }
 
+// Response listener on finishing submit prompt add/edit.
 function prompt_edit_dialog_resp_listener(data, function_id, semantic_id, lan_code) {
-    var edit_ok_btn = $('#prompt-edit-ok-btn');
-    var edit_dialog = $('#prompt-edit-dialog');
-    edit_ok_btn.find('.spinner-border').addClass('d-none');
+    finished_state_btn(prompt_edit_ok_btn);
     if (data.message === 'fail') {
-        edit_dialog.find('label[content="error-message"]').text(data.error);
-        edit_dialog.find('label[content="error-message"]').removeClass('d-none');
-        setTimeout(() => {
-            edit_dialog.find('label[content="error-message"]').addClass('d-none');
-            edit_dialog.find('label[content="error-message"]').empty();
-        }, 10000);
+        show_error_message(prompt_edit_dialog, data.error);
     } else {
-        edit_dialog.attr('function-id', function_id);
-        edit_dialog.attr('semantic-id', semantic_id);
-        edit_dialog.attr('lan-code', lan_code);
-        edit_ok_btn.find('.finished-indicator').removeClass('d-none');
-        setTimeout(() => {
-            edit_ok_btn.find('.finished-indicator').addClass('d-none');
-        }, 1000);
+        prompt_edit_dialog.attr('function-id', function_id);
+        prompt_edit_dialog.attr('semantic-id', semantic_id);
+        prompt_edit_dialog.attr('lan-code', lan_code);
+        prompt_edit_dialog.find('#example-edit-open-btn').removeClass('disabled');
     }
 }
 
+// Click listener for the Delete button in prompt edit dialog.
+prompt_delete_btn.on('click', () => {
+    clearTimeout(prompt_delete_click_timer);
+    prompt_delete_click_count++;
+    if (prompt_delete_click_count === 3) {
+        prompt_delete_click_count = 0;
+        var function_id = prompt_edit_dialog.attr('function-id');
+        var semantic_id = prompt_edit_dialog.attr('semantic-id');
+        var lan_code = prompt_edit_dialog.attr('lan-code');
+        send_post('remove_prompt', {
+            'function_id': function_id,
+            'semantic_id': semantic_id,
+            'lan_code': lan_code
+        }).then((data) => {
+            if (data.message === 'fail') {
+                show_error_message(prompt_edit_dialog, data.error);
+            } else {
+                prompt_edit_dialog_bs.hide();
+            }
+        })
+    } else {
+        prompt_delete_click_timer = setTimeout(() => {
+            prompt_delete_click_count = 0;
+        }, 200);
+    }
+})
+
+// Generate the edit list for one example.
 function gen_one_example_edit_list(dialog_contents) {
     const icons = ['person-fill', 'gear-wide'];
     var dialog_list = $(`<ul class="list-group list-group-flush rounded">`);
@@ -227,8 +259,8 @@ function gen_one_example_edit_list(dialog_contents) {
     }
 
     var add_item_btn = $(`
-        <li class="list-group-item p-1 border-0">
-            <button class="btn w-100 btn-secondary">Add line</button>
+        <li class="list-group-item p-1 border-0" id="add-item-btn">
+            <button class="btn w-100 btn-light btn-sm border-secondary">Add line</button>
         </li>
     `);
     dialog_list.append(add_item_btn);
@@ -251,6 +283,7 @@ function gen_one_example_edit_list(dialog_contents) {
     return dialog_list;
 }
 
+// Generate a pair of nav link and tab content for one example.
 function gen_one_example_edit_tab(model_name, dialog_contents, index) {
     var nav = $(`
         <li class="nav-item">
@@ -279,12 +312,13 @@ function gen_one_example_edit_tab(model_name, dialog_contents, index) {
     return [nav, tab_content];
 }
 
+// Click listener for the 'Edit example' button in prompt edit dialog.
+// Render example editor with existing examples.
+example_edit_count_pointer = 0;
 $('#example-edit-open-btn').on('click', () => {
-    var edit_dialog = $('#example-edit-dialog');
-    var prompt_edit_dialog = $('#prompt-edit-dialog');
-    edit_dialog.find('#example-model-edit-nav').empty();
-    edit_dialog.find('#example-model-edit-tab-content').empty();
-    edit_dialog.find('#example-add-dialog-btn, #example-edit-ok-btn').addClass('disabled');
+    example_edit_dialog.find('#example-model-edit-nav').empty();
+    example_edit_dialog.find('#example-model-edit-tab-content').empty();
+    example_edit_dialog.find('#example-add-dialog-btn, #example-edit-ok-btn').addClass('disabled');
 
     send_post(`get_prompt_dialog`, {
         'function_id': prompt_edit_dialog.attr('function-id'),
@@ -292,51 +326,56 @@ $('#example-edit-open-btn').on('click', () => {
         'lan_code': prompt_edit_dialog.attr('lan-code')
     }).then((data) => {
         // Add existing examples to the edit dialog.
+        example_edit_count_pointer = Object.keys(data.content).length;
         Object.entries(data.content).forEach(([model_name, dialog_contents], index) => {
             var [nav, tab_content] = gen_one_example_edit_tab(model_name, dialog_contents, index);
-            edit_dialog.find('#example-model-edit-nav').append(nav);
-            edit_dialog.find('#example-model-edit-tab-content').append(tab_content);
+            example_edit_dialog.find('#example-model-edit-nav').append(nav);
+            example_edit_dialog.find('#example-model-edit-tab-content').append(tab_content);
         });
-        edit_dialog.find('#example-add-dialog-btn, #example-edit-ok-btn').removeClass('disabled');
+        example_edit_dialog.find('#example-add-dialog-btn, #example-edit-ok-btn').removeClass('disabled');
     });
 })
 
+// Click listener for the 'Add dialog' button in example edit dialog.
 $('#example-add-dialog-btn').on('click', () => {
     // Add new example item to the edit dialog.
-    var edit_dialog = $('#example-edit-dialog');
     var [nav, tab_content] = gen_one_example_edit_tab('',
         [{ raw: $('#prompt-edit-dialog').find('textarea[content="content"]').val() }],
-        edit_dialog.find('.example-nav-link').length);
-    edit_dialog.find('#example-model-edit-nav').append(nav);
-    edit_dialog.find('#example-model-edit-tab-content').append(tab_content);
+        example_edit_count_pointer++);
+    example_edit_dialog.find('#example-model-edit-nav').append(nav);
+    example_edit_dialog.find('#example-model-edit-tab-content').append(tab_content);
 })
 
-$('#example-edit-ok-btn').on('click', () => {
-    var edit_dialog = $('#example-edit-dialog');
-    var prompt_edit_dialog = $('#prompt-edit-dialog');
+// Click listener for the OK button in example edit dialog.
+example_edit_ok_btn.on('click', () => {
     var examples = {};
-    edit_dialog.find('#example-model-edit-nav .example-nav-link').each((i, nav_item) => {
-        var model_name = $(nav_item).find('.model-name-input').val();
+    var has_empty = false;
+    example_edit_dialog.find('#example-model-edit-nav .example-nav-link').each((i, nav_item) => {
+        var model_name = validate_input($(nav_item));
+        if (model_name.length === 0) {
+            has_empty = true;
+        }
         var tab_id = $(nav_item).attr('data-bs-target');
         var example_contents = [];
-        edit_dialog.find(tab_id).find('.example-list-item').each((j, list_item) => {
+        example_edit_dialog.find(tab_id).find('.example-list-item').each((j, list_item) => {
             var role_index = $(list_item).find('.role-icon .bi').hasClass('bi-person-fill') ? 0 : 1;
             var content = $(list_item).find('textarea').val();
             example_contents.push([j, content, role_index]);
         });
         examples[model_name] = example_contents;
     });
-    $('#example-edit-ok-btn .spinner-border').removeClass('d-none');
-    send_post('edit_prompt_dialog', {
-        'function_id': prompt_edit_dialog.attr('function-id'),
-        'semantic_id': prompt_edit_dialog.attr('semantic-id'),
-        'lan_code': prompt_edit_dialog.attr('lan-code'),
-        'examples': examples
-    }).then((data) => {
-        $('#example-edit-ok-btn .spinner-border').addClass('d-none');
-        $('#example-edit-ok-btn .finished-indicator').removeClass('d-none');
-        setTimeout(() => {
-            $('#example-edit-ok-btn .finished-indicator').addClass('d-none');
-        }, 2000);
-    })
+    if (!has_empty) {
+        loading_state_btn(example_edit_ok_btn);
+        send_post('edit_prompt_examples', {
+            'function_id': prompt_edit_dialog.attr('function-id'),
+            'semantic_id': prompt_edit_dialog.attr('semantic-id'),
+            'lan_code': prompt_edit_dialog.attr('lan-code'),
+            'examples': examples
+        }).then((data) => {
+            finished_state_btn(example_edit_ok_btn);
+            if (data.message === 'fail') {
+                show_error_message(example_edit_dialog, data.error);
+            }
+        })
+    }
 })

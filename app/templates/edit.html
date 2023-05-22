@@ -62,9 +62,14 @@
                 </form>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="prompt-delete-btn"
+                data-bs-toggle="tooltip" data-bs-placement="top" 
+                data-bs-title="This will delete ALL associate examples and user favorites. Triple-click to confirm.">
+                    <span>Delete</span>
+                </button>
                 <button type="button" class="btn btn-info" id="example-edit-open-btn" data-bs-toggle="modal"
                     data-bs-target="#example-edit-dialog">
-                    <span>Edit dialogs</span>
+                    <span>Edit examples</span>
                 </button>
                 <button type="button" class="btn btn-primary" id="prompt-edit-ok-btn">
                     <div class="spinner-border spinner-border-sm d-none"></div>
@@ -81,7 +86,7 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Edit prompt dialogs</h1>
+                <h1 class="modal-title fs-5">Edit prompt examples</h1>
                 <button type="button" class="btn-close" data-bs-toggle="modal"
                     data-bs-target="#prompt-edit-dialog"></button>
             </div>
