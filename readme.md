@@ -19,8 +19,10 @@
 - 🤖 **多种AI工具**： 收集多种基于GPT的AI工具、网站
 - 📦 **开箱即用**：[www.promptgenius.site](https://www.promptgenius.site)
 
-
 ## 使用说明
+
+### 🏠 主页面布局
+
 Prompt Genius 页面默认显示热门分类提示词，页面分为分类检索区、搜索区和提示词展示区。
 
 ![image](./img/index_chn.png)
@@ -31,10 +33,6 @@ Prompt Genius将所有提示词，按照使用场景进行层次化的分类，�
 9个大类，其中每个大类下细分多个不同的子类，每个子类下包含多个不同的提示词。
 
 ![switch_class_chn](./img/switch_class_chn.gif)
-
-目前整体分类体系如下：
-
-![image](./img/class_tree.png)
 
 
 ### 🔍 关键词搜索
@@ -49,6 +47,18 @@ Prompt Genius将所有提示词，按照使用场景进行层次化的分类，�
 通过关键词搜索，点击卡片左上方的复制按钮即可复制提示词，将其粘贴到 ChatGPT 中。展示信息包括提示词类别标签、author信息（带有或者不带有链接。）
 
 ![prompt_display_chn](./img/prompt_display_chn.png)
+
+### 🌟 个性化收藏
+
+注册并登录账户后，可以将提示词添加到自己账户的收藏夹下，构建个性化提示词库。
+
+![Personal favorites](./img/fav_chn.png)
+
+### 💬 示例对话
+
+快速预览常见NLP大模型对提示词的回复内容，方便判断提示词能否实现您需要的功能。
+
+![Example dialogs](./img/example_chn.png)
 
 ### 🌎 语言切换
 
@@ -79,7 +89,7 @@ Prompt Genius将所有提示词，按照使用场景进行层次化的分类，�
 
 ## 技术设计
 
-前端使用 [Boostrap](https://getbootstrap.com/) 和 [jQuery](https://jquery.com/)实现.
+前端使用 [Bootstrap](https://getbootstrap.com/) 和 [jQuery](https://jquery.com/)实现.
 
 后台使用 [Flask](https://flask.palletsprojects.com/) 和其他python包实现 (参见 [requirements](./requirements.txt)).
 

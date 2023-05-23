@@ -1,9 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<main class="container-xxl overflow-y-scroll">
-    <div class="row py-2 py-md-3 row-cols-xxl-3 row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 g-2"
+<main class="container-xxl overflow-y-scroll pt-2 pt-md-3">
+    <h4>
+        <span class="badge text-bg-warning">Pending user submits</span>
+    </h4>
+    <div class="row row-cols-xxl-3 row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 g-2"
         id="user-submit-display">
+    </div>
+    <hr>
+    <h4>
+        <span class="badge text-bg-secondary">Archived user submits</span>
+    </h4>
+    <div class="row pb-2 pb-md-3 row-cols-xxl-3 row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 g-2"
+        id="user-submit-display-archived">
     </div>
 </main>
 {% endblock %}
@@ -26,7 +36,7 @@
             $('#user-group button').addClass('disabled');
         })
 
-        get_data('/fetch_user_submits').then((data) => {
+        get_data('/fetch_user_submits/0').then((data) => {
             var display = $('#user-submit-display');
             data.content.forEach((item) => {
                 var card = gen_user_submit_card(
@@ -35,6 +45,19 @@
                 display.append(col);
             });
             masonry_reload(display, '.user-submit-col');
+        })
+
+        get_data('/fetch_user_submits/1').then((data) => {
+            var display = $('#user-submit-display-archived');
+            data.content.forEach((item) => {
+                var card = gen_user_submit_card(
+                    item.func, item.disp_time, item.db_time, item.user, item.content, item.raw_content);
+                var col = $(`<div class="user-submit-archived-col col">`).append(card);
+                display.append(col);
+            });
+            display.find('.submit-archive-btn').addClass('disabled');
+            display.find('.user-submit-card').find('.badge, .card-text').css('opacity', '0.6')
+            masonry_reload(display, '.user-submit-archived-col');
         })
     }
 
@@ -47,7 +70,9 @@
             <div class="card shadow-sm user-submit-card text-bg-light">
                 <div class="card-body">
                     <div class="card-title d-flex flex-wrap">
-                        <div class="badge rounded-pill text-bg-primary mb-1 me-1">
+                        <div class="badge rounded-pill text-dark mb-1 me-1 text-truncate" 
+                        style="max-width: 300px; background-color: #29B6F6"
+                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${func}">
                             <i class="bi bi-wrench"></i>
                             <span>${func}</span>
                         </div>
@@ -55,7 +80,8 @@
                             <i class="bi bi-person-fill-up"></i>
                             <span>${user.length ? user : 'Anonymous'}</span>
                         </div>
-                        <div class="badge rounded-pill text-bg-secondary mb-1 me-1">
+                        <div class="badge rounded-pill mb-1 me-1 text-dark" 
+                        style="background-color: #4DD0E1">
                             <i class="bi bi-calendar-plus"></i>
                             <span>${disp_time}</span>
                         </div>
@@ -90,6 +116,7 @@
         var copy_btn = card.find('.submit-copy-btn');
 
         new bootstrap.Tooltip(delete_btn);
+        new bootstrap.Tooltip(card.find('.text-truncate'));
 
         var delete_click_timer;
         var delete_click_count = 0;
@@ -112,6 +139,10 @@
 
         copy_btn.on('click', () => {
             copy_to_clipboard(raw_content);
+            copy_btn.find('.bi').switchClass('bi-clipboard', 'bi-clipboard-check-fill');
+            setTimeout(() => {
+                copy_btn.find('.bi').switchClass('bi-clipboard-check-fill', 'bi-clipboard');
+            }, 1000);
         })
 
         return card;
@@ -122,8 +153,9 @@
             'func': func,
             'time': time
         }).then((data) => {
-            card.parent().remove();
+            card.parent().addClass('d-none');
             masonry_reload($('#user-submit-display'), '.user-submit-col');
+            masonry_reload($('#user-submit-display-archived'), '.user-submit-archived-col');
         })
     }
 </script>

@@ -502,11 +502,11 @@ def edit_prompt_examples():
     return jsonify({'message': 'success'})
 
 
-@bp.route('/fetch_user_submits')
+@bp.route('/fetch_user_submits/<show_archived>')
 @admin_required
-def fetch_user_submits():
+def fetch_user_submits(show_archived):
     submits = []
-    for submit in SubmitFunction.query.filter(SubmitFunction.archived == 0).order_by(desc(SubmitFunction.createTime)).all():
+    for submit in SubmitFunction.query.filter(SubmitFunction.archived == int(show_archived)).order_by(desc(SubmitFunction.createTime)).all():
         submits.append({'func': submit.funcDesc,
                         'disp_time': datetime.strptime(submit.createTime, db_datetime_format).strftime(display_datetime_format),
                         'db_time': submit.createTime,
