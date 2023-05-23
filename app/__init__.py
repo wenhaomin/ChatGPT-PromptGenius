@@ -1,12 +1,14 @@
 import json
 
 from flask import Flask
+from flask_talisman import Talisman
 import sqlalchemy
 from sqlalchemy import text
 
 
 def create_app():
     app = Flask(__name__)
+    Talisman(app, content_security_policy=None)
     app.config.from_file('app_config.json', json.load)
 
     from .models import db
