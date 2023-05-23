@@ -84,7 +84,8 @@
                 </div>
                 <div class="offcanvas-body">
                     <!-- Navbar links directing to pages. -->
-                    <ul class="navbar-nav d-flex flex-row mb-2 mb-lg-0" id="navbar-links"></ul>
+                    <ul class="navbar-nav d-flex flex-wrap" id="navbar-links"></ul>
+                    <hr class="d-lg-none mt-2">
 
                     <!-- Search bar. -->
                     <div class="input-group ms-lg-auto mb-3 mb-lg-0" id="search-input-group">
@@ -167,7 +168,7 @@
 
     <!-- Contents for admin edit. -->
     {% if show_edit_content %}
-        {% include 'edit.html' %}
+    {% include 'admin.html' %}
     {% endif %}
 </body>
 

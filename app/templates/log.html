@@ -34,7 +34,8 @@
         Promise.all([
             init_language_select(),
             render_page_basic(),
-            render_logs_display()
+            render_logs_display(),
+            render_user_specific()
         ]).then(() => {
             $('#class-sidebar-toggler').addClass('disabled');
             $('#class-sidebar-toggler i').addClass('text-secondary');

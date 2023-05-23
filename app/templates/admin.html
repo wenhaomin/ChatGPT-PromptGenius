@@ -1,0 +1,19 @@
+<script>
+    // Generate a "Dashboard" navbar link for accessing to various admin dashboard pages.
+    function gen_dashboard_navlink() {
+        var nav_item = $(`
+            <li class="nav-item dropdown">
+                <button class="nav-link navbar-link dropdown-toggle 
+                ${window.location.pathname.includes('dashboard') ? 'active-navbar-link' : ''}" 
+                data-bs-toggle="dropdown">Dashboard</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/dashboard/user_submit">View submits</a></li>
+              </ul>
+            </li>
+        `);
+
+        $('#page-header-title').switchClass('d-lg-block', 'd-xl-block');
+
+        return nav_item;
+    }
+</script>

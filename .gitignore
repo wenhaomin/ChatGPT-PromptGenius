@@ -5,3 +5,4 @@ app/__pycache__
 instance/
 .idea
 app/app_config.json
+script/

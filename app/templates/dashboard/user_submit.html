@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container-xxl overflow-y-scroll">
+    <div class="row py-2 py-md-3 row-cols-xxl-3 row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 g-2"
+        id="user-submit-display">
+    </div>
+</main>
+{% endblock %}
+
+{% block script %}
+<script>
+    window.onload = () => {
+        action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
+
+        Promise.all([
+            init_language_select(),
+            render_page_basic(),
+            render_user_specific()
+        ]).then(() => {
+            $('#class-sidebar-toggler').addClass('disabled');
+            $('#class-sidebar-toggler i').addClass('text-secondary');
+            $('#search-input-group input').attr('disabled', 'disabled');
+            $('#search-input-group button').attr('disabled', 'disabled');
+            $('#nav-submit-btn').attr('disabled', 'disabled');
+            $('#user-group button').addClass('disabled');
+        })
+
+        get_data('/fetch_user_submits').then((data) => {
+            var display = $('#user-submit-display');
+            data.content.forEach((item) => {
+                var card = gen_user_submit_card(
+                    item.func, item.disp_time, item.db_time, item.user, item.content, item.raw_content);
+                var col = $(`<div class="user-submit-col col">`).append(card);
+                display.append(col);
+            });
+            masonry_reload(display, '.user-submit-col');
+        })
+    }
+
+    function switch_language_listener() {
+        render_page_basic();
+    }
+
+    function gen_user_submit_card(func, disp_time, db_time, user, content, raw_content) {
+        var card = $(`
+            <div class="card shadow-sm user-submit-card text-bg-light">
+                <div class="card-body">
+                    <div class="card-title d-flex flex-wrap">
+                        <div class="badge rounded-pill text-bg-primary mb-1 me-1">
+                            <i class="bi bi-wrench"></i>
+                            <span>${func}</span>
+                        </div>
+                        <div class="badge rounded-pill text-bg-info mb-1 me-1">
+                            <i class="bi bi-person-fill-up"></i>
+                            <span>${user.length ? user : 'Anonymous'}</span>
+                        </div>
+                        <div class="badge rounded-pill text-bg-secondary mb-1 me-1">
+                            <i class="bi bi-calendar-plus"></i>
+                            <span>${disp_time}</span>
+                        </div>
+                    </div>
+                    <div class="card-text small prompt-card-content">
+                        ${content}
+                    </div>
+                    <div class="row g-2 mt-1">
+                        <div class="col-4">
+                            <button class="btn btn-sm btn-outline-danger w-100 submit-delete-btn"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Triple-click to confirm.">
+                                <i class="bi bi-trash me-1"></i>Dismiss
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-sm btn-outline-success w-100 submit-archive-btn">
+                                <i class="bi bi-archive me-1"></i>Archive
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-sm btn-outline-primary w-100 submit-copy-btn">
+                                <i class="bi bi-clipboard me-1"></i>Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+        var delete_btn = card.find('.submit-delete-btn');
+        var archive_btn = card.find('.submit-archive-btn');
+        var copy_btn = card.find('.submit-copy-btn');
+
+        new bootstrap.Tooltip(delete_btn);
+
+        var delete_click_timer;
+        var delete_click_count = 0;
+        delete_btn.on('click', () => {
+            clearTimeout(delete_click_timer);
+            delete_click_count++;
+            if (delete_click_count === 3) {
+                delete_click_count = 0;
+                archive_submit('/delete_user_submit', card, func, db_time);
+            } else {
+                delete_click_timer = setTimeout(() => {
+                    delete_click_count = 0;
+                }, 200);
+            }
+        })
+
+        archive_btn.on('click', () => {
+            archive_submit('/archive_user_submit', card, func, db_time);
+        })
+
+        copy_btn.on('click', () => {
+            copy_to_clipboard(raw_content);
+        })
+
+        return card;
+    }
+
+    function archive_submit(post_url, card, func, time) {
+        send_post(post_url, {
+            'func': func,
+            'time': time
+        }).then((data) => {
+            card.parent().remove();
+            masonry_reload($('#user-submit-display'), '.user-submit-col');
+        })
+    }
+</script>
+{% endblock %}

@@ -9,7 +9,9 @@ function language_select_listener(selected_lan_code) {
         set_cookie('lancode', cur_lan_code, 30);
         switch_active_language(selected_lan_code);
 
-        switch_language_listener();
+        if (typeof switch_language_listener !== 'undefined') {
+            switch_language_listener();
+        }
         action_sidebar_bs.hide();
     }
 }
@@ -90,7 +92,7 @@ function gain_popularity_listener(card, function_id, semantic_id, lan_code, incr
     var cur_pop = parseInt(pop_display.text());
     pop_display.text(cur_pop + increase);
     masonry_reload(card.parents('#prompt-display'), '.prompt-col');
-    send_post(`increase_popularity`,
+    send_post(`/increase_popularity`,
         {
             'lan_code': lan_code, 'function_id': function_id,
             'semantic_id': semantic_id, 'increase': increase
@@ -147,11 +149,11 @@ function prompt_fav_listener(btn, function_id, semantic_id, lan_code) {
         };
         if (fav_icon.hasClass('bi-bookmark')) {
             fav_icon.switchClass('bi-bookmark', 'bi-bookmark-check-fill');
-            send_post('add_fav_prompt', prompt_indicator);
+            send_post('/add_fav_prompt', prompt_indicator);
             gain_popularity_listener(prompt_card, function_id, semantic_id, lan_code, 2);
         } else {
             fav_icon.switchClass('bi-bookmark-check-fill', 'bi-bookmark');
-            send_post('remove_fav_prompt', prompt_indicator);
+            send_post('/remove_fav_prompt', prompt_indicator);
             gain_popularity_listener(prompt_card, function_id, semantic_id, lan_code, -2);
         }
     }
@@ -179,7 +181,7 @@ function register_click_listener() {
 
         if (username.length > 0 && password.length > 0) {
             spinner.removeClass('d-none');
-            send_post('register', {
+            send_post('/register', {
                 'username': username,
                 'password': password
             }).then((data) => {
@@ -218,7 +220,7 @@ function login_click_listener() {
 
         if (username.length > 0 && password.length > 0) {
             spinner.removeClass('d-none');
-            send_post('login', {
+            send_post('/login', {
                 'username': username,
                 'password': password
             }).then((data) => {
@@ -246,7 +248,7 @@ function login_click_listener() {
 }
 
 function logout_click_listener() {
-    get_data('logout').then(() => {
+    get_data('/logout').then(() => {
         if (cur_username === 'admin') {
             window.location.href = '/';
         }
@@ -272,7 +274,7 @@ function user_setting_ok_click_listener() {
 
     if (oldpass.length > 0 && newpass.length > 0) {
         spinner.removeClass('d-none');
-        send_post('change_password', {
+        send_post('/change_password', {
             'old_password': oldpass,
             'new_password': newpass
         }).then((data) => {

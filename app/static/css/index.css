@@ -1,9 +1,13 @@
 main {
-    margin-top: 60px;
+    margin-top: 62px;
 }
 
 p {
     margin-bottom: 6px !important;
+}
+
+#main-navbar {
+    height: 62px;
 }
 
 .navbar-link {

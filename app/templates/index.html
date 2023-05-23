@@ -173,7 +173,13 @@
         </div>
     </div>
 </div>
+
+{% if show_edit_content %}
+{% include 'index_editor.html' %}
+{% endif %}
+
 {% endblock %}
+
 
 {% block script %}
 <script>

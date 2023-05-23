@@ -13,6 +13,8 @@ from app.models import *
 
 bp = Blueprint('views', __name__)
 login_manager = LoginManager()
+db_datetime_format = '%Y_%m_%d_%H_%M_%S'
+display_datetime_format = '%Y-%m-%d %H:%M:%S'
 
 
 """
@@ -39,6 +41,15 @@ def tools():
 @bp.route('/log')
 def log():
     return render_template('log.html',
+                           lan_code=get_preferred_lancode(),
+                           username=get_cur_username(),
+                           show_edit_content=is_admin())
+
+
+@bp.route('/dashboard/<dashboard_page>')
+@admin_required
+def dashboard(dashboard_page):
+    return render_template(os.path.join('dashboard', dashboard_page + '.html'),
                            lan_code=get_preferred_lancode(),
                            username=get_cur_username(),
                            show_edit_content=is_admin())
@@ -487,5 +498,45 @@ def edit_prompt_examples():
         db.session.commit()
     except Exception as e:
         return jsonify({'message': 'fail', 'error': str(e)})
+
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/fetch_user_submits')
+@admin_required
+def fetch_user_submits():
+    submits = []
+    for submit in SubmitFunction.query.filter(SubmitFunction.archived == 0).order_by(desc(SubmitFunction.createTime)).all():
+        submits.append({'func': submit.funcDesc,
+                        'disp_time': datetime.strptime(submit.createTime, db_datetime_format).strftime(display_datetime_format),
+                        'db_time': submit.createTime,
+                        'content': md_to_html(submit.promptContent), 
+                        'raw_content': submit.promptContent,
+                        'user': submit.userName})
+    return jsonify({'message': 'success', 'content': submits})
+
+
+@bp.route('/delete_user_submit', methods=['POST'])
+@admin_required
+def delete_user_submit():
+    func = request.json['func']
+    time = request.json['time']
+
+    submit = SubmitFunction.query.filter_by(funcDesc=func, createTime=time).first()
+    db.session.delete(submit)
+    db.session.commit()
+
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/archive_user_submit', methods=['POST'])
+@admin_required
+def archive_user_submit():
+    func = request.json['func']
+    time = request.json['time']
+
+    submit = SubmitFunction.query.filter_by(funcDesc=func, createTime=time).first()
+    submit.archived = 1
+    db.session.commit()
 
     return jsonify({'message': 'success'})

@@ -43,6 +43,7 @@ class SubmitFunction(db.Model):
     createTime = Column(String, primary_key=True)
     promptContent = Column(String)
     userName = Column(String)
+    archived = Column(Integer, default=0)
 
 
 class Languages(db.Model):

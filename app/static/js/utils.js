@@ -81,6 +81,13 @@ function copy_to_clipboard(text) {
     copyContent();
 }
 
+function warn_input(input) {
+    input.addClass('border-danger');
+    setTimeout(() => {
+        input.removeClass('border-danger');
+    }, 5000)
+}
+
 function validate_input(input_group, repeat_group) {
     var input_element = input_group.find('textarea, input');
     var input_val = input_element.val();
@@ -89,17 +96,19 @@ function validate_input(input_group, repeat_group) {
         input_element.removeClass('border-danger');
 
         if (repeat_group !== undefined) {
-            if (input_val !== repeat_group.find('textarea, input').val()) {
-                input_element.addClass('border-danger');
-                repeat_group.find('textarea, input').addClass('border-danger');
+            var repeat_element = repeat_group.find('textarea, input');
+            if (input_val !== repeat_element.val()) {
+                warn_input(input_element);
+                warn_input(repeat_element);
                 return "";
             } else {
-                repeat_group.find('textarea, input').removeClass('border-danger');
+                input_element.removeClass('border-danger');
+                repeat_element.removeClass('border-danger');
             }
         }
         return input_val;
     } else {
-        input_element.addClass('border-danger');
+        warn_input(input_element);
         return "";
     }
 }

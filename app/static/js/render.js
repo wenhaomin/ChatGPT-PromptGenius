@@ -5,7 +5,7 @@
 
 async function init_language_select() {
     // Intialize the options in #language-select.
-    var data = await get_data('fetch_lan');
+    var data = await get_data('/fetch_lan');
     data.forEach(function (item) {
         var language_select_item = $(`
             <li lan-code="${item['code']}"><a class="dropdown-item">${item['name']}</a></li>
@@ -28,14 +28,17 @@ async function render_page_basic() {
     $('#navbar-links').empty();
     ['/', '/tools', '/log'].forEach((href, index) => {
         var nav_item = $(`
-            <li class="nav-item me-3 me-lg-0">
+            <li class="nav-item">
                 <a class="nav-link navbar-link
                     ${(href === window.location.pathname) ? 'active-navbar-link' : ''}" 
                     href="${href}">${navbar_contents[cur_lan_code][index]}</a>
             </li>
         `);
         $('#navbar-links').append(nav_item);
-    })
+    });
+    if (typeof gen_dashboard_navlink !== 'undefined') {
+        $('#navbar-links').append(gen_dashboard_navlink());
+    }
 
     document.title += '-' + $('#navbar-links').find('.active-navbar-link').text();
 
@@ -107,7 +110,7 @@ async function render_page_basic() {
 
 async function render_class_tree() {
     // Intialize the options in #language-select.
-    var data = await get_data(`fetch_classes/${cur_lan_code}`);
+    var data = await get_data(`/fetch_classes/${cur_lan_code}`);
     $('#class-selection-list').empty();
     data.forEach((item, index) => {
         var class_selection = gen_class_selection(item);
@@ -138,7 +141,7 @@ async function render_class_tree() {
 }
 
 async function render_tools() {
-    var data = await get_data(`fetch_tools/${cur_lan_code}`);
+    var data = await get_data(`/fetch_tools/${cur_lan_code}`);
     var display = $('#tools-display')
     display.empty();
     data.forEach(({ name, desc, url, icon_src, tags }) => {
@@ -192,7 +195,7 @@ function render_prompt_display(prompt_list) {
 // By Haomin Wen: display all prompts of a given class
 async function render_prompt_by_class(class_id) {
     render_placeholder_prompt_display();
-    var data = await get_data(`fetch_prompt/${class_id}/${cur_lan_code}`);
+    var data = await get_data(`/fetch_prompt/${class_id}/${cur_lan_code}`);
     // use a function to handle the response data
     // call another function to render the fetched prompt data
     render_prompt_display(data['content']);
@@ -202,7 +205,7 @@ async function render_prompt_by_class(class_id) {
 // search prompt by give string
 async function render_prompt_by_string(search_text) {
     render_placeholder_prompt_display();
-    var data = await get_data(`search_prompt/${search_text}/${cur_lan_code}`);
+    var data = await get_data(`/search_prompt/${search_text}/${cur_lan_code}`);
     render_prompt_display(data['content']);
     update_prompt_display_fav();
 }
@@ -236,7 +239,7 @@ async function render_prompt_example_display(function_id, semantic_id, lan_code)
 }
 
 async function render_logs_display() {
-    var contents = await get_data(`fetch_logs/${cur_lan_code}`);
+    var contents = await get_data(`/fetch_logs/${cur_lan_code}`);
 
     var displays = $('#top-log-display, #logs-display');
     displays.empty();
@@ -305,7 +308,7 @@ async function render_userfav_class_item() {
 
 async function update_prompt_display_fav() {
     if (cur_username.length > 0) {
-        var fav_prompts = (await get_data('fetch_fav_prompt'))['content'];
+        var fav_prompts = (await get_data('/fetch_fav_prompt'))['content'];
         fav_prompts.forEach((item) => {
             var prompt_card = $(`.prompt-card[function-id="${item.function_id}"][semantic-id="${item.semantic_id}"][lan-code="${item.lan_code}"]`);
             if (prompt_card.length) {
