@@ -1,13 +1,12 @@
-
 <h1 align="center">
 💡Prompt Genius
 </h1>
 <p align="center">
     <a href="./readme-en.md">English</a> | 中文
 </p>
-<p align="center">
-    <em>全面、有效的 ChatGPT指令大全</em>
-</p>
+
+![banner](./img/PG-banner-readme.png)
+
 
 ## Why use Prompt Genius?
 
