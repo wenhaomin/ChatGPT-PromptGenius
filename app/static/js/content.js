@@ -12,7 +12,7 @@ navbar_contents = {
 
 site_contents = {
     "eng": {
-        "title": "Prompt Genius",
+        "title": "PromptGenius",
         "class_canvas_title": "Browse classes",
         "action_canvas_title": "More",
         "ok_text": "OK"

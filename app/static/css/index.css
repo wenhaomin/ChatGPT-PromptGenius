@@ -6,6 +6,14 @@ p {
     margin-bottom: 6px !important;
 }
 
+#page-header-title {
+    background-image: linear-gradient(to right, #ffbd7a, #65bfff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 550 !important;
+}
+
 #main-navbar {
     height: 62px;
 }
@@ -15,10 +23,10 @@ p {
 }
 
 .active-navbar-link {
-    color: #fff !important;
+    color: #B3E5FC !important;
     text-decoration: underline !important;
-    text-decoration-color: #fff !important;
-    font-weight: 750 !important;
+    text-decoration-color: #B3E5FC !important;
+    font-weight: 800 !important;
 }
 
 .overflow-y-scroll {

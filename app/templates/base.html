@@ -63,8 +63,8 @@
             </button>
 
             <a class="navbar-brand d-flex align-items-center">
-                <img src="/static/asset/icons/android-chrome-192x192.png" height="35"></img>
-                <span id="page-header-title" class="text-white fs-4 ms-2 d-none d-lg-block"></span>
+                <img src="/static/asset/icons/android-chrome-192x192.png" height="38"></img>
+                <span id="page-header-title" class="fs-4 ms-2 d-none d-xl-block"></span>
             </a>
 
             <button type="button" class="text-light navbar-toggler border-0 
@@ -89,8 +89,8 @@
 
                     <!-- Search bar. -->
                     <div class="input-group ms-lg-auto mb-3 mb-lg-0" id="search-input-group">
-                        <input type="text" class="form-control text-bg-dark border-secondary">
-                        <button class="btn btn-secondary" type="button">
+                        <input type="text" class="form-control text-bg-dark" style="border-color: #2f3c8f">
+                        <button class="btn text-light border-0" style="background-color: #2f3c8f;">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -99,19 +99,19 @@
                     <!-- Action button group. -->
                     <div class="btn-group flex-row mb-3 mb-lg-0" role="group" id="nav-button-group">
                         <!-- Submit button. -->
-                        <button type="button" class="btn btn-secondary" id="nav-submit-btn" data-bs-toggle="modal"
-                            data-bs-target="#submit-dialog">
+                        <button class="btn text-light border-0" id="nav-submit-btn"
+                            style="background-color: #d44b01;" data-bs-toggle="modal" data-bs-target="#submit-dialog">
                             <i class="bi bi-cloud-upload"></i>
                             <span></span>
                         </button>
                         <!-- GitHub link button. -->
-                        <a type="button" class="btn btn-secondary" id="nav-github-btn"
-                            href="https://github.com/wenhaomin/PromptGenius" target="_blank">
+                        <button class="btn text-light border-0" style="background-color: #d25c01;" id="nav-github-btn">
                             <i class="bi bi-github"></i>
-                        </a>
+                        </button>
                         <!-- Language selector. -->
                         <div class="btn-group" id="nav-language-select-group">
-                            <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                            <button class="btn text-light dropdown-toggle border-0" style="background-color: #d06b13;"
+                                data-bs-toggle="dropdown">
                                 <i class="bi bi-globe"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" id="nav-language-select"></ul>
@@ -121,8 +121,9 @@
 
                     <!-- User group. -->
                     <div class="btn-group" id="user-group">
-                        <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i>
+                        <button class="btn text-light dropdown-toggle border-0" data-bs-toggle="dropdown"
+                            style="background-color: #006064;">
+                            <i class="bi bi-person-fill"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end">
                             <li>
@@ -204,6 +205,10 @@
     if (save_lan_code !== "" && save_lan_code !== undefined) {
         cur_lan_code = save_lan_code;
     }
+
+    $('#nav-github-btn').on('click', () => {
+        window.open("https://github.com/wenhaomin/PromptGenius", "_blank");
+    })
 </script>
 
 <!-- Additional scripts specific to each page. -->

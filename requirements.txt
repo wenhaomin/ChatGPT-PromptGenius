@@ -1,7 +1,6 @@
 pandas
 numpy
 flask
-flask_talisman
 waitress
 easydict
 flask-login

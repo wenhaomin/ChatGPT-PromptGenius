@@ -271,7 +271,7 @@ async function render_user_specific() {
     var logout_item = $('#user-group').find('#logout-item');
 
     if (cur_username.length > 0) {
-        userbar_icon.removeClass('bi-person-circle');
+        userbar_icon.removeClass('bi-person-fill');
         userbar_icon.text(cur_username);
         username_span.text(cur_username);
 
@@ -279,7 +279,7 @@ async function render_user_specific() {
         setting_item.removeClass('d-none');
         logout_item.removeClass('d-none');
     } else {
-        userbar_icon.addClass('bi-person-circle');
+        userbar_icon.addClass('bi-person-fill');
         userbar_icon.empty();
         username_span.text(user_contents[cur_lan_code]['guest_name']);
 
