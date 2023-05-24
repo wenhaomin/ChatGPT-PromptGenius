@@ -15,31 +15,36 @@ site_contents = {
         "title": "PromptGenius",
         "class_canvas_title": "Browse classes",
         "action_canvas_title": "More",
-        "ok_text": "OK"
+        "ok_text": "OK",
+        "popular_name": "Popular"
     },
     "chn": {
         "title": "提示精灵",
         "class_canvas_title": "浏览类别",
         "action_canvas_title": "更多",
-        "ok_text": "确定"
+        "ok_text": "确定",
+        "popular_name": "精选"
     },
     "jpn": {
         "title": "ヒントウィザード",
         "class_canvas_title": "カテゴリ",
         "action_canvas_title": "もっと",
-        "ok_text": "OK"
+        "ok_text": "OK",
+        "popular_name": "人気"
     },
     "kor": {
         "title": "팁마법사",
         "class_canvas_title": "수업 찾아보기",
         "action_canvas_title": "더 보기",
-        "ok_text": "좋아요"
+        "ok_text": "좋아요",
+        "popular_name": "인기 있는"
     },
     "deu": {
         "title": "PromptGenie",
         "class_canvas_title": "Klassen durchsuchen",
         "action_canvas_title": "Mehr",
-        "ok_text": "OK"
+        "ok_text": "OK",
+        "popular_name": "Beliebt"
     }
 }
 

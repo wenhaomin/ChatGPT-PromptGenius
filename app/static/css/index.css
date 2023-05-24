@@ -64,7 +64,7 @@ input.text-bg-dark::placeholder {
 }
 
 .class-nav-link:hover, .child-class-nav-link:hover {
-    background-color: #f7f7f7;
+    background-color: #ededdf;
 }
 
 .class-nav-link {
@@ -82,6 +82,10 @@ input.text-bg-dark::placeholder {
     padding-left: 40px !important;
     padding-top: 3px !important;
     padding-bottom: 3px !important;
+}
+
+.class-nav-link.active .class-icon {
+    color: white !important;
 }
 
 .top-banner-item {

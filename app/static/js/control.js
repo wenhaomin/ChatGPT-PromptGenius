@@ -160,8 +160,7 @@ function prompt_fav_listener(btn, function_id, semantic_id, lan_code) {
 }
 
 function not_implemented_listener() {
-    $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['not_implemented']);
-    warning_toast.show();
+    show_warning_toast(warning_contents[cur_lan_code]['not_implemented']);
 }
 
 function register_click_listener() {
@@ -234,7 +233,7 @@ function login_click_listener() {
                     action_sidebar_bs.hide();
 
                     if (cur_username === 'admin') {
-                        window.location.href = '/';
+                        location.reload();
                     }
                 } else {
                     error_message.removeClass('d-none');
@@ -250,7 +249,7 @@ function login_click_listener() {
 function logout_click_listener() {
     get_data('/logout').then(() => {
         if (cur_username === 'admin') {
-            window.location.href = '/';
+            location.reload();
         }
 
         cur_username = '';

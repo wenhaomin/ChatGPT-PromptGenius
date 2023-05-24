@@ -71,6 +71,7 @@ class Classes(db.Model):
     icon = Column(String)
     icon_style = Column(String)
     childrens = Column(String)  # class IDs of childrens, split by ','
+    order = Column(Integer, default=0)
 
 
 class ClassNames(db.Model):
@@ -79,6 +80,7 @@ class ClassNames(db.Model):
     ID = Column(String, primary_key=True)  # class ID
     lanCode = Column(String, primary_key=True)
     name = Column(String)  # Human-readable name of this class
+    order = Column(Integer, default=0)
 
 
 class Functions(db.Model):

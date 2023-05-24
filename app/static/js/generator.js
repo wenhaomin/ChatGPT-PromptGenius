@@ -4,7 +4,7 @@
 
 function gen_class_selection(item) {
     var nav_item = $(`
-        <li class="nav-item h6 class-list-item">
+        <li class="nav-item h6 class-list-item" color-hex=${item['icon_style']}>
             <a class="nav-link link-body-emphasis text-truncate d-inline-block class-nav-link" 
                 class-id="${item['ID']}">
                 <i class="bi bi-${item['icon']} class-icon" style="color: #${item['icon_style']}"></i>
@@ -79,12 +79,12 @@ function gen_prompt_card(item) {
     }
 
     if (priority < 0) {
-        icon_color = '424242';
+        icon_color = '212121';
     }
 
     var pop_color = value_to_hex(copied_count, pop_minmax[0], pop_minmax[1], pop_cmap);
     var card = $(`
-        <div class="card shadow-sm prompt-card" style="background-color: #${icon_color}1a"
+        <div class="card shadow-sm prompt-card" style="background-color: #${icon_color}20"
         function-id="${function_id}" semantic-id="${semantic_id}" lan-code="${lan_code}">
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between mb-0">

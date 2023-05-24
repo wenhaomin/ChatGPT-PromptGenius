@@ -138,3 +138,8 @@ function show_error_message(container, error) {
         container.find('label[content="error-message"]').empty();
     }, 10000);
 }
+
+function show_warning_toast(content) {
+    $('#warning-toast').find('span').text(content);
+    warning_toast.show();
+}

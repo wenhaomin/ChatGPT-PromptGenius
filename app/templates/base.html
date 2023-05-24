@@ -41,6 +41,17 @@
 
     {% block style %}
     {% endblock %}
+
+    <div class="toast align-items-center position-fixed bottom-0 end-0 m-3 text-bg-warning" id="warning-toast"
+        data-bs-delay="8000" style="z-index: 9999">
+        <div class="d-flex">
+            <div class="toast-body">
+                <span></span>
+                <i class="bi bi-emoji-frown"></i>
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -99,8 +110,8 @@
                     <!-- Action button group. -->
                     <div class="btn-group flex-row mb-3 mb-lg-0" role="group" id="nav-button-group">
                         <!-- Submit button. -->
-                        <button class="btn text-light border-0" id="nav-submit-btn"
-                            style="background-color: #d44b01;" data-bs-toggle="modal" data-bs-target="#submit-dialog">
+                        <button class="btn text-light border-0" id="nav-submit-btn" style="background-color: #d44b01;"
+                            data-bs-toggle="modal" data-bs-target="#submit-dialog">
                             <i class="bi bi-cloud-upload"></i>
                             <span></span>
                         </button>

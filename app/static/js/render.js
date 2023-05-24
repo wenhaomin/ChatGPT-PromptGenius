@@ -111,25 +111,33 @@ async function render_page_basic() {
 async function render_class_tree() {
     // Intialize the options in #language-select.
     var data = await get_data(`/fetch_classes/${cur_lan_code}`);
-    $('#class-selection-list').empty();
-    data.forEach((item, index) => {
-        var class_selection = gen_class_selection(item);
-        $('#class-selection-list').append(class_selection);
-        if (item['childrens'] != undefined && item['childrens'].length) {
-            $('#class-selection-list').append(gen_child_class_selection(item['childrens']));
-        }
-        if (index < data.length - 1) {
-            $('#class-selection-list').append(`<hr class="class-selection-divider">`);
-        }
-    });
-
+    var popular_class_item = {
+        'ID': 'popular',
+        'name': site_contents[cur_lan_code]["popular_name"],
+        'icon': 'star',
+        'icon_style': 'F44336'
+    };
     var fav_class_item = {
         'ID': 'user_fav',
         'name': user_contents[cur_lan_code]["fav_class_name"],
         'icon': 'heart-fill',
         'icon_style': 'C62828'
     };
-    $('#class-selection-list').prepend(gen_class_selection(fav_class_item));
+    data.unshift(fav_class_item, popular_class_item);
+
+    $('#class-selection-list').empty();
+    data.forEach((item, index) => {
+        var class_selection = gen_class_selection(item);
+        var parent_class_container = $(`<div class="parent-class-container rounded">`);
+        parent_class_container.append(class_selection);
+        if (item['childrens'] != undefined && item['childrens'].length) {
+            parent_class_container.append(gen_child_class_selection(item['childrens']));
+        }
+        $('#class-selection-list').append(parent_class_container);
+        if (index < data.length - 1) {
+            $('#class-selection-list').append(`<hr class="class-selection-divider">`);
+        }
+    });
 
     await render_userfav_class_item();
 
@@ -178,8 +186,7 @@ function render_prompt_display(prompt_list) {
     display.find('.prompt-example-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
 
     if (prompt_list.length === 0) {
-        $('#warning-toast').find('span').text(warning_contents[cur_lan_code]['no_prompt']);
-        warning_toast.show();
+        show_warning_toast(warning_contents[cur_lan_code]['no_prompt']);
     } else {
         warning_toast.hide();
     }
@@ -293,10 +300,13 @@ async function render_user_specific() {
 
 async function render_userfav_class_item() {
     var fav_class_item = $('#class-selection-list').find(`.class-nav-link[class-id="user_fav"]`).parent();
+    var fav_class_div = $('#class-selection-list').find('.class-selection-divider').first();
     if (cur_username.length > 0) {
         fav_class_item.removeClass('d-none');
+        fav_class_div.removeClass('d-none');
     } else {
         fav_class_item.addClass('d-none');
+        fav_class_div.addClass('d-none');
         if (cur_selected_class == 'user_fav') {
             cur_selected_class = 'popular';
             set_cookie('selected_class', cur_selected_class, 30);

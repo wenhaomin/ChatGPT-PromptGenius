@@ -202,7 +202,7 @@ def fetch_classes(lan_code):
                 'childrens': [{'ID': child, 'name': class_names[child]} for child in item.childrens.split(',')]
                 if item.childrens is not None else [],
                 'icon': item.icon, 'icon_style': item.icon_style}
-               for item in Classes.query.all()]
+               for item in Classes.query.order_by(Classes.order).all()]
     return jsonify(classes)
 
 
@@ -340,6 +340,49 @@ def submit_function():
 """
 Admin-specific routers: these routers are accessable only under Admin account.
 """
+
+
+@bp.route('/edit_class_name', methods=['POST'])
+@admin_required
+def edit_class_name():
+    class_id = request.json['class_id']
+    lan_code = request.json['lan_code']
+    class_name = request.json['class_name']
+
+    class_entry = ClassNames.query.filter_by(ID=class_id, lanCode=lan_code).first()
+    class_entry.name = class_name
+    db.session.commit()
+
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/edit_class_order', methods=['POST'])
+@admin_required
+def edit_class_order():
+    class_orders = request.json['class_orders']
+
+    for class_order in class_orders:
+        class_entry = Classes.query.filter_by(ID=class_order['class_id']).first()
+        class_entry.order = class_order['order']
+    db.session.commit()
+
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/remove_class', methods=['POST'])
+@admin_required
+def remove_class():
+    class_id = request.json['class_id']
+
+    if (len(Functions.query.filter(Functions.classes.contains(class_id)).all()) > 0):
+        return jsonify({'message': 'fail'})
+
+    for c in Classes.query.filter_by(ID=class_id).all():
+        db.session.delete(c)
+    for class_name in ClassNames.query.filter_by(ID=class_id).all():
+        db.session.delete(class_name)
+    db.session.commit()
+    return jsonify({'message': 'success'})
 
 
 @bp.route('/fetch_prompt_meta', methods=['POST'])
@@ -510,7 +553,7 @@ def fetch_user_submits(show_archived):
         submits.append({'func': submit.funcDesc,
                         'disp_time': datetime.strptime(submit.createTime, db_datetime_format).strftime(display_datetime_format),
                         'db_time': submit.createTime,
-                        'content': md_to_html(submit.promptContent), 
+                        'content': md_to_html(submit.promptContent),
                         'raw_content': submit.promptContent,
                         'user': submit.userName})
     return jsonify({'message': 'success', 'content': submits})
