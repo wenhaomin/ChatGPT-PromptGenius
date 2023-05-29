@@ -73,7 +73,7 @@ def login():
     user = User.query.filter(User.username == username).first()
 
     if user and user.check_password(password):
-        login_user(user)
+        login_user(user, remember=True)
         return jsonify({'message': 'success', 'username': user.username})
     else:
         return jsonify({'message': 'fail'})
@@ -95,7 +95,7 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    login_user(new_user)
+    login_user(new_user, remember=True)
     return jsonify({'message': 'success', 'username': new_user.username})
 
 
@@ -199,7 +199,7 @@ def fetch_classes(lan_code):
     class_names = {item.ID: item.name
                    for item in ClassNames.query.filter(ClassNames.lanCode == lan_code).all()}
     classes = [{'ID': item.ID, 'name': class_names[item.ID],
-                'childrens': [{'ID': child, 'name': class_names[child]} 
+                'childrens': [{'ID': child, 'name': class_names[child]}
                               for child in item.childrens.split(',') if len(child) > 0],
                 'icon': item.icon, 'icon_style': item.icon_style}
                for item in Classes.query.order_by(Classes.order).all()]
@@ -475,6 +475,90 @@ def modify_child_class():
     db.session.commit()
 
     return jsonify({'message': 'success'})
+
+
+@bp.route('/delete_function', methods=['POST'])
+@admin_required
+def delete_function():
+    function_id = request.json['function_id']
+
+    if len(FunctionPrompts.query.filter_by(functionID=function_id).all()) > 0:
+        return jsonify({'message': 'fail'})
+
+    for entry in Functions.query.filter_by(ID=function_id).all():
+        db.session.delete(entry)
+    for entry in FunctionNames.query.filter_by(ID=function_id).all():
+        db.session.delete(entry)
+    db.session.commit()
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/fetch_function_names', methods=['POST'])
+@admin_required
+def fetch_function_names():
+    function_id = request.json['function_id']
+    function_names = []
+    for entry in FunctionNames.query.filter_by(ID=function_id).all():
+        function_names.append({'lan_code': entry.lanCode, 'name': entry.name})
+
+    return jsonify({'message': 'success', 'content': function_names})
+
+
+@bp.route('/fetch_function_class_tags', methods=['POST'])
+@admin_required
+def fetch_function_class_tags():
+    function_id = request.json['function_id']
+    lan_code = request.json['lan_code']
+    class_tags = []
+    for class_id in Functions.query.filter_by(ID=function_id).first().classes.split(','):
+        class_tags.append({'class_id': class_id,
+                           'class_name': ClassNames.query.filter_by(ID=class_id, lanCode=lan_code).first().name})
+    return jsonify(class_tags)
+
+
+@bp.route('/edit_function_meta', methods=['POST'])
+@admin_required
+def edit_function_meta():
+    function_id = request.json['function_id']
+    function_names = request.json['function_names']
+    class_tags = request.json['class_tags']
+
+    try:
+        for function_name in function_names:
+            entry = FunctionNames.query.filter_by(ID=function_id, lanCode=function_name['lan_code']).first()
+            entry.name = function_name['name']
+        entry = Functions.query.filter_by(ID=function_id).first()
+        entry.classes = ','.join(class_tags)
+
+        db.session.commit()
+    except Exception as e:
+        return jsonify({'message': 'fail', 'error': str(e)})
+    return jsonify({'message': 'success', 'function-id': function_id})
+
+
+@bp.route('/add_function', methods=['POST'])
+@admin_required
+def add_function():
+    function_names = request.json['function_names']
+    class_tags = request.json['class_tags']
+
+    cur_function_ids = [item.ID for item in Functions.query.all()]
+    new_function_id = generate_random_string(16)
+    while new_function_id in cur_function_ids:
+        new_function_id = generate_random_string(16)
+
+    try:
+        new_function = Functions(ID=new_function_id, classes=','.join(class_tags))
+        db.session.add(new_function)
+        for function_name in function_names:
+            new_name = FunctionNames(ID=new_function_id, lanCode=function_name['lan_code'], 
+                                     name=function_name['name'])
+            db.session.add(new_name)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({'message': 'fail', 'error': str(e)})
+
+    return jsonify({'message': 'success', 'function_id': new_function_id})
 
 
 @bp.route('/fetch_prompt_meta', methods=['POST'])

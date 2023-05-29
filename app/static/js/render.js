@@ -193,6 +193,7 @@ function render_prompt_display(prompt_list) {
 
     if (typeof gen_prompt_card_edit_btn !== 'undefined') {
         display.prepend(gen_add_prompt_card());
+        display.prepend(gen_edit_function_card());
         display.find('.prompt-card').append(gen_prompt_card_edit_btn());
     }
 
