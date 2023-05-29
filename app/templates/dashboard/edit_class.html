@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="add-child-class-btn">
+                <button type="button" class="btn btn-info" id="add-child-class-btn">
                     <span>Add child</span>
                 </button>
                 <button type="button" class="btn btn-primary" id="edit-child-class-ok-btn">
@@ -217,7 +217,7 @@
                     <button class="btn btn-dark edit-icon-btn border-0" class-id="new-class">
                         <i class="bi bi-question-lg"></i>
                     </button>
-                    <button class="btn btn-warning">
+                    <button class="btn btn-warning" id="clear-new-class-btn">
                         <i class="bi bi-x-lg"></i>
                     </button>
                     <button class="btn btn-success" id="class-add-ok-btn">
@@ -264,6 +264,10 @@
                     location.reload();
                 })
             }
+        })
+
+        row.find('#clear-new-class-btn').on('click', () => {
+            row.find('input').val('');
         })
 
         return row;
@@ -354,12 +358,12 @@
         var edit_child_dialog = $('#edit-child-dialog');
         edit_child_dialog.find('.modal-footer button').addClass('disabled');
         edit_child_dialog.attr('parent-class-id', parent_class_id);
+        $('#child-class-edit-container .child-class-row').remove();
         edit_child_dialog_bs.show();
 
         var name_promises = [];
         send_post('/fetch_child_class', { 'parent_id': parent_class_id }).then((data) => {
             var lan_codes = [];
-            $('#child-class-edit-container .child-class-row').remove();
             $('#language-row .lan-col').each((index, col) => { lan_codes.push($(col).attr('lan-code')) });
             data.content.forEach((children) => {
                 var child_row = gen_child_class_edit_row(children[0], 'existing');
@@ -417,8 +421,8 @@
                 if (data.message === 'fail') {
                     show_warning_toast('Failed to finish children class modification: try to delete classes that are attached to functions.');
                 } else {
-                    edit_child_dialog_bs.hide();
                 }
+                edit_child_dialog_bs.hide();
             })
         }
     })

@@ -70,7 +70,7 @@ class Classes(db.Model):
     ID = Column(String, primary_key=True)  # class ID
     icon = Column(String)
     icon_style = Column(String)
-    childrens = Column(String)  # class IDs of childrens, split by ','
+    childrens = Column(String, default='')  # class IDs of childrens, split by ','
     order = Column(Integer, default=0)
 
 

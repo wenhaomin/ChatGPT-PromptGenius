@@ -199,8 +199,8 @@ def fetch_classes(lan_code):
     class_names = {item.ID: item.name
                    for item in ClassNames.query.filter(ClassNames.lanCode == lan_code).all()}
     classes = [{'ID': item.ID, 'name': class_names[item.ID],
-                'childrens': [{'ID': child, 'name': class_names[child]} for child in item.childrens.split(',')]
-                if item.childrens is not None else [],
+                'childrens': [{'ID': child, 'name': class_names[child]} 
+                              for child in item.childrens.split(',') if len(child) > 0],
                 'icon': item.icon, 'icon_style': item.icon_style}
                for item in Classes.query.order_by(Classes.order).all()]
     return jsonify(classes)
@@ -394,6 +394,10 @@ def remove_class():
 
     for c in Classes.query.filter_by(ID=class_id).all():
         db.session.delete(c)
+        for child_id in c.childrens.split(','):
+            if len(child_id) > 0:
+                for child_name_entry in ClassNames.query.filter_by(ID=child_id):
+                    db.session.delete(child_name_entry)
     for class_name in ClassNames.query.filter_by(ID=class_id).all():
         db.session.delete(class_name)
     db.session.commit()
@@ -408,9 +412,9 @@ def add_parent_class():
     icon_style = request.json['icon_style']
 
     cur_class_ids = [c.ID for c in ClassNames.query.all()]
-    new_class_id = generate_random_string(16)
+    new_class_id = generate_random_string(8)
     while new_class_id in cur_class_ids:
-        new_class_id = generate_random_string(16)
+        new_class_id = generate_random_string(8)
 
     new_class = Classes(ID=new_class_id, icon=icon, icon_style=icon_style, order=-1)
     db.session.add(new_class)
@@ -428,11 +432,12 @@ def fetch_child_class():
 
     childrens = []
     for children_id in Classes.query.filter_by(ID=parent_id).first().childrens.split(','):
-        entries = ClassNames.query.filter_by(ID=children_id).all()
-        children_names = {}
-        for entry in entries:
-            children_names[entry.lanCode] = entry.name
-        childrens.append([children_id, children_names])
+        if len(children_id) > 0:
+            entries = ClassNames.query.filter_by(ID=children_id).all()
+            children_names = {}
+            for entry in entries:
+                children_names[entry.lanCode] = entry.name
+            childrens.append([children_id, children_names])
     return jsonify({'message': 'success', 'content': childrens})
 
 
@@ -462,6 +467,9 @@ def modify_child_class():
                     db.session.add(new_name_entry)
             else:
                 child_id = children['class_id']
+                for name in children['names']:
+                    name_entry = ClassNames.query.filter_by(ID=child_id, lanCode=name['lan_code']).first()
+                    name_entry.name = name['name']
             child_ids.append(child_id)
     parent_entry.childrens = ','.join(child_ids)
     db.session.commit()
