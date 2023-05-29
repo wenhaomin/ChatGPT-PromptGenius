@@ -369,6 +369,21 @@ def edit_class_order():
     return jsonify({'message': 'success'})
 
 
+@bp.route('/edit_class_icon', methods=['POST'])
+@admin_required
+def edit_class_icon():
+    class_id = request.json['class_id']
+    icon = request.json['icon']
+    icon_style = request.json['icon_style']
+
+    class_entry = Classes.query.filter_by(ID=class_id).first()
+    class_entry.icon = icon
+    class_entry.icon_style = icon_style
+    db.session.commit()
+
+    return jsonify({'message': 'success'})
+
+
 @bp.route('/remove_class', methods=['POST'])
 @admin_required
 def remove_class():
@@ -382,6 +397,75 @@ def remove_class():
     for class_name in ClassNames.query.filter_by(ID=class_id).all():
         db.session.delete(class_name)
     db.session.commit()
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/add_parent_class', methods=['POST'])
+@admin_required
+def add_parent_class():
+    class_names = request.json['class_names']
+    icon = request.json['icon']
+    icon_style = request.json['icon_style']
+
+    cur_class_ids = [c.ID for c in ClassNames.query.all()]
+    new_class_id = generate_random_string(16)
+    while new_class_id in cur_class_ids:
+        new_class_id = generate_random_string(16)
+
+    new_class = Classes(ID=new_class_id, icon=icon, icon_style=icon_style, order=-1)
+    db.session.add(new_class)
+    for class_name in class_names:
+        db.session.add(ClassNames(ID=new_class_id, lanCode=class_name['lan_code'], name=class_name['class_name']))
+    db.session.commit()
+
+    return jsonify({'message': 'success'})
+
+
+@bp.route('/fetch_child_class', methods=['POST'])
+@admin_required
+def fetch_child_class():
+    parent_id = request.json['parent_id']
+
+    childrens = []
+    for children_id in Classes.query.filter_by(ID=parent_id).first().childrens.split(','):
+        entries = ClassNames.query.filter_by(ID=children_id).all()
+        children_names = {}
+        for entry in entries:
+            children_names[entry.lanCode] = entry.name
+        childrens.append([children_id, children_names])
+    return jsonify({'message': 'success', 'content': childrens})
+
+
+@bp.route('/modify_child_class', methods=['POST'])
+@admin_required
+def modify_child_class():
+    parent_id = request.json['parent_id']
+    childrens = request.json['childrens']
+    cur_class_ids = [c.ID for c in ClassNames.query.all()]
+
+    parent_entry = Classes.query.filter_by(ID=parent_id).first()
+    child_ids = []
+    for children in childrens:
+        if children['state'] == 'delete':
+            if (len(Functions.query.filter(Functions.classes.contains(children['class_id'])).all()) > 0):
+                return jsonify({'message': 'fail'})
+            else:
+                for name_entry in ClassNames.query.filter_by(ID=children['class_id']).all():
+                    db.session.delete(name_entry)
+        else:
+            if children['state'] == 'new':
+                child_id = parent_id + '-' + generate_random_string(6)
+                while child_id in cur_class_ids:
+                    child_id = parent_id + '-' + generate_random_string(6)
+                for name in children['names']:
+                    new_name_entry = ClassNames(ID=child_id, lanCode=name['lan_code'], name=name['name'])
+                    db.session.add(new_name_entry)
+            else:
+                child_id = children['class_id']
+            child_ids.append(child_id)
+    parent_entry.childrens = ','.join(child_ids)
+    db.session.commit()
+
     return jsonify({'message': 'success'})
 
 

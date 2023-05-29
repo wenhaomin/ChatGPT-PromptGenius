@@ -31,6 +31,19 @@ function hex_to_rgb(hex) {
     return [r, g, b];
 }
 
+function rgb_to_hex(rgb) {
+    rgb = rgb.slice(4, -1);
+    var values = rgb.split(',');
+    var hexValues = values.map(function(value) {
+      var intValue = parseInt(value.trim(), 10);
+      var hexValue = intValue.toString(16).padStart(2, '0');
+      return hexValue;
+    });
+    var hexColor = hexValues.join('');
+  
+    return hexColor;
+  }
+
 function value_to_hex(value, min, max, cmap) {
     if (value < min) value = min;
     if (value > max) value = max;
