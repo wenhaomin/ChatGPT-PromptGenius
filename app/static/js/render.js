@@ -149,11 +149,16 @@ async function render_tools() {
     var data = await get_data(`/fetch_tools/${cur_lan_code}`);
     var display = $('#tools-display')
     display.empty();
-    data.forEach(({ name, desc, url, icon_src, tags }) => {
-        var card = gen_tool_card(name, desc, url, icon_src, tags);
+    data.forEach(({ name, desc, url, icon_src, tags, lan_code }) => {
+        var card = gen_tool_card(name, desc, url, icon_src, tags, lan_code);
         var col = $(`<div class="tool-col col">`).append(card);
         display.append(col);
     });
+
+    if (typeof gen_tool_card_edit_btn !== 'undefined') {
+        display.prepend(gen_add_tool_card());
+        display.find('.tool-card').append(gen_tool_card_edit_btn());
+    }
 
     masonry_reload(display, '.tool-col');
 }

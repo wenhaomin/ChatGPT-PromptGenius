@@ -1,35 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <main class="container-xxl overflow-y-scroll">
-        <div class="row py-2 py-md-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-2"
-             id="tools-display"></div>
-    </main>
+<main class="container-xxl overflow-y-scroll">
+    <div class="row py-2 py-md-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-2"
+        id="tools-display"></div>
+</main>
+
+{% if show_edit_content %}
+{% include 'editor/tools_editor.html' %}
+{% endif %}
+
 {% endblock %}
 
 {% block script %}
-    <script>
-        window.onload = () => {
-            action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
+<script>
+    window.onload = () => {
+        action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
 
-            Promise.all([
-                init_language_select(),
-                render_page_basic(),
-                render_tools(),
-                render_user_specific()
-            ]).then(() => {
-                $('#class-sidebar-toggler').addClass('disabled');
-                $('#class-sidebar-toggler i').addClass('text-secondary');
-                $('#search-input-group input').attr('disabled', 'disabled');
-                $('#search-input-group button').attr('disabled', 'disabled');
-                $('#nav-submit-btn').attr('disabled', 'disabled');
-                $('#user-group button').addClass('disabled');
-            });
-        }
+        Promise.all([
+            init_language_select(),
+            render_page_basic(),
+            render_tools(),
+            render_user_specific()
+        ]).then(() => {
+            $('#class-sidebar-toggler').addClass('disabled');
+            $('#class-sidebar-toggler i').addClass('text-secondary');
+            $('#search-input-group input').attr('disabled', 'disabled');
+            $('#search-input-group button').attr('disabled', 'disabled');
+            $('#nav-submit-btn').attr('disabled', 'disabled');
+            $('#user-group button').addClass('disabled');
+        });
+    }
 
-        function switch_language_listener() {
-            render_page_basic();
-            render_tools();
-        }
-    </script>
+    function switch_language_listener() {
+        render_page_basic();
+        render_tools();
+    }
+</script>
 {% endblock %}

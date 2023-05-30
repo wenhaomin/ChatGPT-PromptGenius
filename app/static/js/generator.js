@@ -156,9 +156,10 @@ function gen_top_banner_item(image, url) {
     `)
 }
 
-function gen_tool_card(name, desc, url, icon, tags) {
+function gen_tool_card(name, desc, url, icon, tags, lan_code) {
     var card = $(`
-        <a href="${url}" target="_blank" class="card shadow-sm text-decoration-none tool-card bg-light">
+        <div class="card shadow-sm tool-card bg-light" 
+        name="${name}" lan-code="${lan_code}" tags="${tags}" url="${url}">
             <div class="card-body">
                 <div class="card-title d-flex flex-column">
                     <div class="d-flex flex-nowrap justify-content-between">
@@ -167,12 +168,16 @@ function gen_tool_card(name, desc, url, icon, tags) {
                     </div>
                     <div class="tool-tag-row"></div>
                 </div>
-                <div class="card-text small">
+                <div class="card-text small tool-desc">
                     ${desc}
                 </div>
             </div>
-        </a>
+        </div>
     `);
+
+    card.on('click', () => {
+        window.open(url, "_blank");
+    })
 
     tags.forEach(tag => {
         card.find('.tool-tag-row').append(`

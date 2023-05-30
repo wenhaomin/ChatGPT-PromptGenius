@@ -176,7 +176,7 @@ def fetch_tools(lan_code):
     if lan_code != 'chn':
         lan_code = 'eng'
     tools = [{'name': item.name, 'desc': item.desc, 'url': item.url,
-              'icon_src': item.icon_src, 'tags': item.tags.split(',')}
+              'icon_src': item.icon_src, 'tags': item.tags.split(','), 'lan_code': item.lanCode}
              for item in Tools.query.filter(Tools.lanCode == lan_code).all()]
     return jsonify(tools)
 
