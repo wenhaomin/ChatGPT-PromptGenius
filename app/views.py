@@ -261,17 +261,21 @@ def search_prompt(search_text, lan_code):
 @bp.route('/get_prompt_dialog', methods=['POST'])
 def get_prompt_dialog():
     result = {}
+    model_order = []
+
     function_id = request.json['function_id']
     semantic_id = request.json['semantic_id']
     lan_code = request.json['lan_code']
     for dialog in PromptDialogs.query.filter(and_(PromptDialogs.functionID == function_id,
                                                   PromptDialogs.semanticID == semantic_id,
                                                   PromptDialogs.lanCode == lan_code)).\
-            order_by(PromptDialogs.model, PromptDialogs.dialog_index).all():
+            order_by(PromptDialogs.model_index, PromptDialogs.dialog_index).all():
         content_html = markdown(dialog.content, extras=["fenced-code-blocks", "tables"])
         result.setdefault(dialog.model, []).append({'html': content_html, 'raw': dialog.content,
                                                     'role': dialog.role_index})
-    return jsonify({'content': result, 'count': len(result), 'message': 'success'})
+        if dialog.model not in model_order:
+            model_order.append(dialog.model)
+    return jsonify({'content': result, 'model_order': model_order, 'count': len(result), 'message': 'success'})
 
 
 @bp.route('/fetch_logs/<lan_code>')

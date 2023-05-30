@@ -78,13 +78,15 @@ function gen_prompt_card(item) {
         author_link = `href="${author_link}"`;
     }
 
+    var opacity = 1.0;
     if (priority < 0) {
         icon_color = '212121';
+        opacity = 0.7;
     }
 
     var pop_color = value_to_hex(copied_count, pop_minmax[0], pop_minmax[1], pop_cmap);
     var card = $(`
-        <div class="card shadow-sm prompt-card" style="background-color: #${icon_color}20"
+        <div class="card shadow-sm prompt-card" style="background-color: #${icon_color}20;"
         function-id="${function_id}" semantic-id="${semantic_id}" lan-code="${lan_code}">
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between mb-0">
@@ -102,7 +104,7 @@ function gen_prompt_card(item) {
                         <i class="bi bi-fire"></i>
                     </div>
                 </div>
-                <div class="card-text small prompt-card-content">
+                <div class="card-text small prompt-card-content" style="opacity: ${opacity}">
                     ${prompt_html}
                 </div>
                 <div class="row prompt-card-action-row g-1">
@@ -208,10 +210,11 @@ function gen_dialog_list(dialog_contents) {
     return dialog_list;
 }
 
-function gen_multimodel_dialog_display(model_dialogs) {
+function gen_multimodel_dialog_display(model_dialogs, model_order) {
     var model_nav = $(`<ul class="nav nav-underline mb-2">`);
     var nav_tabs = $(`<div class="tab-content">`);
-    Object.entries(model_dialogs).forEach(([model_name, dialog_contents], index) => {
+    model_order.forEach((model_name, index) => {
+        var dialog_contents = model_dialogs[model_name];
         model_nav.append(`
             <li class="nav-item">
                 <button class="nav-link ${(index === 0) ? 'active' : ''}"

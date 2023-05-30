@@ -384,10 +384,10 @@ def edit_prompt_examples():
 
         examples = request.json['examples']
         for model_name, example_contents in examples.items():
-            for index, content, role in example_contents:
+            for model_i, dialog_i, content, role in example_contents:
                 new_item = PromptDialogs(functionID=function_id, semanticID=semantic_id,
-                                         lanCode=lan_code, model=model_name,
-                                         dialog_index=index, role_index=role, content=content)
+                                         lanCode=lan_code, model=model_name, model_index=model_i,
+                                         dialog_index=dialog_i, role_index=role, content=content)
                 db.session.add(new_item)
         db.session.commit()
     except Exception as e:

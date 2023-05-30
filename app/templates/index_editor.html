@@ -209,9 +209,9 @@
 
     prompt_edit_ok_btn.on('click', prompt_edit_ok_btn_click_listener);
     prompt_delete_btn.on('click', prompt_delete_btn_click_listener);
-    $('#example-edit-open-btn').on('click', example_edit_open_btn_click_listener);
-    $('#example-add-dialog-btn').on('click', example_add_dialog_btn_click_listener);
-    example_edit_ok_btn.on('click', example_edit_ok_btn_click_listener);
+    $('#example-edit-open-btn').on('click', example_edit_open_listener);
+    $('#example-add-dialog-btn').on('click', example_add_dialog_listener);
+    example_edit_ok_btn.on('click', example_edit_ok_listener);
 
     var prompt_delete_click_timer;
     var prompt_delete_click_count = 0;
@@ -682,6 +682,7 @@
                     </button>
                     <input class="form-control form-control-sm model-name-input" 
                     value="${model_name}" type="text" placeholder="model name" style="width: 100px"/>
+                    <i class="bi bi-grip-vertical text-dark"></i>
                 </a>
             </li>
         `);
@@ -703,7 +704,7 @@
     // Click listener for the 'Edit example' button in prompt edit dialog.
     // Render example editor with existing examples.
     var example_edit_count_pointer = 0;
-    function example_edit_open_btn_click_listener() {
+    function example_edit_open_listener() {
         example_edit_dialog.find('#example-model-edit-nav').empty();
         example_edit_dialog.find('#example-model-edit-tab-content').empty();
         example_edit_dialog.find('#example-add-dialog-btn, #example-edit-ok-btn').addClass('disabled');
@@ -715,17 +716,19 @@
         }).then((data) => {
             // Add existing examples to the edit dialog.
             example_edit_count_pointer = Object.keys(data.content).length;
-            Object.entries(data.content).forEach(([model_name, dialog_contents], index) => {
+            data.model_order.forEach((model_name, index) => {
+                var dialog_contents = data.content[model_name];
                 var [nav, tab_content] = gen_one_example_edit_tab(model_name, dialog_contents, index);
                 example_edit_dialog.find('#example-model-edit-nav').append(nav);
                 example_edit_dialog.find('#example-model-edit-tab-content').append(tab_content);
-            });
+            })
+            example_edit_dialog.find('#example-model-edit-nav').sortable();
             example_edit_dialog.find('#example-add-dialog-btn, #example-edit-ok-btn').removeClass('disabled');
         });
     }
 
     // Click listener for the 'Add dialog' button in example edit dialog.
-    function example_add_dialog_btn_click_listener() {
+    function example_add_dialog_listener() {
         // Add new example item to the edit dialog.
         var [nav, tab_content] = gen_one_example_edit_tab('',
             [{ raw: $('#prompt-edit-dialog').find('textarea[content="content"]').val() }],
@@ -735,7 +738,7 @@
     }
 
     // Click listener for the OK button in example edit dialog.
-    function example_edit_ok_btn_click_listener() {
+    function example_edit_ok_listener() {
         var examples = {};
         var has_empty = false;
         example_edit_dialog.find('#example-model-edit-nav .example-nav-link').each((i, nav_item) => {
@@ -748,7 +751,7 @@
             example_edit_dialog.find(tab_id).find('.example-list-item').each((j, list_item) => {
                 var role_index = $(list_item).find('.role-icon .bi').hasClass('bi-person-fill') ? 0 : 1;
                 var content = $(list_item).find('textarea').val();
-                example_contents.push([j, content, role_index]);
+                example_contents.push([i, j, content, role_index]);
             });
             examples[model_name] = example_contents;
         });

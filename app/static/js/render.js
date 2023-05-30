@@ -231,7 +231,7 @@ async function render_prompt_example_display(function_id, semantic_id, lan_code)
 
     var prompt_more_dialog = $('#prompt-more-dialog');
     prompt_more_dialog.find('.modal-body').empty();
-    var [nav, nav_tabs] = gen_multimodel_dialog_display(data['content']);
+    var [nav, nav_tabs] = gen_multimodel_dialog_display(data['content'], data['model_order']);
     prompt_more_dialog.find('.modal-body').append(nav).append(nav_tabs);
 
     for (var role = 0; role < 2; role++) {
