@@ -44,15 +44,6 @@ def log():
                            show_edit_content=is_admin())
 
 
-@bp.route('/dashboard/<dashboard_page>')
-@admin_required
-def dashboard(dashboard_page):
-    return render_template(os.path.join('dashboard', dashboard_page + '.html'),
-                           lan_code=get_preferred_lancode(),
-                           username=get_cur_username(),
-                           show_edit_content=is_admin())
-
-
 """
 Routers for user managements: login, register and logout.
 """
