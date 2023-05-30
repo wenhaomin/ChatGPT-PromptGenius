@@ -1,3 +1,4 @@
+import os
 import json
 
 from flask import Flask
@@ -44,9 +45,10 @@ def create_app():
                     """))
 
     from . import views
-    from . import admin_views
     app.register_blueprint(views.bp)
-    app.register_blueprint(admin_views.bp)
+    if os.path.exists(os.path.join('.', 'admin_views.py')):
+        from . import admin_views
+        app.register_blueprint(admin_views.bp)
     app.config['TEMPLATES_AUTO_RELOAD'] = True
 
     views.login_manager.init_app(app)

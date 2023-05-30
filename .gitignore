@@ -6,3 +6,7 @@ instance/
 .idea
 app/app_config.json
 script/
+app/admin_views.py
+app/templates/dashboard
+app/templates/admin.html
+app/templates/index_editor.html
