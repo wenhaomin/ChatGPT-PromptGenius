@@ -7,3 +7,4 @@ flask-login
 flask-sqlalchemy
 markdown2
 pygments
+werkzeug

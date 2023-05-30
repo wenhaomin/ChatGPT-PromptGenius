@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="/static/css/monokai.css">
     <link rel="stylesheet" href="/static/module/jquery-ui/jquery-ui.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <!-- Website icons. -->
     <link rel="icon" type="image/png" sizes="32x32" href="/static/asset/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/asset/icons/favicon-16x16.png">
-    <link rel="Shortcut Icon" href="/static/asset/icons/favicon.ico" type="image/x-icon" />
+    <link rel="Shortcut Icon" href="/static/asset/icons/favicon.ico" type="image/x-icon"/>
     <link rel="icon" href="/static/asset/icons/favicon.ico" type="image/x-icon">
 
     <!-- External modules. -->
@@ -26,11 +26,11 @@
     <script src="/static/module/jquery-ui/jquery-ui.min.js"></script>
     <script src="/static/module/chroma.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
-        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
-        async></script>
+            integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+            async></script>
 
     <!-- Local modules. -->
     <script src="/static/js/content.js"></script>
@@ -43,7 +43,7 @@
     {% endblock %}
 
     <div class="toast align-items-center position-fixed bottom-0 end-0 m-3 text-bg-warning" id="warning-toast"
-        data-bs-delay="8000" style="z-index: 9999">
+         data-bs-delay="8000" style="z-index: 9999">
         <div class="d-flex">
             <div class="toast-body">
                 <span></span>
@@ -58,130 +58,134 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TY2Y50CCNH"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
     gtag('js', new Date());
 
     gtag('config', 'G-TY2Y50CCNH');
 </script>
 
 <body>
-    <!-- The top-fixed nav bar. -->
-    <nav class="navbar navbar-expand-lg bg-dark fixed-top" id="main-navbar">
-        <div class="container-fluid d-flex justify-content-between">
-            <button type="button" class="navbar-toggler text-light border-0" data-bs-toggle="offcanvas"
+<!-- The top-fixed nav bar. -->
+<nav class="navbar navbar-expand-lg bg-dark fixed-top" id="main-navbar">
+    <div class="container-fluid d-flex justify-content-between">
+        <button type="button" class="navbar-toggler text-light border-0" data-bs-toggle="offcanvas"
                 data-bs-target="#class-sidebar" id="class-sidebar-toggler">
-                <i class="bi bi-grid-3x3-gap-fill"></i>
-            </button>
+            <i class="bi bi-grid-3x3-gap-fill"></i>
+        </button>
 
-            <a class="navbar-brand d-flex align-items-center">
-                <img src="/static/asset/icons/android-chrome-192x192.png" height="38"></img>
-                <span id="page-header-title" class="fs-4 ms-2 d-none d-xl-block"></span>
-            </a>
+        <a class="navbar-brand d-flex align-items-center">
+            <img src="/static/asset/icons/android-chrome-192x192.png" height="38"></img>
+            <span id="page-header-title" class="fs-4 ms-2 d-none d-xl-block"></span>
+        </a>
 
-            <button type="button" class="text-light navbar-toggler border-0 
+        <button type="button" class="text-light navbar-toggler border-0
                 d-flex flex-nowrap d-lg-none justify-content-around" data-bs-toggle="offcanvas"
                 data-bs-target="#action-sidebar">
-                <i class="bi bi-search"></i>
-                <i class="bi bi-three-dots"></i>
-            </button>
+            <i class="bi bi-search"></i>
+            <i class="bi bi-three-dots"></i>
+        </button>
 
-            <!-- Right offcanvas for actions. -->
-            <div class="offcanvas-lg offcanvas-end flex-grow-1 text-bg-dark" tabindex="-1" id="action-sidebar">
-                <div class="offcanvas-header border-bottom border-secondary" data-bs-theme="dark">
-                    <h5 class="offcanvas-title" id="action-offcanvas-title"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#action-sidebar"
+        <!-- Right offcanvas for actions. -->
+        <div class="offcanvas-lg offcanvas-end flex-grow-1 text-bg-dark" tabindex="-1" id="action-sidebar">
+            <div class="offcanvas-header border-bottom border-secondary" data-bs-theme="dark">
+                <h5 class="offcanvas-title" id="action-offcanvas-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#action-sidebar"
                         aria-label="Close">
+                </button>
+            </div>
+            <div class="offcanvas-body">
+                <!-- Navbar links directing to pages. -->
+                <ul class="navbar-nav d-flex flex-wrap" id="navbar-links"></ul>
+                <hr class="d-lg-none mt-2">
+
+                <!-- Search bar. -->
+                <div class="input-group ms-lg-auto mb-3 mb-lg-0" id="search-input-group">
+                    <input type="text" class="form-control text-bg-dark" style="border-color: #2f3c8f">
+                    <button class="btn text-light border-0" style="background-color: #2f3c8f;">
+                        <i class="bi bi-search"></i>
                     </button>
                 </div>
-                <div class="offcanvas-body">
-                    <!-- Navbar links directing to pages. -->
-                    <ul class="navbar-nav d-flex flex-wrap" id="navbar-links"></ul>
-                    <hr class="d-lg-none mt-2">
+                <div class="vr d-none d-lg-block mx-2"></div>
 
-                    <!-- Search bar. -->
-                    <div class="input-group ms-lg-auto mb-3 mb-lg-0" id="search-input-group">
-                        <input type="text" class="form-control text-bg-dark" style="border-color: #2f3c8f">
-                        <button class="btn text-light border-0" style="background-color: #2f3c8f;">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                    <div class="vr d-none d-lg-block mx-2"></div>
-
-                    <!-- Action button group. -->
-                    <div class="btn-group flex-row mb-3 mb-lg-0" role="group" id="nav-button-group">
-                        <!-- Submit button. -->
-                        <button class="btn text-light border-0" id="nav-submit-btn" style="background-color: #d44b01;"
+                <!-- Action button group. -->
+                <div class="btn-group flex-row mb-3 mb-lg-0" role="group" id="nav-button-group">
+                    <!-- Submit button. -->
+                    <button class="btn text-light border-0" id="nav-submit-btn" style="background-color: #d44b01;"
                             data-bs-toggle="modal" data-bs-target="#submit-dialog">
-                            <i class="bi bi-cloud-upload"></i>
-                            <span></span>
-                        </button>
-                        <!-- GitHub link button. -->
-                        <button class="btn text-light border-0" style="background-color: #d25c01;" id="nav-github-btn">
-                            <i class="bi bi-github"></i>
-                        </button>
-                        <!-- Language selector. -->
-                        <div class="btn-group" id="nav-language-select-group">
-                            <button class="btn text-light dropdown-toggle border-0" style="background-color: #d06b13;"
+                        <i class="bi bi-cloud-upload"></i>
+                        <span></span>
+                    </button>
+                    <!-- GitHub link button. -->
+                    <button class="btn text-light border-0" style="background-color: #d25c01;" id="nav-github-btn">
+                        <i class="bi bi-github"></i>
+                    </button>
+                    <!-- Language selector. -->
+                    <div class="btn-group" id="nav-language-select-group">
+                        <button class="btn text-light dropdown-toggle border-0" style="background-color: #d06b13;"
                                 data-bs-toggle="dropdown">
-                                <i class="bi bi-globe"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" id="nav-language-select"></ul>
-                        </div>
-                    </div>
-                    <div class="vr d-none d-lg-block mx-2"></div>
-
-                    <!-- User group. -->
-                    <div class="btn-group" id="user-group">
-                        <button class="btn text-light dropdown-toggle border-0" data-bs-toggle="dropdown"
-                            style="background-color: #006064;">
-                            <i class="bi bi-person-fill"></i>
+                            <i class="bi bi-globe"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end">
-                            <li>
+                        <ul class="dropdown-menu dropdown-menu-end" id="nav-language-select"></ul>
+                    </div>
+                </div>
+                <div class="vr d-none d-lg-block mx-2"></div>
+
+                <!-- User group. -->
+                <div class="btn-group" id="user-group">
+                    <button class="btn text-light dropdown-toggle border-0" data-bs-toggle="dropdown"
+                            style="background-color: #006064;">
+                        <i class="bi bi-person-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end">
+                        <li>
                                 <span class="dropdown-item-text">
                                     <span class="welcome-text"></span>,
                                     <span class="user-name"></span>
                                 </span>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" id="login-item" data-bs-toggle="modal"
-                                    data-bs-target="#user-login-dialog">
-                                    <i class="bi bi-box-arrow-in-right me-2"></i>
-                                    <span></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-none" id="user-setting-item" data-bs-toggle="modal"
-                                    data-bs-target="#user-setting-dialog">
-                                    <i class="bi bi-gear-fill me-2"></i>
-                                    <span></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-none" id="logout-item">
-                                    <i class="bi bi-box-arrow-left me-2"></i>
-                                    <span></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" id="login-item" data-bs-toggle="modal"
+                               data-bs-target="#user-login-dialog">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
+                                <span></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-none" id="user-setting-item" data-bs-toggle="modal"
+                               data-bs-target="#user-setting-dialog">
+                                <i class="bi bi-gear-fill me-2"></i>
+                                <span></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-none" id="logout-item">
+                                <i class="bi bi-box-arrow-left me-2"></i>
+                                <span></span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Main container -->
-    {% block content %}
-    {% endblock %}
+<!-- Main container -->
+{% block content %}
+{% endblock %}
 
-    <!-- Contents for admin edit. -->
-    {% if show_edit_content %}
+<!-- Contents for admin edit. -->
+{% if show_edit_content %}
     {% include 'admin.html' %}
-    {% endif %}
+{% endif %}
 </body>
 
 <!-- Shared global variables. -->

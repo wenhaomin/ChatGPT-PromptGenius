@@ -118,20 +118,16 @@ function submit_enter_listener() {
     var func_desc = validate_input($('#submit-dialog-funcdesc-group'));
     var prompt_content = validate_input($('#submit-dialog-prompt-group'));
     var user_name = $('#submit-dialog-user-group input').val();
+    var submit_ok_btn = $('#submit-enter-btn');
     if (func_desc.length > 0 & prompt_content.length > 0) {
-        $('#submit-enter-btn-spinner').removeClass('d-none');
+        loading_state_btn(submit_ok_btn);
         send_post('/submit_function', {
             'func_desc': func_desc,
             'prompt_content': prompt_content,
             'user_name': user_name
         }).then(() => {
-            $('#submit-enter-btn-spinner').addClass('d-none');
-            $('#submit-ok-indicator').removeClass('d-none');
-            setTimeout(() => {
-                submit_dialog_bs.hide();
-                $('#submit-ok-indicator').addClass('d-none');
-                submit_clear_listener();
-            }, 1000);
+            finished_state_btn(submit_ok_btn);
+            submit_dialog_bs.hide();
         });
     }
 }
@@ -167,10 +163,7 @@ function register_click_listener() {
     var username_group = $('#login-username-group');
     var password_group = $('#login-password-group');
     var password_re_group = $('#login-password-repeat-group');
-    var error_message = $('#register-error-message');
-    error_message.addClass('d-none');
-    $('#login-error-message').addClass('d-none');
-    var spinner = $('#register-btn .spinner-border');
+    var register_btn = $('#register-btn');
 
     if (password_re_group.hasClass('d-none')) {
         password_re_group.removeClass('d-none');
@@ -179,12 +172,12 @@ function register_click_listener() {
         var password = validate_input(password_group, password_re_group);
 
         if (username.length > 0 && password.length > 0) {
-            spinner.removeClass('d-none');
+            loading_state_btn(register_btn);
             send_post('/register', {
                 'username': username,
                 'password': password
             }).then((data) => {
-                spinner.addClass('d-none');
+                finished_state_btn(register_btn);
                 if (data.message === 'success') {
                     user_login_dialog_bs.hide();
                     cur_username = data.username;
@@ -192,10 +185,8 @@ function register_click_listener() {
                     render_userfav_class_item();
                     action_sidebar_bs.hide();
                 } else {
-                    error_message.removeClass('d-none');
-                    setTimeout(() => {
-                        error_message.addClass('d-none');
-                    }, 5000);
+                    show_error_message($('#user-login-dialog'),
+                        user_contents[cur_lan_code]['register_error_message']);
                 }
             })
         }
@@ -206,10 +197,7 @@ function login_click_listener() {
     var username_group = $('#login-username-group');
     var password_group = $('#login-password-group');
     var password_re_group = $('#login-password-repeat-group');
-    var error_message = $('#login-error-message');
-    error_message.addClass('d-none');
-    $('#register-error-message').addClass('d-none');
-    var spinner = $('#login-btn .spinner-border');
+    var login_btn = $('#login-btn');
 
     if (!password_re_group.hasClass('d-none')) {
         $('#login-password-repeat-group').addClass('d-none');
@@ -218,12 +206,12 @@ function login_click_listener() {
         var password = validate_input(password_group);
 
         if (username.length > 0 && password.length > 0) {
-            spinner.removeClass('d-none');
+            loading_state_btn(login_btn);
             send_post('/login', {
                 'username': username,
                 'password': password
             }).then((data) => {
-                spinner.addClass('d-none');
+                finished_state_btn(login_btn);
                 if (data.message === 'success') {
                     user_login_dialog_bs.hide();
                     cur_username = data.username;
@@ -236,10 +224,8 @@ function login_click_listener() {
                         location.reload();
                     }
                 } else {
-                    error_message.removeClass('d-none');
-                    setTimeout(() => {
-                        error_message.addClass('d-none');
-                    }, 5000);
+                    show_error_message($('#user-login-dialog'),
+                        user_contents[cur_lan_code]['login_error_message']);
                 }
             })
         }
@@ -264,28 +250,23 @@ function user_setting_ok_click_listener() {
     var oldpass_group = $('#setting-oldpass-group');
     var newpass_group = $('#setting-newpass-group');
     var newpass_re_group = $('#setting-newpass-repeat-group');
-    var error_message = $('#setting-error-message');
-    error_message.addClass('d-none');
-    var spinner = $('#user-setting-ok-btn .spinner-border');
+    var ok_btn = $('#user-setting-ok-btn');
 
     var oldpass = validate_input(oldpass_group);
     var newpass = validate_input(newpass_group, newpass_re_group);
 
     if (oldpass.length > 0 && newpass.length > 0) {
-        spinner.removeClass('d-none');
+        loading_state_btn(ok_btn);
         send_post('/change_password', {
             'old_password': oldpass,
             'new_password': newpass
         }).then((data) => {
-            spinner.addClass('d-none');
+            finished_state_btn(ok_btn);
             if (data.message === 'success') {
                 user_setting_dialog_bs.hide();
                 $('#user-setting-dialog').find('input').val('');
             } else {
-                error_message.removeClass('d-none');
-                setTimeout(() => {
-                    error_message.addClass('d-none');
-                }, 5000);
+                show_error_message($('#user-setting-dialog'), user_contents[cur_lan_code]['setting_error_message'])
             }
         })
     }

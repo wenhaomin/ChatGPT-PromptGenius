@@ -56,14 +56,12 @@ async function render_page_basic() {
     var user_login_dialog = $('#user-login-dialog');
     if (user_login_dialog.length) {
         user_login_dialog.find('.modal-title').text(login_or_register_text);
-        user_login_dialog.find('#login-error-message').text(_user_contents["login_error_message"]);
-        user_login_dialog.find('#register-error-message').text(_user_contents["register_error_message"]);
         $('#login-dialog-message').text(_user_contents["login_message"]);
         $('#login-username-group input').attr('placeholder', _user_contents["username_ph"]);
         $('#login-password-group input').attr('placeholder', _user_contents["password_ph"]);
         $('#login-password-repeat-group input').attr('placeholder', _user_contents["password_re_ph"]);
-        $('#register-btn span').text(_user_contents["register_text"]);
-        $('#login-btn span').text(_user_contents["login_text"]);
+        $('#register-btn .btn-text').text(_user_contents["register_text"]);
+        $('#login-btn .btn-text').text(_user_contents["login_text"]);
     }
 
     var user_setting_dialog = $('#user-setting-dialog');
@@ -72,8 +70,7 @@ async function render_page_basic() {
         $('#setting-oldpass-group input').attr('placeholder', _user_contents["oldpass_ph"]);
         $('#setting-newpass-group input').attr('placeholder', _user_contents["newpass_ph"]);
         $('#setting-newpass-repeat-group input').attr('placeholder', _user_contents["newpass_re_ph"]);
-        $('#user-setting-ok-btn span').text(_site_contents["ok_text"]);
-        $('#setting-error-message').text(_user_contents["setting_error_message"]);
+        $('#user-setting-ok-btn .btn-text').text(_site_contents["ok_text"]);
     }
 
     if ($('#submit-dialog').length) {
@@ -84,7 +81,7 @@ async function render_page_basic() {
         $('#submit-dialog-funcdesc-group input').attr('placeholder', _submit_contents['func_placeholder']);
         $('#submit-dialog-prompt-group textarea').attr('placeholder', _submit_contents['prompt_placeholder']);
         $('#submit-dialog-user-group input').attr('placeholder', _submit_contents['username_placeholder']);
-        $('#submit-enter-btn-text').text(_submit_contents['ok_btn_text']);
+        $('#submit-dialog').find('.btn-text').text(_submit_contents['ok_btn_text']);
         $('#submit-clear-btn').text(_submit_contents['clear_btn_text']);
     }
 

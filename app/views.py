@@ -2,18 +2,16 @@ import os
 from datetime import datetime
 
 from flask import Blueprint, jsonify, render_template
-from sqlalchemy import and_, func, desc
 from flask_login import LoginManager, login_user, login_required, logout_user
+from sqlalchemy import and_, func, desc
 
-from app.utils import *
 from app.models import *
-
+from app.utils import *
 
 bp = Blueprint('views', __name__)
 login_manager = LoginManager()
 db_datetime_format = '%Y_%m_%d_%H_%M_%S'
 display_datetime_format = '%Y-%m-%d %H:%M:%S'
-
 
 """
 Routers for different pages.
@@ -218,7 +216,8 @@ def fetch_prompt(class_id, lan_code):
         fav_prompts = UserFavPrompt.query.filter(UserFavPrompt.userID == current_user.id).all()
         for prompt in [PromptView.query.filter(and_(PromptView.functionID == item.functionID,
                                                     PromptView.semanticID == item.semanticID,
-                                                    PromptView.lanCode == item.lanCode)).first() for item in fav_prompts]:
+                                                    PromptView.lanCode == item.lanCode)).first() for item in
+                       fav_prompts]:
             result.append(gather_prompt_content_dict(prompt))
     else:
         # find all prompts that has the function
@@ -259,7 +258,7 @@ def get_prompt_dialog():
     lan_code = request.json['lan_code']
     for dialog in PromptDialogs.query.filter(and_(PromptDialogs.functionID == function_id,
                                                   PromptDialogs.semanticID == semantic_id,
-                                                  PromptDialogs.lanCode == lan_code)).\
+                                                  PromptDialogs.lanCode == lan_code)). \
             order_by(PromptDialogs.model_index, PromptDialogs.dialog_index).all():
         content_html = markdown(dialog.content, extras=["fenced-code-blocks", "tables"])
         result.setdefault(dialog.model, []).append({'html': content_html, 'raw': dialog.content,
@@ -298,12 +297,12 @@ Routers for users' interactions with the website.
 def increase_popularity():
     if request.method == 'POST':
         try:
-            functionprompt = FunctionPrompts.query.filter_by(
+            function_prompt = FunctionPrompts.query.filter_by(
                 lanCode=request.json['lan_code'],
                 functionID=request.json['function_id'],
                 semanticID=request.json['semantic_id']).first()
-            if functionprompt:
-                functionprompt.copied_count += request.json['increase']
+            if function_prompt:
+                function_prompt.copied_count += request.json['increase']
                 db.session.commit()
             return jsonify({'message': 'success'})
         except Exception as e:

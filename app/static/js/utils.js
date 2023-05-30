@@ -133,6 +133,7 @@ function get_selected_value(select) {
 function finished_state_btn(btn) {
     btn.find('.spinner-border').addClass('d-none');
     btn.find('.finished-indicator').removeClass('d-none');
+    btn.removeClass('disabled');
     setTimeout(() => {
         btn.find('.finished-indicator').addClass('d-none');
     }, 1000);
@@ -141,6 +142,7 @@ function finished_state_btn(btn) {
 function loading_state_btn(btn) {
     btn.find('.spinner-border').removeClass('d-none');
     btn.find('.finished-indicator').addClass('d-none');
+    btn.addClass('disabled');
 }
 
 function show_error_message(container, error) {

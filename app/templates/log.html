@@ -1,55 +1,55 @@
 {% extends "base.html" %}
 
 {% block style %}
-<style>
-    ul {
-        margin-bottom: 6px;
-    }
+    <style>
+        ul {
+            margin-bottom: 6px;
+        }
 
-    .h4,
-    .h5,
-    .h6 {
-        margin-top: 12px;
-        margin-bottom: 4px;
-    }
-</style>
+        .h4,
+        .h5,
+        .h6 {
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<main class="container-xxl overflow-y-scroll">
-    <div class="row pt-2 pt-md-3 row-cols-1" id="top-log-display"></div>
-    <hr class="my-2">
-    <div class="row pb-2 pb-md-3 row-cols-sm-1 row-cols-lg-2 g-2" id="logs-display"></div>
-</main>
+    <main class="container-xxl overflow-y-scroll">
+        <div class="row pt-2 pt-md-3 row-cols-1" id="top-log-display"></div>
+        <hr class="my-2">
+        <div class="row pb-2 pb-md-3 row-cols-sm-1 row-cols-lg-2 g-2" id="logs-display"></div>
+    </main>
 {% endblock %}
 
 {% block script %}
-<script>
-    window.onload = () => {
-        action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
+    <script>
+        window.onload = () => {
+            action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
 
-        logindex_minmax = [0, 3]
-        logindex_cmap = chroma.scale(['FF6D00', 'F5F5F5']).domain(logindex_minmax);
+            logindex_minmax = [0, 3]
+            logindex_cmap = chroma.scale(['FF6D00', 'F5F5F5']).domain(logindex_minmax);
 
-        Promise.all([
-            init_language_select(),
-            render_page_basic(),
-            render_logs_display(),
-            render_user_specific()
-        ]).then(() => {
-            $('#class-sidebar-toggler').addClass('disabled');
-            $('#class-sidebar-toggler i').addClass('text-secondary');
-            $('#search-input-group input').attr('disabled', 'disabled');
-            $('#search-input-group button').attr('disabled', 'disabled');
-            $('#nav-submit-btn').attr('disabled', 'disabled');
-            $('#user-group button').addClass('disabled');
-        });
+            Promise.all([
+                init_language_select(),
+                render_page_basic(),
+                render_logs_display(),
+                render_user_specific()
+            ]).then(() => {
+                $('#class-sidebar-toggler').addClass('disabled');
+                $('#class-sidebar-toggler i').addClass('text-secondary');
+                $('#search-input-group input').attr('disabled', 'disabled');
+                $('#search-input-group button').attr('disabled', 'disabled');
+                $('#nav-submit-btn').attr('disabled', 'disabled');
+                $('#user-group button').addClass('disabled');
+            });
 
-    }
+        }
 
-    function switch_language_listener() {
-        render_page_basic();
-        render_logs_display();
-    }
-</script>
+        function switch_language_listener() {
+            render_page_basic();
+            render_logs_display();
+        }
+    </script>
 {% endblock %}

@@ -1,9 +1,7 @@
-from flask import Flask
+from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, String, Integer
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
-
 
 db = SQLAlchemy()
 
