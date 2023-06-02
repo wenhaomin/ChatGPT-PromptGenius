@@ -235,7 +235,7 @@ def fetch_prompt(class_id, lan_code):
 @bp.route('/search_prompt/<search_text>/<lan_code>')
 def search_prompt(search_text, lan_code):
     lan_codes = [lan_code]
-    if lan_code not in ['chn', 'eng']:
+    if lan_code != 'eng':
         lan_codes.append('eng')
 
     result = []

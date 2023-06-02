@@ -240,10 +240,6 @@ banner_contents = {
             "image": "static/asset/banners/device_eng.png",
             "url": undefined
         },
-        {
-            "image": "static/asset/banners/ExampleDialog-eng.png",
-            "url": undefined
-        }
     ],
     "chn": [
         {
@@ -254,10 +250,6 @@ banner_contents = {
             "image": "static/asset/banners/device_chn.png",
             "url": undefined
         },
-        {
-            "image": "static/asset/banners/ExampleDialog-chn.png",
-            "url": undefined
-        }
     ],
     "jpn": [
         {
@@ -268,10 +260,6 @@ banner_contents = {
             "image": "static/asset/banners/device_jpn.png",
             "url": undefined
         },
-        {
-            "image": "static/asset/banners/ExampleDialog-jpn.png",
-            "url": undefined
-        }
     ],
     "kor": [
         {
@@ -282,10 +270,6 @@ banner_contents = {
             "image": "static/asset/banners/device_kor.png",
             "url": undefined
         },
-        {
-            "image": "static/asset/banners/ExampleDialog-kor.png",
-            "url": undefined
-        }
     ],
     "deu": [
         {
@@ -296,10 +280,6 @@ banner_contents = {
             "image": "static/asset/banners/device_deu.png",
             "url": undefined
         },
-        {
-            "image": "static/asset/banners/ExampleDialog-deu.png",
-            "url": undefined
-        }
     ],
 }
 

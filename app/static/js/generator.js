@@ -157,6 +157,10 @@ function gen_top_banner_item(image, url) {
 }
 
 function gen_tool_card(name, desc, url, icon, tags, lan_code) {
+    var icon_html = `<img src="${icon}" class="object-fit-cover rounded tool-icon"></img>`;
+    if (icon === undefined || icon === null || icon.length === 0) {
+        icon_html = ``;
+    }
     var card = $(`
         <div class="card shadow-sm tool-card bg-light" 
         name="${name}" lan-code="${lan_code}" tags="${tags}" url="${url}">
@@ -164,7 +168,7 @@ function gen_tool_card(name, desc, url, icon, tags, lan_code) {
                 <div class="card-title d-flex flex-column">
                     <div class="d-flex flex-nowrap justify-content-between">
                         <h5 class="ms-2">${name}</h5>
-                        <img src="${icon}" class="object-fit-cover rounded tool-icon"></img>
+                        ${icon_html}
                     </div>
                     <div class="tool-tag-row"></div>
                 </div>
