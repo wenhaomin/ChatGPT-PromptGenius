@@ -193,40 +193,39 @@ def fetch_classes(lan_code):
     return jsonify(classes)
 
 
+@login_required
+def fetch_user_fav_prompts():
+    result = []
+    fav_prompts = UserFavPrompt.query.filter(UserFavPrompt.userID == current_user.id).all()
+    for prompt in [PromptView.query.filter(and_(PromptView.functionID == item.functionID,
+                                                PromptView.semanticID == item.semanticID,
+                                                PromptView.lanCode == item.lanCode)).first() for item in
+                   fav_prompts]:
+        result.append(gather_prompt_content_dict(prompt))
+    return result
+
+
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
 def fetch_prompt(class_id, lan_code):
     lan_codes = [lan_code]
     if lan_code not in ['chn', 'eng']:
         lan_codes.append('eng')
 
-    result = []
-    function_ids = [item.functionID
-                    for item in FunctionPrompts.query.with_entities(FunctionPrompts.functionID).all()]
-
-    # find all funcions that has the class
-    if class_id == 'all_class' or class_id == 'popular':
-        function_ids = [item.functionID
-                        for item in FunctionPrompts.query.with_entities(FunctionPrompts.functionID).all()]
+    if class_id == 'special-user_fav':
+        result = fetch_user_fav_prompts()
     else:
-        function_ids = [item.ID
-                        for item in Functions.query.with_entities(Functions.ID).
-                        filter(Functions.classes.contains(class_id)).all()]
-
-    if class_id == 'user_fav' and current_user.is_authenticated:
-        fav_prompts = UserFavPrompt.query.filter(UserFavPrompt.userID == current_user.id).all()
-        for prompt in [PromptView.query.filter(and_(PromptView.functionID == item.functionID,
-                                                    PromptView.semanticID == item.semanticID,
-                                                    PromptView.lanCode == item.lanCode)).first() for item in
-                       fav_prompts]:
-            result.append(gather_prompt_content_dict(prompt))
-    else:
-        # find all prompts that has the function
-        for prompt in PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
+        result = []
+        if 'special-' in class_id:
+            entries = PromptView.query.filter(and_(PromptView.types.contains(class_id),
+                                                   PromptView.lanCode.in_(lan_codes)))
+        else:
+            function_ids = [item.ID
+                            for item in Functions.query.with_entities(Functions.ID).
+                            filter(Functions.classes.contains(class_id)).all()]
+            entries = PromptView.query.filter(and_(PromptView.functionID.in_(function_ids),
                                                    PromptView.lanCode.in_(lan_codes),
-                                                   PromptView.priority >= (-999 if is_admin() else 0))
-                                              ).order_by(desc(PromptView.copied_count)).all():
-            if class_id == 'popular' and int(prompt.priority) != 2:
-                continue
+                                                   PromptView.priority >= (-999 if is_admin() else 0)))
+        for prompt in entries.order_by(desc(PromptView.copied_count)).all():
             result.append(gather_prompt_content_dict(prompt))
 
     return jsonify({"content": result, "message": "success"})

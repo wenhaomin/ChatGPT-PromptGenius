@@ -39,7 +39,7 @@ function class_select_listener(selected_class_id) {
 }
 
 function switch_active_class(selected_class_id, scroll) {
-    if (selected_class_id === 'popular') {
+    if (selected_class_id === 'special-popular') {
         $('#top-banner').show('blind', 600);
     } else {
         $('#top-banner').hide('blind', 600);
@@ -62,11 +62,11 @@ function load_cookie_class() {
     if (saved_selected_class !== "" && saved_selected_class !== undefined) {
         cur_selected_class = saved_selected_class;
     } else {
-        cur_selected_class = "popular";
+        cur_selected_class = "special-popular";
     }
 
-    if (cur_username === "" && cur_selected_class === "user_fav") {
-        cur_selected_class = "popular"
+    if (cur_username === "" && cur_selected_class === "special-user_fav") {
+        cur_selected_class = "special-popular"
     }
 }
 
@@ -215,14 +215,13 @@ function login_click_listener() {
                 if (data.message === 'success') {
                     user_login_dialog_bs.hide();
                     cur_username = data.username;
+                    if (cur_username === 'admin') {
+                        location.reload();
+                    }
                     render_user_specific();
                     render_userfav_class_item();
                     update_prompt_display_fav();
                     action_sidebar_bs.hide();
-
-                    if (cur_username === 'admin') {
-                        location.reload();
-                    }
                 } else {
                     show_error_message($('#user-login-dialog'),
                         user_contents[cur_lan_code]['login_error_message']);

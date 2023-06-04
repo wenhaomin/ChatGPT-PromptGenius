@@ -67,7 +67,11 @@ function gen_prompt_card(item) {
     var function_id = item['functionID'];
     var semantic_id = item['semanticID'];
     var lan_code = item['lanCode'];
-    var priority = item['priority'];
+    if (item.hasOwnProperty('priority')) {
+        var priority = item['priority'];
+    } else {
+        var priority = 0;
+    }
     if (author === undefined || author.length === 0) {
         author = 'Anonymous'
     }
@@ -79,14 +83,19 @@ function gen_prompt_card(item) {
     }
 
     var opacity = 1.0;
+    var border_style = '';
     if (priority < 0) {
         icon_color = '212121';
         opacity = 0.7;
+        border_style = 'border-light';
+    }
+    if (priority > 0) {
+        border_style = 'border-warning';
     }
 
     var pop_color = value_to_hex(copied_count, pop_minmax[0], pop_minmax[1], pop_cmap);
     var card = $(`
-        <div class="card shadow-sm prompt-card" style="background-color: #${icon_color}20;"
+        <div class="card shadow-sm prompt-card ${border_style}" style="background-color: #${icon_color}20;"
         function-id="${function_id}" semantic-id="${semantic_id}" lan-code="${lan_code}">
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between mb-0">

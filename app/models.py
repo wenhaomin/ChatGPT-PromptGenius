@@ -108,6 +108,7 @@ class FunctionPrompts(db.Model):
     author = Column(String)
     author_link = Column(String)
     copied_count = Column(Integer)
+    types = Column(String, default='normal')
 
 
 class PromptDialogs(db.Model):
@@ -139,3 +140,4 @@ class PromptView(db.Model):
     icon_style = db.Column(db.String)
     function_name = db.Column(db.String)
     dialog_count = db.Column(db.Integer)
+    types = Column(String)

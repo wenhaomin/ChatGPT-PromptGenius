@@ -108,26 +108,21 @@ async function render_page_basic() {
 async function render_class_tree() {
     // Intialize the options in #language-select.
     var data = await get_data(`/fetch_classes/${cur_lan_code}`);
-    var popular_class_item = {
-        'ID': 'popular',
-        'name': site_contents[cur_lan_code]["popular_name"],
-        'icon': 'star',
-        'icon_style': 'F44336'
-    };
-    var fav_class_item = {
-        'ID': 'user_fav',
-        'name': user_contents[cur_lan_code]["fav_class_name"],
-        'icon': 'heart-fill',
-        'icon_style': 'C62828'
-    };
-    data.unshift(fav_class_item, popular_class_item);
+    special_class_contents.slice().reverse().forEach((item) => {
+        data.unshift({
+            'ID': item.ID,
+            'name': item.names[cur_lan_code],
+            'icon': item.icon,
+            'icon_style': item.icon_style
+        })
+    })
 
     $('#class-selection-list').empty();
     data.forEach((item, index) => {
         var class_selection = gen_class_selection(item);
         var parent_class_container = $(`<div class="parent-class-container rounded">`);
         parent_class_container.append(class_selection);
-        if (item['childrens'] != undefined && item['childrens'].length) {
+        if (item['childrens'] !== undefined && item['childrens'].length) {
             parent_class_container.append(gen_child_class_selection(item['childrens']));
         }
         $('#class-selection-list').append(parent_class_container);
@@ -303,7 +298,7 @@ async function render_user_specific() {
 }
 
 async function render_userfav_class_item() {
-    var fav_class_item = $('#class-selection-list').find(`.class-nav-link[class-id="user_fav"]`).parent();
+    var fav_class_item = $('#class-selection-list').find(`.class-nav-link[class-id="special-user_fav"]`).parent();
     var fav_class_div = $('#class-selection-list').find('.class-selection-divider').first();
     if (cur_username.length > 0) {
         fav_class_item.removeClass('d-none');
@@ -311,8 +306,8 @@ async function render_userfav_class_item() {
     } else {
         fav_class_item.addClass('d-none');
         fav_class_div.addClass('d-none');
-        if (cur_selected_class == 'user_fav') {
-            cur_selected_class = 'popular';
+        if (cur_selected_class == 'special-user_fav') {
+            cur_selected_class = 'special-popular';
             set_cookie('selected_class', cur_selected_class, 30);
             switch_active_class(cur_selected_class);
             render_prompt_by_class(cur_selected_class);

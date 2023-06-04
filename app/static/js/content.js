@@ -2,7 +2,46 @@
  * Basic multi-language contents.
  */
 
-navbar_contents = {
+const special_class_contents = [
+    {
+        'ID': 'special-user_fav',
+        'names': {
+            'eng': 'My Favorites',
+            'chn': '我的最爱',
+            'jpn': '私のお気に入り',
+            'kor': '내가 좋아하는 것들',
+            'deu': 'Meine Favoriten'
+        },
+        'icon': 'heart-fill',
+        'icon_style': 'C62828'
+    },
+    {
+        'ID': 'special-popular',
+        'names': {
+            'eng': 'Popular',
+            'chn': '精选',
+            'jpn': '人気',
+            'kor': '인기 있는',
+            'deu': 'Beliebt'
+        },
+        'icon': 'star',
+        'icon_style': 'F44336'
+    },
+    {
+        'ID': 'special-user_submit',
+        'names': {
+            'eng': 'User Submit',
+            'chn': '用户投稿专区',
+            'jpn': 'ユーザーによる送信',
+            'kor': '사용자 기여 영역',
+            'deu': 'Bereich für Benutzerbeiträge'
+        },
+        'icon': 'people',
+        'icon_style': 'ff5722'
+    }
+]
+
+const navbar_contents = {
     'eng': ['Home', 'AI Tools', 'About'],
     'chn': ['主页', 'AI工具', '关于'],
     'jpn': ['ホーム', 'AI工具', 'について'],
@@ -10,7 +49,7 @@ navbar_contents = {
     'deu': ['Startseite', 'KI-Tools', 'Über']
 }
 
-site_contents = {
+const site_contents = {
     "eng": {
         "title": "PromptGenius",
         "class_canvas_title": "Browse classes",
@@ -48,7 +87,7 @@ site_contents = {
     }
 }
 
-submit_contents = {
+const submit_contents = {
     "eng": {
         "title": "Submit your prompt",
         "message": "If you happens to know a useful prompt that is not listed in this page, you can submit it here. Thank you for your kind contribution!",
@@ -96,7 +135,7 @@ submit_contents = {
     }
 }
 
-searchbar_contents = {
+const searchbar_contents = {
     "eng": {
         "placeholder": "Search",
     },
@@ -114,7 +153,7 @@ searchbar_contents = {
     },
 }
 
-actionbar_contents = {
+const actionbar_contents = {
     "eng": {
         "submit_btn_text": "Contribute"
     },
@@ -132,7 +171,7 @@ actionbar_contents = {
     },
 }
 
-user_contents = {
+const user_contents = {
     "eng": {
         "welcome_text": "Welcome",
         "guest_name": "Guest",
@@ -230,7 +269,7 @@ user_contents = {
     }
 }
 
-banner_contents = {
+const banner_contents = {
     "eng": [
         {
             "image": "static/asset/banners/pg_eng.png",
@@ -283,7 +322,7 @@ banner_contents = {
     ],
 }
 
-prompt_card_contents = {
+const prompt_card_contents = {
     "eng": {
         "copy_text": "Copy",
         "fav_text": "Mark",
@@ -311,7 +350,7 @@ prompt_card_contents = {
     },
 }
 
-warning_contents = {
+const warning_contents = {
     "eng": {
         "no_prompt": 'There are currently no prompt under the filter you applied.',
         "not_implemented": 'Sorry, this is a function in developing.'
@@ -334,7 +373,7 @@ warning_contents = {
     }
 }
 
-prompt_more_dialog_contents = {
+const prompt_more_dialog_contents = {
     "eng": {
         "title": "Example dialogs",
         "speakers": ["User", "AI Model"],
