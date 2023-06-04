@@ -11,7 +11,7 @@ def gather_prompt_content_dict(prompt):
     result = {'functionID': prompt.functionID, 'semanticID': prompt.semanticID, 'lanCode': prompt.lanCode,
               'content': prompt.content, 'html': md_to_html(prompt.content),
               'author': prompt.author, 'author_link': prompt.author_link, 'copied_count': prompt.copied_count,
-              'icon': prompt.icon, 'icon_style': prompt.icon_style,
+              'class_id': prompt.class_id, 'icon': prompt.icon, 'icon_style': prompt.icon_style,
               'function_name': prompt.function_name, 'dialog_count': prompt.dialog_count}
     if is_admin():
         result['types'] = prompt.types.split(',')

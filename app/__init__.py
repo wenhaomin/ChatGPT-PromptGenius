@@ -30,6 +30,7 @@ def create_app():
                         CREATE VIEW prompt_view AS
                         SELECT 
                             fp.*,
+                            c.ID as class_id,
                             c.icon,
                             c.icon_style,
                             fn.name as function_name,

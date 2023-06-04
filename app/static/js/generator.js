@@ -67,6 +67,7 @@ function gen_prompt_card(item) {
     var function_id = item['functionID'];
     var semantic_id = item['semanticID'];
     var lan_code = item['lanCode'];
+    var class_id = item['class_id'];
     if (item.hasOwnProperty('priority')) {
         var priority = item['priority'];
     } else {
@@ -135,7 +136,13 @@ function gen_prompt_card(item) {
             </div>
         </div>
     `);
-    new bootstrap.Tooltip(card.find('.function-desc-badge'));
+    const tooltip_bs = new bootstrap.Tooltip(card.find('.function-desc-badge'));
+
+    var function_badge = card.find('.function-desc-badge');
+    function_badge.on('click', () => {
+        class_select_listener(class_id, true);
+        tooltip_bs.hide();
+    })
 
     var example_btn = card.find('.prompt-example-btn');
     example_btn.on('click', () => {

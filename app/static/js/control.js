@@ -27,11 +27,11 @@ function switch_active_language(selected_lan_code) {
     });
 }
 
-function class_select_listener(selected_class_id) {
+function class_select_listener(selected_class_id, scroll) {
     if (cur_selected_class !== selected_class_id) {
         cur_selected_class = selected_class_id;
         set_cookie('selected_class', cur_selected_class, 30);
-        switch_active_class(cur_selected_class);
+        switch_active_class(cur_selected_class, scroll);
 
         render_prompt_by_class(cur_selected_class, cur_lan_code);
         class_sidebar_bs.hide();
