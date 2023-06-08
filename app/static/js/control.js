@@ -33,7 +33,7 @@ function class_select_listener(selected_class_id, scroll) {
         set_cookie('selected_class', cur_selected_class, 30);
         switch_active_class(cur_selected_class, scroll);
 
-        render_prompt_by_class(cur_selected_class, cur_lan_code);
+        render_class_prompts(cur_selected_class);
         class_sidebar_bs.hide();
     }
 }
@@ -105,7 +105,7 @@ function prompt_search_listener() {
         action_sidebar_bs.hide();
         cur_selected_class = '';
         switch_active_class(cur_selected_class);
-        render_prompt_by_string(search_text, cur_lan_code)
+        render_search_prompts(search_text, cur_lan_code)
     }
 }
 

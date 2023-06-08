@@ -169,8 +169,19 @@ function render_placeholder_prompt_display() {
     masonry_reload(display, '.prompt-col');
 }
 
-function render_prompt_display(prompt_list) {
+async function render_prompt_display(data_url) {
     var display = $("#prompt-display");
+    display.empty();
+    ['4350af', '613cb0', 'd0dc59', '97c15c', 'ec6337', 'f6c344'].forEach((color, index) => {
+        var col = $(`<div class="prompt-col col">`);
+        var card = gen_placeholder_card(color, index + 4);
+        display.append(col.append(card));
+    })
+    masonry_reload(display, '.prompt-col');
+
+    var data = await get_data(data_url);
+    var prompt_list = data.content;
+
     display.empty();
     prompt_list.forEach((item, index) => {
         var col = $(`<div class="prompt-col col">`);
@@ -195,24 +206,15 @@ function render_prompt_display(prompt_list) {
     }
 
     masonry_reload(display, '.prompt-col');
+    await update_prompt_display_fav();
 }
 
-// By Haomin Wen: display all prompts of a given class
-async function render_prompt_by_class(class_id) {
-    render_placeholder_prompt_display();
-    var data = await get_data(`/fetch_prompt/${class_id}/${cur_lan_code}`);
-    // use a function to handle the response data
-    // call another function to render the fetched prompt data
-    render_prompt_display(data['content']);
-    update_prompt_display_fav();
+async function render_class_prompts(class_id) {
+    await render_prompt_display(`/fetch_prompt/${class_id}/${cur_lan_code}`);
 }
 
-// search prompt by give string
-async function render_prompt_by_string(search_text) {
-    render_placeholder_prompt_display();
-    var data = await get_data(`/search_prompt/${search_text}/${cur_lan_code}`);
-    render_prompt_display(data['content']);
-    update_prompt_display_fav();
+async function render_search_prompts(search_text) {
+    await render_prompt_display(`/search_prompt/${search_text}/${cur_lan_code}`);
 }
 
 async function render_prompt_example_display(function_id, semantic_id, lan_code) {
@@ -310,7 +312,7 @@ async function render_userfav_class_item() {
             cur_selected_class = 'special-popular';
             set_cookie('selected_class', cur_selected_class, 30);
             switch_active_class(cur_selected_class);
-            render_prompt_by_class(cur_selected_class);
+            render_class_prompts(cur_selected_class);
         }
     }
 }

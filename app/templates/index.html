@@ -192,7 +192,7 @@
             init_language_select(),
             render_page_basic(),
             render_class_tree(),
-            render_prompt_by_class(cur_selected_class, cur_lan_code),
+            render_class_prompts(cur_selected_class),
             render_user_specific()
         ]).then(() => {
             $("#search-input-group button").on('click', prompt_search_listener);
@@ -221,7 +221,7 @@
         render_class_tree();
 
         load_cookie_class();
-        render_prompt_by_class(cur_selected_class, cur_lan_code);
+        render_class_prompts(cur_selected_class);
     }
 </script>
 {% endblock %}
