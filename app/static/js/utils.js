@@ -126,6 +126,16 @@ function validate_input(input_group, repeat_group) {
     }
 }
 
+function set_selected_value(select, value) {
+    select.find('option').each((index, item) => {
+        if ($(item).val() === value) {
+            $(item).prop('selected', true);
+        } else {
+            $(item).prop('selected', false);
+        }
+    });
+}
+
 function get_selected_value(select) {
     return select.find(":selected").val();
 }

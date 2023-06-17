@@ -6,7 +6,7 @@
 async function init_language_select() {
     // Intialize the options in #language-select.
     var data = await get_data('/fetch_lan');
-    data.forEach(function (item) {
+    data.forEach((item) => {
         var language_select_item = $(`
             <li lan-code="${item['code']}"><a class="dropdown-item">${item['name']}</a></li>
         `);
@@ -16,6 +16,14 @@ async function init_language_select() {
 
         language_select_item.on('click', () => { language_select_listener(item['code']); });
     });
+
+    if ($('#prompt-edit-dialog').length > 0) {
+        data.forEach((item) => {
+            $('#prompt-edit-dialog').find('select[content="lan-code"]').append(`
+                <option value="${item['code']}">${item['name']}</option>
+            `);
+        })
+    }
 }
 
 async function render_page_basic() {

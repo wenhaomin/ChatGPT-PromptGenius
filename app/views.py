@@ -216,6 +216,8 @@ def fetch_prompt(class_id, lan_code):
     else:
         result = []
         if 'special-' in class_id:
+            if class_id == 'special-user_submit':
+                lan_codes.append('eng')
             entries = PromptView.query.filter(and_(PromptView.types.contains(class_id),
                                                    PromptView.lanCode.in_(lan_codes)))
         else:
