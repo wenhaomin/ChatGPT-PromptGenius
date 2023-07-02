@@ -161,6 +161,8 @@ function gen_prompt_card(item) {
         gain_popularity_listener(card, function_id, semantic_id, lan_code, 1);
     })
 
+    card.find('.prompt-card-content').find('img').css('width', '100%');
+
     return card;
 }
 
@@ -223,7 +225,7 @@ function gen_dialog_list(dialog_contents) {
                         <i class="bi bi-clipboard"></i>
                     </button>
                 </div>
-                <small>${content.html}</small>
+                <small class="prompt-dialog-content">${content.html}</small>
             </li>
         `);
         var copy_btn = dialog_item.find('.dialog-copy-btn');
@@ -256,6 +258,9 @@ function gen_multimodel_dialog_display(model_dialogs, model_order) {
         tab_content.append(gen_dialog_list(dialog_contents));
         nav_tabs.append(tab_content);
     })
+
+    nav_tabs.find('.prompt-dialog-content').find('img').css('width', '100%');
+
     return [model_nav, nav_tabs]
 }
 
