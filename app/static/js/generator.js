@@ -136,6 +136,12 @@ function gen_prompt_card(item) {
             </div>
         </div>
     `);
+    var content_first_element = card.find('.prompt-card-content p').first().children().first();
+    if (content_first_element.is('img')) {
+        content_first_element.addClass('card-img-top');
+        content_first_element.prependTo(card);
+    }
+
     const tooltip_bs = new bootstrap.Tooltip(card.find('.function-desc-badge'));
 
     var function_badge = card.find('.function-desc-badge');

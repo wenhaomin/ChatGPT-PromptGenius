@@ -18,6 +18,18 @@ function masonry_reload(parent_dom, item_selector) {
     });
 }
 
+function masonry_reload_on_images(parent_dom, item_selector) {
+    var images = parent_dom.find('img');
+    images.each(() => {
+        if (this.complete) {
+            $(this).trigger('load');
+        }
+    })
+    images.on('load', () => {
+        masonry_reload(parent_dom, item_selector);
+    })
+}
+
 function hex_to_rgb(hex) {
     // If it is a shorthand 3 digit hex color, convert to full 6 digits.
     if (hex.length === 3) {

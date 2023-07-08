@@ -214,6 +214,8 @@ async function render_prompt_display(data_url) {
     }
 
     masonry_reload(display, '.prompt-col');
+    masonry_reload_on_images(display, '.prompt-col');
+
     await update_prompt_display_fav();
 }
 
