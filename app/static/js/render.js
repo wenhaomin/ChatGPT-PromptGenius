@@ -10,12 +10,11 @@ async function init_language_select() {
         var language_select_item = $(`
             <li lan-code="${item['code']}"><a class="dropdown-item">${item['name']}</a></li>
         `);
-
         $('#nav-language-select').append(language_select_item);
-        switch_active_language(cur_lan_code);
-
         language_select_item.on('click', () => { language_select_listener(item['code']); });
     });
+
+    switch_active_language(cur_lan_code);
 
     if ($('#prompt-edit-dialog').length > 0) {
         data.forEach((item) => {

@@ -208,7 +208,7 @@ def fetch_user_fav_prompts():
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
 def fetch_prompt(class_id, lan_code):
     lan_codes = [lan_code]
-    if lan_code not in ['chn', 'eng']:
+    if lan_code != 'eng':
         lan_codes.append('eng')
 
     if class_id == 'special-user_fav':
@@ -216,8 +216,6 @@ def fetch_prompt(class_id, lan_code):
     else:
         result = []
         if 'special-' in class_id:
-            if class_id == 'special-user_submit':
-                lan_codes.append('eng')
             entries = PromptView.query.filter(and_(PromptView.types.contains(class_id),
                                                    PromptView.lanCode.in_(lan_codes)))
         else:

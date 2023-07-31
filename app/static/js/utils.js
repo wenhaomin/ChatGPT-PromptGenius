@@ -26,7 +26,12 @@ function masonry_reload_on_images(parent_dom, item_selector) {
         }
     })
     images.on('load', () => {
-        masonry_reload(parent_dom, item_selector);
+        parent_dom.masonry({
+            itemSelector: item_selector,
+            columnWidth: item_selector,
+            transitionDuration: 500,
+            percentPosition: true
+        }).masonry('reloadItems').masonry('layout');
     })
 }
 
@@ -46,15 +51,15 @@ function hex_to_rgb(hex) {
 function rgb_to_hex(rgb) {
     rgb = rgb.slice(4, -1);
     var values = rgb.split(',');
-    var hexValues = values.map(function(value) {
-      var intValue = parseInt(value.trim(), 10);
-      var hexValue = intValue.toString(16).padStart(2, '0');
-      return hexValue;
+    var hexValues = values.map(function (value) {
+        var intValue = parseInt(value.trim(), 10);
+        var hexValue = intValue.toString(16).padStart(2, '0');
+        return hexValue;
     });
     var hexColor = hexValues.join('');
-  
+
     return hexColor;
-  }
+}
 
 function value_to_hex(value, min, max, cmap) {
     if (value < min) value = min;
@@ -182,21 +187,21 @@ function show_warning_toast(content) {
 }
 
 function gen_random_string(length) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
 
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
 
-  return result;
+    return result;
 }
 
 function get_date_string() {
-  const date = new Date();
-  const year = date.getFullYear().toString().slice(-2);
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  return year + month + day;
+    const date = new Date();
+    const year = date.getFullYear().toString().slice(-2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return year + month + day;
 }
