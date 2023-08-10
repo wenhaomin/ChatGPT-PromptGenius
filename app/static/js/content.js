@@ -155,16 +155,16 @@ const searchbar_contents = {
 
 const actionbar_contents = {
     "eng": {
-        "submit_btn_text": "Contribute"
+        "submit_btn_text": "Share Prompt"
     },
     "chn": {
-        "submit_btn_text": "贡献提示词"
+        "submit_btn_text": "分享提示词"
     },
     "jpn": {
-        "submit_btn_text": "貢献する"
+        "submit_btn_text": "共有する"
     },
     "kor": {
-        "submit_btn_text": "기여하다"
+        "submit_btn_text": "공유하다"
     },
     "deu": {
         "submit_btn_text": "Beitragen"

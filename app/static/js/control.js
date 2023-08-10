@@ -3,23 +3,23 @@
  */
 
 
-function language_select_listener(selected_lan_code) {
-    if (cur_lan_code !== selected_lan_code) {
-        cur_lan_code = selected_lan_code;
-        set_cookie('lancode', cur_lan_code, 30);
-        switch_active_language(selected_lan_code);
+function page_lan_select_listener(selected_page_lan) {
+    if (cur_page_lan !== selected_page_lan) {
+        cur_page_lan = selected_page_lan;
+        set_cookie('lancode', cur_page_lan, 30);
+        switch_active_page_lan(selected_page_lan);
 
-        if (typeof switch_language_listener !== 'undefined') {
-            switch_language_listener();
+        if (typeof refresh_page_multilan !== 'undefined') {
+            refresh_page_multilan();
         }
         action_sidebar_bs.hide();
     }
 }
 
-function switch_active_language(selected_lan_code) {
+function switch_active_page_lan(selected_page_lan) {
     // Change the selected option of #language-select to the given lan_code.
     $('#nav-language-select').children('li').each((index, item) => {
-        if ($(item).attr('lan-code') === selected_lan_code) {
+        if ($(item).attr('lan-code') === selected_page_lan) {
             $(item).children('a').addClass('active');
         } else {
             $(item).children('a').removeClass('active');
@@ -81,7 +81,7 @@ function copy_btn_click_listener(btn, text) {
 function example_btn_click_listener(btn, function_id, semantic_id, lan_code) {
     btn.find('.spinner-border').removeClass('d-none');
     btn.find('.bi').addClass('d-none');
-    render_prompt_example_display(function_id, semantic_id, lan_code).then(() => {
+    render_prompt_example_display(function_id, semantic_id, lan_code).finally(() => {
         btn.find('.spinner-border').addClass('d-none');
         btn.find('.bi').removeClass('d-none');
     });
@@ -105,7 +105,7 @@ function prompt_search_listener() {
         action_sidebar_bs.hide();
         cur_selected_class = '';
         switch_active_class(cur_selected_class);
-        render_search_prompts(search_text, cur_lan_code)
+        render_search_prompts(search_text, cur_page_lan)
     }
 }
 
@@ -156,7 +156,7 @@ function prompt_fav_listener(btn, function_id, semantic_id, lan_code) {
 }
 
 function not_implemented_listener() {
-    show_warning_toast(warning_contents[cur_lan_code]['not_implemented']);
+    show_warning_toast(warning_contents[cur_page_lan]['not_implemented']);
 }
 
 function register_click_listener() {
@@ -186,7 +186,7 @@ function register_click_listener() {
                     action_sidebar_bs.hide();
                 } else {
                     show_error_message($('#user-login-dialog'),
-                        user_contents[cur_lan_code]['register_error_message']);
+                        user_contents[cur_page_lan]['register_error_message']);
                 }
             })
         }
@@ -224,7 +224,7 @@ function login_click_listener() {
                     action_sidebar_bs.hide();
                 } else {
                     show_error_message($('#user-login-dialog'),
-                        user_contents[cur_lan_code]['login_error_message']);
+                        user_contents[cur_page_lan]['login_error_message']);
                 }
             })
         }
@@ -265,7 +265,7 @@ function user_setting_ok_click_listener() {
                 user_setting_dialog_bs.hide();
                 $('#user-setting-dialog').find('input').val('');
             } else {
-                show_error_message($('#user-setting-dialog'), user_contents[cur_lan_code]['setting_error_message'])
+                show_error_message($('#user-setting-dialog'), user_contents[cur_page_lan]['setting_error_message'])
             }
         })
     }

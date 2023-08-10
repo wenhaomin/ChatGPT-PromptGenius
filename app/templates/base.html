@@ -213,12 +213,12 @@
         return "";
     }
 
-    cur_lan_code = "{{ lan_code }}";
+    cur_page_lan = "{{ lan_code }}";
     cur_username = "{{ username }}"
     // Load saved language code from cookie.
-    var save_lan_code = get_cookie('lancode');
-    if (save_lan_code !== "" && save_lan_code !== undefined) {
-        cur_lan_code = save_lan_code;
+    var saved_page_lan = get_cookie('lancode');
+    if (saved_page_lan !== "" && saved_page_lan !== undefined) {
+        cur_page_lan = saved_page_lan;
     }
 
     $('#nav-github-btn').on('click', () => {

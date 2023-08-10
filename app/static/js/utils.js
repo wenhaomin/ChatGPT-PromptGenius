@@ -2,6 +2,10 @@
  * Utilities. These functions are general tools that are shared across the project.
  */
 
+var current_get_request = null;
+var current_post_request = null;
+var current_requests = {};
+
 function masonry_reload(parent_dom, item_selector) {
     parent_dom.masonry({
         itemSelector: item_selector,
@@ -72,29 +76,35 @@ function random_int(min, max) {
 }
 
 async function get_data(url) {
-    try {
-        const response = await $.ajax({
-            url: url,
-            type: 'GET',
-            contentType: 'application/json'
-        });
-        return response;
-    } catch (error) {
-        console.error(error);
-    }
+    return ajax_request(url, 'GET');
 }
 
 async function send_post(url, data) {
+    return ajax_request(url, 'POST', data);
+}
+
+async function ajax_request(url, type, data, group) {
+    if (!group) {
+        group = url;
+    }
+
+    if (current_requests[group]) {
+        current_requests[group].abort();
+    }
+    current_requests[group] = $.ajax({
+        url: url,
+        type: type,
+        contentType: 'application/json',
+        data: JSON.stringify(data)
+    });
+
     try {
-        const response = await $.ajax({
-            url: url,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data)
-        });
+        const response = await current_requests[group];
         return response;
     } catch (error) {
         console.error(error);
+    } finally {
+        delete current_requests[group];
     }
 }
 

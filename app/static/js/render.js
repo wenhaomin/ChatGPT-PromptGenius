@@ -5,16 +5,16 @@
 
 async function init_language_select() {
     // Intialize the options in #language-select.
-    var data = await get_data('/fetch_lan');
+    var data = await ajax_request('/fetch_lan', 'GET');
     data.forEach((item) => {
-        var language_select_item = $(`
+        var page_lan_select_item = $(`
             <li lan-code="${item['code']}"><a class="dropdown-item">${item['name']}</a></li>
         `);
-        $('#nav-language-select').append(language_select_item);
-        language_select_item.on('click', () => { language_select_listener(item['code']); });
+        $('#nav-language-select').append(page_lan_select_item);
+        page_lan_select_item.on('click', () => { page_lan_select_listener(item['code']); });
     });
 
-    switch_active_language(cur_lan_code);
+    switch_active_page_lan(cur_page_lan);
 
     if ($('#prompt-edit-dialog').length > 0) {
         data.forEach((item) => {
@@ -27,7 +27,7 @@ async function init_language_select() {
 
 async function render_page_basic() {
     // Render the basic elements on the page.
-    var _site_contents = site_contents[cur_lan_code];
+    var _site_contents = site_contents[cur_page_lan];
     $('#page-browser-title, #page-header-title').text(_site_contents['title']);
     $('#class-offcanvas-title').text(_site_contents['class_canvas_title']);
     $('#action-offcanvas-title').text(_site_contents['action_canvas_title']);
@@ -38,7 +38,7 @@ async function render_page_basic() {
             <li class="nav-item">
                 <a class="nav-link navbar-link
                     ${(href === window.location.pathname) ? 'active-navbar-link' : ''}" 
-                    href="${href}">${navbar_contents[cur_lan_code][index]}</a>
+                    href="${href}">${navbar_contents[cur_page_lan][index]}</a>
             </li>
         `);
         $('#navbar-links').append(nav_item);
@@ -49,11 +49,11 @@ async function render_page_basic() {
 
     document.title += '-' + $('#navbar-links').find('.active-navbar-link').text();
 
-    $('#search-input-group input').attr('placeholder', searchbar_contents[cur_lan_code]['placeholder']);
-    $('#nav-submit-btn span').text(actionbar_contents[cur_lan_code]["submit_btn_text"]);
+    $('#search-input-group input').attr('placeholder', searchbar_contents[cur_page_lan]['placeholder']);
+    $('#nav-submit-btn span').text(actionbar_contents[cur_page_lan]["submit_btn_text"]);
 
     var user_group = $('#user-group');
-    var _user_contents = user_contents[cur_lan_code];
+    var _user_contents = user_contents[cur_page_lan];
     var login_or_register_text = `${_user_contents["login_text"]} / ${_user_contents["register_text"]}`;
     user_group.find('.welcome-text').text(_user_contents["welcome_text"]);
     user_group.find('#login-item span').text(login_or_register_text);
@@ -82,7 +82,7 @@ async function render_page_basic() {
 
     if ($('#submit-dialog').length) {
         // Render contents in submit dialog.
-        var _submit_contents = submit_contents[cur_lan_code];
+        var _submit_contents = submit_contents[cur_page_lan];
         $('#submit-dialog-title').text(_submit_contents['title']);
         $('#submit-dialog-message').text(_submit_contents['message']);
         $('#submit-dialog-funcdesc-group input').attr('placeholder', _submit_contents['func_placeholder']);
@@ -95,7 +95,7 @@ async function render_page_basic() {
     if ($('#top-banner').length) {
         $('#top-banner-inner').empty();
         $('#top-banner-indicator').empty();
-        banner_contents[cur_lan_code].forEach(({ image, url }, index) => {
+        banner_contents[cur_page_lan].forEach(({ image, url }, index) => {
             var banner_item = gen_top_banner_item(image, url);
             var indicator_item = $(`<button type="button" data-bs-target="#top-banner" data-bs-slide-to="${index}"></button>`);
             if (index === 0) {
@@ -108,17 +108,20 @@ async function render_page_basic() {
     }
 
     if ($('#prompt-more-dialog').length) {
-        $('#prompt-more-dialog').find('.modal-title').text(prompt_more_dialog_contents[cur_lan_code]['title']);
+        $('#prompt-more-dialog').find('.modal-title').text(prompt_more_dialog_contents[cur_page_lan]['title']);
     }
 }
 
 async function render_class_tree() {
     // Intialize the options in #language-select.
-    var data = await get_data(`/fetch_classes/${cur_lan_code}`);
+    var data = await ajax_request(`/fetch_classes/${cur_page_lan}`, 'GET', null, 'classes');
+    if (data === undefined) {
+        return;
+    }
     special_class_contents.slice().reverse().forEach((item) => {
         data.unshift({
             'ID': item.ID,
-            'name': item.names[cur_lan_code],
+            'name': item.names[cur_page_lan],
             'icon': item.icon,
             'icon_style': item.icon_style
         })
@@ -148,7 +151,7 @@ async function render_class_tree() {
 }
 
 async function render_tools() {
-    var data = await get_data(`/fetch_tools/${cur_lan_code}`);
+    var data = await ajax_request(`/fetch_tools/${cur_page_lan}`, 'GET', null, 'tools');
     var display = $('#tools-display')
     display.empty();
     data.forEach(({ name, desc, url, icon_src, tags, lan_code }) => {
@@ -186,22 +189,25 @@ async function render_prompt_display(data_url) {
     })
     masonry_reload(display, '.prompt-col');
 
-    var data = await get_data(data_url);
-    var prompt_list = data.content;
+    var data = await ajax_request(data_url, 'GET', null, 'prompt');
+    if (data === undefined) {
+        return;
+    }
 
     display.empty();
+    var prompt_list = data.content;
     prompt_list.forEach((item, index) => {
         var col = $(`<div class="prompt-col col">`);
         var card = gen_prompt_card(item);
         display.append(col.append(card));
     });
 
-    display.find('.prompt-copy-btn span').text(prompt_card_contents[cur_lan_code]['copy_text']);
-    display.find('.prompt-fav-btn span').text(prompt_card_contents[cur_lan_code]['fav_text']);
-    display.find('.prompt-example-btn span').text(prompt_card_contents[cur_lan_code]['more_text']);
+    display.find('.prompt-copy-btn span').text(prompt_card_contents[cur_page_lan]['copy_text']);
+    display.find('.prompt-fav-btn span').text(prompt_card_contents[cur_page_lan]['fav_text']);
+    display.find('.prompt-example-btn span').text(prompt_card_contents[cur_page_lan]['more_text']);
 
     if (prompt_list.length === 0) {
-        show_warning_toast(warning_contents[cur_lan_code]['no_prompt']);
+        show_warning_toast(warning_contents[cur_page_lan]['no_prompt']);
     } else {
         warning_toast.hide();
     }
@@ -219,17 +225,17 @@ async function render_prompt_display(data_url) {
 }
 
 async function render_class_prompts(class_id) {
-    await render_prompt_display(`/fetch_prompt/${class_id}/${cur_lan_code}`);
+    await render_prompt_display(`/fetch_prompt/${class_id}/${cur_page_lan}`);
 }
 
 async function render_search_prompts(search_text) {
-    await render_prompt_display(`/search_prompt/${search_text}/${cur_lan_code}`);
+    await render_prompt_display(`/search_prompt/${search_text}/${cur_page_lan}`);
 }
 
 async function render_prompt_example_display(function_id, semantic_id, lan_code) {
     const icons = ['person-fill', 'gear-wide'];
     const colors = ['FFB300', '039BE5']
-    const speakers = prompt_more_dialog_contents[cur_lan_code]['speakers'];
+    const speakers = prompt_more_dialog_contents[cur_page_lan]['speakers'];
 
     var data = await send_post(`get_prompt_dialog`, {
         'function_id': function_id,
@@ -256,7 +262,7 @@ async function render_prompt_example_display(function_id, semantic_id, lan_code)
 }
 
 async function render_logs_display() {
-    var contents = await get_data(`/fetch_logs/${cur_lan_code}`);
+    var contents = await ajax_request(`/fetch_logs/${cur_page_lan}`, 'GET', null, 'logs');
 
     var displays = $('#top-log-display, #logs-display');
     displays.empty();
@@ -298,7 +304,7 @@ async function render_user_specific() {
     } else {
         userbar_icon.addClass('bi-person-fill');
         userbar_icon.empty();
-        username_span.text(user_contents[cur_lan_code]['guest_name']);
+        username_span.text(user_contents[cur_page_lan]['guest_name']);
 
         login_item.removeClass('d-none');
         setting_item.addClass('d-none');
@@ -328,8 +334,11 @@ async function render_userfav_class_item() {
 
 async function update_prompt_display_fav() {
     if (cur_username.length > 0) {
-        var fav_prompts = (await get_data('/fetch_fav_prompt'))['content'];
-        fav_prompts.forEach((item) => {
+        var fav_prompts = await ajax_request('/fetch_fav_prompt', 'GET');
+        if (fav_prompts === undefined) {
+            return;
+        }
+        fav_prompts['content'].forEach((item) => {
             var prompt_card = $(`.prompt-card[function-id="${item.function_id}"][semantic-id="${item.semantic_id}"][lan-code="${item.lan_code}"]`);
             if (prompt_card.length) {
                 prompt_card.find('.prompt-fav-btn .bi').switchClass('bi-bookmark', 'bi-bookmark-check-fill');
