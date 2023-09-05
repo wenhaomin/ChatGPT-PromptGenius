@@ -207,9 +207,7 @@ def fetch_user_fav_prompts():
 
 @bp.route('/fetch_prompt/<class_id>/<lan_code>')
 def fetch_prompt(class_id, lan_code):
-    lan_codes = [lan_code]
-    if lan_code != 'eng':
-        lan_codes.append('eng')
+    lan_codes = lan_code.split(',')
 
     if class_id == 'special-user_fav':
         result = fetch_user_fav_prompts()
@@ -233,12 +231,9 @@ def fetch_prompt(class_id, lan_code):
 
 @bp.route('/search_prompt/<search_text>/<lan_code>')
 def search_prompt(search_text, lan_code):
-    lan_codes = [lan_code]
-    if lan_code != 'eng':
-        lan_codes.append('eng')
+    lan_codes = lan_code.split(',')
 
     result = []
-
     for prompt in PromptView.query.filter(and_(PromptView.content.contains(search_text),
                                                PromptView.lanCode.in_(lan_codes),
                                                PromptView.priority >= (-999 if is_admin() else 0))).all():

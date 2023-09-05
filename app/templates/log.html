@@ -32,7 +32,7 @@
             logindex_cmap = chroma.scale(['FF6D00', 'F5F5F5']).domain(logindex_minmax);
 
             Promise.all([
-                init_language_select(),
+                render_page_settings(),
                 render_page_basic(),
                 render_logs_display(),
                 render_user_specific()
@@ -45,11 +45,6 @@
                 $('#user-group button').addClass('disabled');
             });
 
-        }
-
-        function refresh_page_multilan() {
-            render_page_basic();
-            render_logs_display();
         }
     </script>
 {% endblock %}

@@ -3,18 +3,24 @@
  * They also assign event listeners to elements if needed.
  */
 
-async function init_language_select() {
+async function render_page_settings() {
     // Intialize the options in #language-select.
     var data = await ajax_request('/fetch_lan', 'GET');
     data.forEach((item) => {
-        var page_lan_select_item = $(`
-            <li lan-code="${item['code']}"><a class="dropdown-item">${item['name']}</a></li>
+        var language_ratio = $(`
+            <input type="radio" class="btn-check page-lan-radio" name="language-ratio" id="language-radio-${item['code']}"
+            ${item['code'] === cur_page_lan ? 'checked' : ''} lan-code="${item['code']}">
+            <label class="btn btn-outline-info" for="language-radio-${item['code']}">${item['name']}</label>
         `);
-        $('#nav-language-select').append(page_lan_select_item);
-        page_lan_select_item.on('click', () => { page_lan_select_listener(item['code']); });
-    });
+        $('#page-setting-dialog #basic-element-ratio-group').append(language_ratio);
 
-    switch_active_page_lan(cur_page_lan);
+        var language_check = $(`
+            <input type="checkbox" class="btn-check prompt-lan-check" id="language-check-${item['code']}" autocomplete="off"
+            ${cur_prompt_lans.includes(item['code']) ? 'checked': ''} lan-code="${item['code']}">
+            <label class="btn btn-outline-info" for="language-check-${item['code']}">${item['name']}</label>
+        `);
+        $('#page-setting-dialog #prompt-ratio-group').append(language_check);
+    });
 
     if ($('#prompt-edit-dialog').length > 0) {
         data.forEach((item) => {
@@ -31,6 +37,7 @@ async function render_page_basic() {
     $('#page-browser-title, #page-header-title').text(_site_contents['title']);
     $('#class-offcanvas-title').text(_site_contents['class_canvas_title']);
     $('#action-offcanvas-title').text(_site_contents['action_canvas_title']);
+    $('.ok-btn-text').text(_site_contents["ok_text"]);
 
     $('#navbar-links').empty();
     ['/', '/tools', '/log'].forEach((href, index) => {
@@ -51,6 +58,13 @@ async function render_page_basic() {
 
     $('#search-input-group input').attr('placeholder', searchbar_contents[cur_page_lan]['placeholder']);
     $('#nav-submit-btn span').text(actionbar_contents[cur_page_lan]["submit_btn_text"]);
+
+    var _page_setting_contents = page_setting_contents[cur_page_lan];
+    $('#page-setting-dialog .modal-title').text(_page_setting_contents['dialog_title']);
+    $('#page-setting-dialog #basic-element-setting-text').text(_page_setting_contents['basic_element_title']);
+    $('#page-setting-dialog #basic-element-setting-discription').text(_page_setting_contents['basic_element_discription']);
+    $('#page-setting-dialog #prompt-setting-text').text(_page_setting_contents['prompt_title']);
+    $('#page-setting-dialog #prompt-setting-discription').text(_page_setting_contents['prompt_discription']);
 
     var user_group = $('#user-group');
     var _user_contents = user_contents[cur_page_lan];
@@ -77,7 +91,6 @@ async function render_page_basic() {
         $('#setting-oldpass-group input').attr('placeholder', _user_contents["oldpass_ph"]);
         $('#setting-newpass-group input').attr('placeholder', _user_contents["newpass_ph"]);
         $('#setting-newpass-repeat-group input').attr('placeholder', _user_contents["newpass_re_ph"]);
-        $('#user-setting-ok-btn .btn-text').text(_site_contents["ok_text"]);
     }
 
     if ($('#submit-dialog').length) {
@@ -225,11 +238,11 @@ async function render_prompt_display(data_url) {
 }
 
 async function render_class_prompts(class_id) {
-    await render_prompt_display(`/fetch_prompt/${class_id}/${cur_page_lan}`);
+    await render_prompt_display(`/fetch_prompt/${class_id}/${cur_prompt_lans}`);
 }
 
 async function render_search_prompts(search_text) {
-    await render_prompt_display(`/search_prompt/${search_text}/${cur_page_lan}`);
+    await render_prompt_display(`/search_prompt/${search_text}/${cur_prompt_lans}`);
 }
 
 async function render_prompt_example_display(function_id, semantic_id, lan_code) {

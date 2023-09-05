@@ -3,30 +3,6 @@
  */
 
 
-function page_lan_select_listener(selected_page_lan) {
-    if (cur_page_lan !== selected_page_lan) {
-        cur_page_lan = selected_page_lan;
-        set_cookie('lancode', cur_page_lan, 30);
-        switch_active_page_lan(selected_page_lan);
-
-        if (typeof refresh_page_multilan !== 'undefined') {
-            refresh_page_multilan();
-        }
-        action_sidebar_bs.hide();
-    }
-}
-
-function switch_active_page_lan(selected_page_lan) {
-    // Change the selected option of #language-select to the given lan_code.
-    $('#nav-language-select').children('li').each((index, item) => {
-        if ($(item).attr('lan-code') === selected_page_lan) {
-            $(item).children('a').addClass('active');
-        } else {
-            $(item).children('a').removeClass('active');
-        }
-    });
-}
-
 function class_select_listener(selected_class_id, scroll) {
     if (cur_selected_class !== selected_class_id) {
         cur_selected_class = selected_class_id;

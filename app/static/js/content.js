@@ -49,6 +49,44 @@ const navbar_contents = {
     'deu': ['Startseite', 'KI-Tools', 'Über']
 }
 
+const page_setting_contents = {
+    "chn": {
+        "dialog_title": "页面设置",
+        "basic_element_title": "页面基本语言：",
+        "basic_element_discription": "影响页面基本元素，包括导航栏、分类树、按钮、工具和关于界面。",
+        "prompt_title": "提示词语言：",
+        "prompt_discription": "影响显示提示词的语言范围，可多选。"
+    },
+    "eng": {
+        "dialog_title": "Page Settings",
+        "basic_element_title": "Page Basic Language:",
+        "basic_element_discription": "Affects basic page elements including navigation bar, category tree, buttons, tools, and the About page.",
+        "prompt_title": "Prompt Language:",
+        "prompt_discription": "Affects the language range for displaying prompts, can select multiple."
+    },
+    "jpn": {
+        "dialog_title": "ページ設定",
+        "basic_element_title": "ページ基本言語：",
+        "basic_element_discription": "ナビゲーションバー、カテゴリツリー、ボタン、ツール、および関連セクションなど、基本的なページ要素に影響します。",
+        "prompt_title": "プロンプト言語：",
+        "prompt_discription": "プロンプトの表示言語範囲に影響を与えます。複数選択可。"
+    },
+    "kor": {
+        "dialog_title": "페이지 설정",
+        "basic_element_title": "기본 언어:",
+        "basic_element_discription": "내비게이션 바, 카테고리 트리, 버튼, 도구, 소개 섹션 등 기본 페이지 요소에 영향을 줍니다.",
+        "prompt_title": "프롬프트 언어:",
+        "prompt_discription": "프롬프트 표시 언어 범위에 영향을 줍니다. 복수 선택 가능."
+    },
+    "deu": {
+        "dialog_title": "Seiteneinstellungen",
+        "basic_element_title": "Grundlegendes Sprache:",
+        "basic_element_discription": "Beeinflusst grundlegende Seitenelemente wie Navigationsleiste, Kategorienbaum, Schaltflächen, Werkzeuge und Abschnitt Über uns.",
+        "prompt_title": "Hinweissprache:",
+        "prompt_discription": "Beeinflusst die Sprachbereichsauswahl für die Anzeige von Hinweisen. Mehrfachauswahl möglich."
+    }
+}
+
 const site_contents = {
     "eng": {
         "title": "PromptGenius",

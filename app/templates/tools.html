@@ -18,7 +18,7 @@
         action_sidebar_bs = new bootstrap.Offcanvas($('#action-sidebar'));
 
         Promise.all([
-            init_language_select(),
+            render_page_settings(),
             render_page_basic(),
             render_tools(),
             render_user_specific()
@@ -30,11 +30,6 @@
             $('#nav-submit-btn').attr('disabled', 'disabled');
             $('#user-group button').addClass('disabled');
         });
-    }
-
-    function refresh_page_multilan() {
-        render_page_basic();
-        render_tools();
     }
 </script>
 {% endblock %}

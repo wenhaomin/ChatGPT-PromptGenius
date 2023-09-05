@@ -158,7 +158,7 @@
                 <button type="button" class="btn btn-primary" id="user-setting-ok-btn">
                     <div class="spinner-border spinner-border-sm d-none"></div>
                     <span class="d-none finished-indicator"><i class="bi bi-check-lg"></i></span>
-                    <span class="btn-text"></span>
+                    <span class="btn-text ok-btn-text"></span>
                 </button>
             </div>
         </div>
@@ -189,7 +189,7 @@
         pop_cmap = chroma.scale(['303F9F', 'FF8F00', 'FF3D00']).domain(pop_minmax);
 
         Promise.all([
-            init_language_select(),
+            render_page_settings(),
             render_page_basic(),
             render_class_tree(),
             render_class_prompts(cur_selected_class),
@@ -214,14 +214,6 @@
             });
         })
 
-    }
-
-    function refresh_page_multilan() {
-        render_page_basic();
-        render_class_tree();
-
-        load_cookie_class();
-        render_class_prompts(cur_selected_class);
     }
 </script>
 {% endblock %}
