@@ -2,7 +2,7 @@
 .vscode
 app/__pycache__
 /meta/
-instance/
+instance/PromptGenius.db
 .idea
 app/app_config.json
 script/
