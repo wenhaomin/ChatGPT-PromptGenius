@@ -174,9 +174,9 @@ function gen_prompt_card(item) {
 
 function gen_top_banner_item(image, url) {
     return $(`
-        <div class="carousel-item rounded top-banner-item py-1 py-md-2 px-0">
+        <a class="carousel-item rounded top-banner-item py-1 py-md-2 px-0" href="${url}">
             <img class="d-block object-fit-scale w-100 banner-img" src="${image}"></img>
-        </div>
+        </a>
     `)
 }
 
