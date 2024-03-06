@@ -310,71 +310,71 @@ const user_contents = {
 const banner_contents = {
     "eng": [
         {
-            "image": "static/asset/banners/pg_eng.png",
+            "image": "static/asset/banners/pg_eng.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/device_eng.png",
+            "image": "static/asset/banners/device_eng.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/OC-banner-eng.png",
+            "image": "static/asset/banners/OC-banner-eng.webp",
             "url": "https://overleafcopilot.github.io/"
         },
     ],
     "chn": [
         {
-            "image": "static/asset/banners/pg_chn.png",
+            "image": "static/asset/banners/pg_chn.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/device_chn.png",
+            "image": "static/asset/banners/device_chn.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/OC-banner-chn.png",
+            "image": "static/asset/banners/OC-banner-chn.webp",
             "url": "https://overleafcopilot.github.io/"
         },
     ],
     "jpn": [
         {
-            "image": "static/asset/banners/pg_jpn.png",
+            "image": "static/asset/banners/pg_jpn.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/device_jpn.png",
+            "image": "static/asset/banners/device_jpn.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/OC-banner-eng.png",
+            "image": "static/asset/banners/OC-banner-eng.webp",
             "url": "https://overleafcopilot.github.io/"
         },
     ],
     "kor": [
         {
-            "image": "static/asset/banners/pg_kor.png",
+            "image": "static/asset/banners/pg_kor.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/device_kor.png",
+            "image": "static/asset/banners/device_kor.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/OC-banner-eng.png",
+            "image": "static/asset/banners/OC-banner-eng.webp",
             "url": "https://overleafcopilot.github.io/"
         },
     ],
     "deu": [
         {
-            "image": "static/asset/banners/pg_deu.png",
+            "image": "static/asset/banners/pg_deu.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/device_deu.png",
+            "image": "static/asset/banners/device_deu.webp",
             "url": "https://www.promptgenius.site/"
         },
         {
-            "image": "static/asset/banners/OC-banner-eng.png",
+            "image": "static/asset/banners/OC-banner-eng.webp",
             "url": "https://overleafcopilot.github.io/"
         },
     ],

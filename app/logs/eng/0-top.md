@@ -24,3 +24,7 @@ Understanding this vital connection, we proudly present PromptGenius, a platform
 
 - **Prompt Word Engineering. "Effective and Robust Prompt Word Development."**
   We will continue to collect prompts that developers care about when building smart applications, for example, how to use prompts for robust output control, how to build a collection of coordinated prompts, etc.
+
+### Homepage of the Developers
+
+- [Yan Lin's Scholar Page](https://logan-lin.github.io/) - [Haomin Wen's Scholar Page](https://wenhaomin.github.io/) - [Zekai Shen's Zhihu Page](https://www.zhihu.com/people/no1szk)

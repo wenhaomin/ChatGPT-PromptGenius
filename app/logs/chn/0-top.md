@@ -26,8 +26,6 @@
 - **提示词工程 “有效、鲁棒的提示词开发”**
   我们将持续收集开发者在搭建智能应用时关心的Prompt，例如，如何使用Prompt进行鲁棒的输出控制，如何构建协同配合的Prompt集合等。
 
-### 支持作者
+### 开发者主页
 
-如果觉得本网站很有帮助，欢迎给我们打赏！感谢您的支持！
-
-<img src="/static/asset/images/alipay_lin.jpg" width=250></img>
+- [林彦的个人学术主页](https://logan-lin.github.io/) - [温浩珉的个人学术主页](https://wenhaomin.github.io/) - [申泽楷的知乎主页](https://www.zhihu.com/people/no1szk)
