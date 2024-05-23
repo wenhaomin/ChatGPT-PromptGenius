@@ -28,4 +28,4 @@
 
 ### 开发者主页
 
-- [林彦的个人学术主页](https://logan-lin.github.io/) - [温浩珉的个人学术主页](https://wenhaomin.github.io/) - [申泽楷的知乎主页](https://www.zhihu.com/people/no1szk)
+- [林彦的个人学术主页](https://logan-lin.github.io/) - [温浩珉的个人学术主页](https://wenhaomin.github.io/) - [申泽楷的知乎主页](https://www.zhihu.com/people/no1wds)
